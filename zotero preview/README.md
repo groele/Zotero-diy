@@ -22,7 +22,7 @@ Requirements: PowerShell 7 and Node.js 18 or later. The runtime package uses onl
 ```powershell
 pwsh -NoProfile -File ./test.ps1
 pwsh -NoProfile -File ./scripts/build.ps1
-`
+```
 
 The test suite checks manifest and update-feed consistency, declared Zotero compatibility, lifecycle cleanup, bounded multi-item rendering, the visible SVG copy-control contract, locale message coverage, and JavaScript syntax. Build output is written to `dist/`.
 
