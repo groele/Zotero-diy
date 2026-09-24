@@ -1,0 +1,62 @@
+<!--
+    zoteropreview
+    prefs.xhtml
+    adapted from Wiley Yu (zotmoov)
+-->
+
+<linkset>
+    <html:link rel="localization" href="zotero-preview.ftl"/>
+</linkset>
+
+<vbox id="zotero-prefpane-zotero-preview" onload="Zotero.zoteropreview.Prefs.init();">
+    <groupbox>
+        <vbox>
+            <label><html:h2 data-l10n-id="zotero-preview-settings-title"></html:h2></label>
+            <hbox>
+                <menulist id="zotero-preview-style-menulist" native="true"
+                    preference="extensions.zoteropreview.citationstyle">
+                    <menupopup>
+                    </menupopup>
+                </menulist>
+            </hbox>
+        </vbox>
+    </groupbox>
+    <groupbox>
+        <label><html:h2 data-l10n-id="zotero-preview-settings-position"></html:h2></label>
+        <radiogroup native="true" id="extensions-zoteropreview-position" preference="extensions.zoteropreview.position">
+            <radio id="extensions-zoteropreview-position-top" value="zotero-item-pane-header" data-l10n-id="zotero-preview-settings-position-top"/>
+            <radio id="extensions-zoteropreview-position-afterInfo" value="zotero-editpane-item-box" data-l10n-id="zotero-preview-settings-position-afterinfo"/>
+            <radio id="extensions-zoteropreview-position-bottom" value="zotero-editpane-related" data-l10n-id="zotero-preview-settings-position-bottom"/>
+        </radiogroup>
+    </groupbox>
+    <groupbox>
+        <label><html:h2 data-l10n-id="zotero-preview-settings-display"></html:h2></label>
+        <radiogroup native="true" id="extensions-zoteropreview-whatToShow" preference="extensions.zoteropreview.whatToShow">
+            <radio id="extensions-zoteropreview-whatToShow-both" value="zpboth" data-l10n-id="zotero-preview-settings-whatToShow-both"/>
+            <radio id="extensions-zoteropreview-whatToShow-bib" value="zpbib" data-l10n-id="zotero-preview-settings-whatToShow-bib"/>
+            <radio id="extensions-zoteropreview-whatToShow-intext" value="zpintext" data-l10n-id="zotero-preview-settings-whatToShow-intext"/>
+        </radiogroup>
+    </groupbox>
+
+    <groupbox>
+        <label><html:h2 data-l10n-id="zotero-preview-settings-display-space"></html:h2></label>
+        <hbox>
+            <hbox align="center">
+            <label data-l10n-id="zotero-preview-settings-display-fontsize" control="zotero-preview-fontsize"/>
+            <html:input class="html-input" id="zotero-preview-fontsize" type="number" min="0.2" max="3" step="0.1" size="2" data-preference="extensions.zoteropreview.fontsize"/>
+                </hbox>
+            </hbox>
+        <hbox>
+            <hbox align="center">
+            <label data-l10n-id="zotero-preview-settings-display-linespacing" control="zotero-preview-spacing"/>
+            <html:input class="html-input" id="zotero-preview-spacing" type="number" min="1" max="3" step="0.1" size="2" data-preference="extensions.zoteropreview.spacing"/>
+                </hbox>
+            </hbox>
+        <hbox>
+            <hbox align="center">
+            <label data-l10n-id="zotero-preview-settings-display-max-items" control="zotero-preview-max-items"/>
+            <html:input class="html-input" id="zotero-preview-max-items" type="number" min="1" max="500" step="1" size="3" data-preference="extensions.zoteropreview.maxPreviewItems"/>
+                </hbox>
+            </hbox>
+        </groupbox>
+</vbox>
