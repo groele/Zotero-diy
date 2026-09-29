@@ -1,0 +1,42 @@
+{
+  "version": "4.1.0",
+  "date": "2026-09-29",
+  "upstreamCommit": "2b747409e8c3df866fca327a8ad859d770694a5b",
+  "artifact": "linter-for-zotero.xpi",
+  "sha256": "b75aa8e5224aa053f734c5efc7db7631b420642650a18dbd595988acc6601e8d",
+  "productionXpiInstalledInIsolatedZotero": true,
+  "environment": {
+    "os": "Windows",
+    "shell": "PowerShell 7",
+    "node": "22.14.0",
+    "pnpm": "12.3.4",
+    "zotero": "10.0.3"
+  },
+  "checks": {
+    "unit": {
+      "passed": 179,
+      "files": 21
+    },
+    "e2e": {
+      "zh-CN": 29,
+      "en-US": 29
+    },
+    "eslintAndAutoCorrect": "passed",
+    "productionBuildAndTypecheck": "passed",
+    "e2eTypecheck": "passed"
+  },
+  "coverage": [
+    "48 registered rules and tools",
+    "database transaction retry and undo/redo",
+    "menus, shortcuts and window lifecycle",
+    "custom CSV and BOM JSON files",
+    "real three-page PDF import and indexing",
+    "installed production XPI and bundled data"
+  ],
+  "limits": [
+    "External services and translators use controlled responses; live availability not verified.",
+    "macOS and Linux not tested.",
+    "Complex or encrypted PDFs and all third-party plugin combinations not exhausted.",
+    "Semantic Scholar author names are not mapped into Zotero creators."
+  ]
+}

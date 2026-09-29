@@ -1,0 +1,8 @@
+*.pdf binary
+*.xpi binary
+*.xlsx binary
+*.pptx binary
+*.png binary
+*.jpg binary
+*.sh text eol=lf
+.husky/pre-commit text eol=lf

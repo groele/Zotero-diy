@@ -1,0 +1,29 @@
+name: update data
+
+on:
+  pull_request:
+    paths:
+      - "data/**"
+
+permissions:
+  # Give the default GITHUB_TOKEN write permission to commit and push the
+  # added or changed files to the repository.
+  contents: write
+
+jobs:
+  update-data:
+    # if: github.actor == 'renovate[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: zotero-plugin-dev/workflows/setup-js@main
+        with:
+          fetch-all: true
+          ref: ${{ github.head_ref }}
+
+      - run: pnpm update-data
+
+      - uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "fix(data): update build-in data"
+          file_pattern: data

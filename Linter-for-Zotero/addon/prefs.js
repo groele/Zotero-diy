@@ -1,0 +1,137 @@
+pref("version", "__buildVersion__");
+
+// --------------------
+// Lint global settings
+// --------------------
+pref("lint.onAdded", true);
+pref("lint.onGroup", false);
+pref("lint.notify", true);
+pref("lint.numConcurrent", 1);
+pref("lint.delayOnAdded", 500);
+
+// --------------------
+// Richtext settings
+// --------------------
+pref("richtext.toolBar", true);
+pref("richtext.hotkey", true);
+pref("richtext.preview", true);
+pref("shortcut.subscript", "accel,=");
+pref("shortcut.supscript", "accel,shift,=");
+pref("shortcut.bold", "accel,B");
+pref("shortcut.italic", "accel,I");
+pref("shortcut.nocase", "accel,N");
+pref("shortcut.lint", "accel,alt,L");
+pref("shortcut.chemicalFormula", "accel,alt,S");
+
+// --------------------
+// Rule settings
+// --------------------
+pref("rule.no-item-duplication", true);
+pref("rule.no-article-webpage", true);
+pref("rule.no-journal-preprint", true);
+pref("rule.no-value-nullish", true);
+pref("rule.no-field-misuse", true);
+pref("rule.no-title-trailing-dot", true);
+pref("rule.no-doi-prefix", true);
+pref("rule.no-issue-extra-zeros", true);
+pref("rule.no-pages-extra-zeros", false);
+pref("rule.no-volume-extra-zeros", true);
+
+pref("rule.require-language", true);
+pref("rule.require-language.only", true);
+pref("rule.require-language.only.cmn", true);
+pref("rule.require-language.only.eng", true);
+pref("rule.require-language.only.other", "");
+pref("rule.require-language.verify-before", false);
+pref("rule.require-short-title", true);
+pref("rule.require-journal-abbr", true);
+pref("rule.require-journal-abbr.infer", true);
+pref("rule.require-journal-abbr.usefull", false);
+pref("rule.require-journal-abbr.usefullZh", false);
+pref("rule.require-journal-abbr.customDataPath", "");
+pref("rule.require-series-esi", true);
+pref("rule.require-series-esi.format", "{subject}ESI");
+pref("rule.require-series-esi.customDataPath", "");
+pref("rule.require-series-esi.overwrite", false);
+pref("rule.require-university-place", true);
+pref("rule.require-doi", true);
+pref("rule.require-creators", true);
+
+pref("rule.correct-title-sentence-case", true);
+pref("rule.correct-title-sentence-case.custom-term-path", "");
+pref("rule.correct-title-sentence-case.disabled-languages", "zh,de");
+pref("rule.correct-title-chemical-formula", false);
+pref("rule.correct-title-chemical-formula.normalize-spaces", true);
+pref("rule.correct-title-punctuation", true);
+pref("rule.correct-title-punctuation.quotes", false);
+pref("rule.correct-shortTitle-sentence-case", true);
+pref("rule.correct-creators-case", true);
+pref("rule.correct-creators-pinyin", false);
+pref("rule.correct-creators-punctuation", true);
+pref("rule.correct-date-format", true);
+pref("rule.correct-filing-date-format", true);
+pref("rule.correct-issue-date-format", true);
+pref("rule.correct-priority-date-format", true);
+pref("rule.correct-publication-title-alias", true);
+pref("rule.correct-publication-title-case", true);
+pref("rule.correct-pages-connector", true);
+pref("rule.correct-pages-range", false);
+pref("rule.correct-conference-abbr", true);
+pref("rule.correct-thesis-type", true);
+pref("rule.correct-university-punctuation", true);
+pref("rule.correct-doi-long", true);
+pref("rule.correct-edition-numeral", true);
+pref("rule.correct-volume-numeral", true);
+pref("rule.correct-bookTitle-sentence-case", true);
+pref("rule.correct-proceedingsTitle-sentence-case", false);
+pref("rule.correct-extra-order", true);
+
+// --------------------
+// Update Metadata Tool
+// --------------------
+pref("rule.tool-update-metadata.option.slient", false);
+pref("rule.tool-update-metadata.option.mode", "all");
+pref("rule.tool-update-metadata.option.allow-type-changed", true);
+pref("semanticScholarToken", "");
+
+// --------------------
+// Context Menu settings
+// --------------------
+pref("menu.standard", true);
+pref("menu.correct-title-sentence-case", true);
+pref("menu.correct-title-chemical-formula", true);
+pref("menu.correct-creators-case", true);
+pref("menu.correct-creators-pinyin", true);
+pref("menu.require-language", true);
+pref("menu.tool-set-language", true);
+pref("menu.correct-publication-title-alias", true);
+pref("menu.correct-publication-title-case", true);
+pref("menu.require-journal-abbr", true);
+pref("menu.require-series-esi", true);
+pref("menu.correct-conference-abbr", true);
+pref("menu.require-university-place", true);
+pref("menu.tool-update-metadata", true);
+pref("menu.tool-title-guillemet", true);
+pref("menu.no-doi-prefix", true);
+pref("menu.tool-get-short-doi", true);
+pref("menu.correct-date-format", true);
+pref("menu.tool-clean-extra", true);
+pref("menu.tool-csl-helper", true);
+pref("menu.tool-creators-ext", true);
+pref("menu.correct-title-punctuation", true);
+pref("menu.correct-extra-order", true);
+
+// --------------------
+// Tool rules settings
+// --------------------
+pref("rule.tool-set-language", true);
+pref("rule.tool-title-guillemet", true);
+pref("rule.tool-clean-extra", true);
+pref("rule.tool-csl-helper", true);
+pref("rule.tool-creators-ext", true);
+pref("rule.tool-get-short-doi", true);
+
+// --------------------
+// Other settings
+// --------------------
+pref("cleanExtra", false);

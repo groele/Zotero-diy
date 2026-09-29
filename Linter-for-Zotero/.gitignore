@@ -1,0 +1,24 @@
+build
+logs
+node_modules
+package-lock.json
+# pnpm-lock.yaml
+yarn.lock
+zotero-cmd.json
+.env
+coverage
+
+# libs
+**/libs/**
+**/abbrevIso*
+
+# tmp
+**/*.bak
+**/*.new
+**/examples.ts
+# **/test.js
+*.tsbuildinfo
+
+# ts 编译的 js
+src/**/*.js
+.scaffold

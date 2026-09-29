@@ -1,0 +1,33 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup JS
+        uses: zotero-plugin-dev/workflows/setup-js@main
+      - run: pnpm build
+      - name: Upload XPI artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: linter-for-zotero
+          path: .scaffold/build/addon/
+
+  test:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+      - name: Setup JS
+        uses: zotero-plugin-dev/workflows/setup-js@main
+      - name: Setup Zotero
+        uses: zotero-plugin-dev/setup-zotero@v1
+      - run: pnpm test

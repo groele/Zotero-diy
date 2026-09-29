@@ -1,0 +1,907 @@
+<linkset>
+  <html:link rel="localization" href="__addonRef__-preferences.ftl" />
+  <html:link rel="localization" href="__addonRef__-rules.ftl" />
+  <html:link rel="localization" href="__addonRef__-main-window.ftl" />
+  <html:link rel="localization" href="schema.ftl" />
+</linkset>
+<vbox
+  id="__addonRef__"
+  onload="Zotero.__addonInstance__.hooks.onPrefsEvent('load', { window })"
+>
+  <!-- 一般设置 -->
+  <groupbox>
+    <label><html:h2 data-l10n-id="section-general" /></label>
+    <!-- 添加时自动执行格式化 -->
+    <checkbox
+      data-l10n-id="lint-on-item-added"
+      preference="lint.onAdded"
+      native="true"
+    />
+    <!-- 添加时自动执行格式化（群组条目） -->
+    <checkbox
+      data-l10n-id="lint-on-groupItem-added"
+      preference="lint.onGroup"
+      native="true"
+    />
+    <!-- 格式化时 -->
+    <checkbox
+      data-l10n-id="notify-on-lint"
+      preference="lint.notify"
+      native="true"
+    />
+    <!-- lint.numConcurrent -->
+    <hbox align="center">
+      <label data-l10n-id="lint-numConcurrent" />
+      <html:input type="number" preference="lint.numConcurrent" />
+      <description
+        data-l10n-id="lint-numConcurrent-description"
+        class="linter-pref-description"
+      />
+    </hbox>
+  </groupbox>
+
+  <!-- 是否启用富文本工具 -->
+  <groupbox>
+    <label><html:h2 data-l10n-id="section-rich-text" /></label>
+    <checkbox
+      data-l10n-id="enable-richtext-toolbar"
+      preference="richtext.toolBar"
+      native="true"
+    />
+    <checkbox
+      data-l10n-id="enable-richtext-preview"
+      preference="richtext.preview"
+      native="true"
+    />
+    <checkbox
+      data-l10n-id="enable-richtext-hotkey"
+      preference="richtext.hotkey"
+      native="true"
+    />
+    <label data-l10n-id="restart-needed" class="linter-pref-description" />
+  </groupbox>
+
+  <groupbox class="linter-shortcuts-section">
+    <label><html:h2 data-l10n-id="shortcuts-header" /></label>
+    <description
+      data-l10n-id="shortcut-description"
+      class="linter-pref-description"
+    />
+    <html:div class="linter-shortcut-list">
+      <html:div class="linter-shortcut-row">
+        <label
+          class="linter-shortcut-label"
+          data-l10n-id="shortcut-subscript"
+        />
+        <html:input
+          class="linter-shortcut-input"
+          type="text"
+          size="20"
+          preference="shortcut.subscript"
+        />
+        <description class="linter-shortcut-preview" />
+      </html:div>
+      <html:div class="linter-shortcut-row">
+        <label
+          class="linter-shortcut-label"
+          data-l10n-id="shortcut-supscript"
+        />
+        <html:input
+          class="linter-shortcut-input"
+          type="text"
+          size="20"
+          preference="shortcut.supscript"
+        />
+        <description class="linter-shortcut-preview" />
+      </html:div>
+      <html:div class="linter-shortcut-row">
+        <label class="linter-shortcut-label" data-l10n-id="shortcut-bold" />
+        <html:input
+          class="linter-shortcut-input"
+          type="text"
+          size="20"
+          preference="shortcut.bold"
+        />
+        <description class="linter-shortcut-preview" />
+      </html:div>
+      <html:div class="linter-shortcut-row">
+        <label class="linter-shortcut-label" data-l10n-id="shortcut-italic" />
+        <html:input
+          class="linter-shortcut-input"
+          type="text"
+          size="20"
+          preference="shortcut.italic"
+        />
+        <description class="linter-shortcut-preview" />
+      </html:div>
+      <html:div class="linter-shortcut-row">
+        <label class="linter-shortcut-label" data-l10n-id="shortcut-nocase" />
+        <html:input
+          class="linter-shortcut-input"
+          type="text"
+          size="20"
+          preference="shortcut.nocase"
+        />
+        <description class="linter-shortcut-preview" />
+      </html:div>
+      <html:div class="linter-shortcut-row">
+        <label class="linter-shortcut-label" data-l10n-id="shortcut-lint" />
+        <html:input
+          class="linter-shortcut-input"
+          type="text"
+          size="20"
+          preference="shortcut.lint"
+        />
+        <description class="linter-shortcut-preview" />
+      </html:div>
+      <html:div class="linter-shortcut-row">
+        <label
+          class="linter-shortcut-label"
+          data-l10n-id="shortcut-chemicalFormula"
+        />
+        <html:input
+          class="linter-shortcut-input"
+          type="text"
+          size="20"
+          preference="shortcut.chemicalFormula"
+        />
+        <description class="linter-shortcut-preview" />
+      </html:div>
+    </html:div>
+    <description
+      class="linter-shortcut-status linter-pref-description"
+      aria-live="polite"
+    />
+  </groupbox>
+
+  <!-- 右键菜单设置 -->
+  <groupbox>
+    <label><html:h2 data-l10n-id="section-menu" /></label>
+    <description
+      data-l10n-id="section-menu-description"
+      class="linter-pref-description"
+    />
+
+    <!-- 主菜单：格式化与规范 -->
+    <groupbox>
+      <label><html:h3 data-l10n-id="section-menu-format" /></label>
+      <checkbox
+        data-l10n-id="menu-standard"
+        preference="menu.standard"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-correct-title-sentence-case-menu-item"
+        preference="menu.correct-title-sentence-case"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-correct-title-chemical-formula-menu-item"
+        preference="menu.correct-title-chemical-formula"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-correct-creators-case-menu-item"
+        preference="menu.correct-creators-case"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-correct-creators-pinyin-menu-item"
+        preference="menu.correct-creators-pinyin"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-correct-date-format-menu-item"
+        preference="menu.correct-date-format"
+        native="true"
+      />
+    </groupbox>
+
+    <!-- 主菜单：语言与出版物 -->
+    <groupbox>
+      <label><html:h3 data-l10n-id="section-menu-publication" /></label>
+      <checkbox
+        data-l10n-id="rule-require-language-menu-item"
+        preference="menu.require-language"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-tool-set-language-menu-item"
+        preference="menu.tool-set-language"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-correct-publication-title-alias-menu-item"
+        preference="menu.correct-publication-title-alias"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-correct-publication-title-case-menu-item"
+        preference="menu.correct-publication-title-case"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-require-journal-abbr-menu-item"
+        preference="menu.require-journal-abbr"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-require-series-esi-menu-item"
+        preference="menu.require-series-esi"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-correct-conference-abbr-menu-item"
+        preference="menu.correct-conference-abbr"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-require-university-place-menu-item"
+        preference="menu.require-university-place"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-tool-update-metadata-menu-item"
+        preference="menu.tool-update-metadata"
+        native="true"
+      />
+    </groupbox>
+
+    <!-- 子菜单：其他小工具 -->
+    <groupbox>
+      <label><html:h3 data-l10n-id="section-menu-tools" /></label>
+      <checkbox
+        data-l10n-id="rule-tool-title-guillemet-menu-item"
+        preference="menu.tool-title-guillemet"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-no-doi-prefix-menu-item"
+        preference="menu.no-doi-prefix"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-tool-get-short-doi-menu-item"
+        preference="menu.tool-get-short-doi"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-tool-clean-extra-menu-item"
+        preference="menu.tool-clean-extra"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-tool-csl-helper-menu-item"
+        preference="menu.tool-csl-helper"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-tool-creators-ext-menu-item"
+        preference="menu.tool-creators-ext"
+        native="true"
+      />
+    </groupbox>
+
+    <!-- 字段右键菜单 -->
+    <groupbox>
+      <label><html:h3 data-l10n-id="section-menu-field" /></label>
+      <checkbox
+        data-l10n-id="menu-field-correct-title-punctuation"
+        preference="menu.correct-title-punctuation"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="menu-field-correct-extra-order"
+        preference="menu.correct-extra-order"
+        native="true"
+      />
+    </groupbox>
+  </groupbox>
+
+  <!-- 详细设置 -->
+  <groupbox>
+    <!-- 条目 -->
+    <groupbox>
+      <label><html:h2 data-l10n-id="section-item" /></label>
+      <!-- 检测是否存在重复条目 -->
+      <checkbox
+        data-l10n-id="rule-no-item-duplication"
+        preference="rule.no-item-duplication"
+        native="true"
+      />
+      <!-- 检测网页条目 -->
+      <checkbox
+        data-l10n-id="rule-no-article-webpage"
+        preference="rule.no-article-webpage"
+        native="true"
+      />
+      <!-- 检测预印本误存为期刊文章 -->
+      <checkbox
+        data-l10n-id="rule-no-journal-preprint"
+        preference="rule.no-journal-preprint"
+        native="true"
+      />
+      <!-- 字段值不得为无效值 -->
+      <checkbox
+        data-l10n-id="rule-no-value-nullish"
+        preference="rule.no-value-nullish"
+        native="true"
+      />
+      <!-- 不应非法占用字段 -->
+      <checkbox
+        data-l10n-id="rule-no-field-misuse"
+        preference="rule.no-field-misuse"
+        native="true"
+      />
+    </groupbox>
+
+    <!-- General Field: Title -->
+    <groupbox>
+      <label><html:h2 data-l10n-id="section-title" /></label>
+
+      <!-- correct-title-chemical-formula -->
+      <checkbox
+        data-l10n-id="rule-correct-title-chemical-formula"
+        preference="rule.correct-title-chemical-formula"
+        native="true"
+      />
+      <vbox class="indented-pref">
+        <checkbox
+          data-l10n-id="rule-correct-title-chemical-formula-option-normalize-spaces"
+          preference="rule.correct-title-chemical-formula.normalize-spaces"
+          native="true"
+        />
+        <description
+          data-l10n-id="rule-correct-title-chemical-formula-description"
+          class="linter-pref-description"
+        />
+      </vbox>
+
+      <!-- correct-title-sentence-case -->
+      <checkbox
+        id="__addonRef__-title-case"
+        data-l10n-id="rule-correct-title-sentence-case"
+        preference="rule.correct-title-sentence-case"
+        native="true"
+      />
+      <vbox class="indented-pref">
+        <hbox align="center">
+          <label
+            data-l10n-id="rule-correct-title-sentence-option-custom-term"
+          />
+          <html:input
+            style="flex: 1"
+            type="text"
+            readonly="true"
+            size="50"
+            data-l10n-id="rule-correct-title-sentence-option-custom-term"
+            preference="rule.correct-title-sentence-case.custom-term-path"
+          />
+          <button
+            data-l10n-id="rule-correct-title-sentence-option-custom-term-button"
+            id="__addonRef__-title-choose-custom-data-button"
+            native="true"
+          />
+        </hbox>
+        <description
+          data-l10n-id="rule-correct-title-sentence-option-custom-term-desc"
+          class="linter-pref-description"
+        />
+        <hbox align="center">
+          <label
+            data-l10n-id="rule-correct-title-sentence-option-disabled-languages"
+          />
+          <html:input
+            style="flex: 1"
+            type="text"
+            size="15"
+            id="__addonRef__-title-case-disabled-languages"
+            data-l10n-id="rule-correct-title-sentence-option-disabled-languages"
+            preference="rule.correct-title-sentence-case.disabled-languages"
+          />
+          <label
+            data-l10n-id="rule-correct-title-sentence-option-disabled-languages-doc"
+            is="zotero-text-link"
+            class="zotero-text-link"
+            href="https://github.com/datasets/language-codes/blob/main/data/language-codes.csv"
+          />
+        </hbox>
+        <description
+          data-l10n-id="rule-correct-title-sentence-option-disabled-languages-desc"
+          class="linter-pref-description"
+        />
+      </vbox>
+
+      <!-- no-title-trailing-dot -->
+      <checkbox
+        data-l10n-id="rule-no-title-trailing-dot"
+        preference="rule.no-title-trailing-dot"
+        native="true"
+      />
+
+      <!-- correct-title-punctuation -->
+      <checkbox
+        data-l10n-id="rule-correct-title-punctuation"
+        preference="rule.correct-title-punctuation"
+        native="true"
+      />
+      <vbox class="indented-pref">
+        <checkbox
+          data-l10n-id="rule-correct-title-punctuation-quotes"
+          preference="rule.correct-title-punctuation.quotes"
+          native="true"
+        />
+      </vbox>
+
+      <!-- 需要短标题 -->
+      <checkbox
+        data-l10n-id="rule-require-short-title"
+        preference="rule.require-short-title"
+        native="true"
+      />
+
+      <!-- correct-shortTitle-sentence-case -->
+      <checkbox
+        data-l10n-id="rule-correct-shortTitle-sentence-case"
+        preference="rule.correct-shortTitle-sentence-case"
+        native="true"
+      />
+      <description
+        data-l10n-id="rule-correct-shortTitle-sentence-case-description"
+        class="indented-pref linter-pref-description"
+      />
+      <!-- correct-title-chemical-formula -->
+      <checkbox
+        data-l10n-id="rule-correct-title-chemical-formula"
+        preference="rule.correct-title-chemical-formula"
+        native="true"
+      />
+    </groupbox>
+
+    <!-- General Field: Creators -->
+    <groupbox>
+      <label><html:h2 data-l10n-id="section-creators" /></label>
+      <!-- require-creators -->
+      <checkbox
+        data-l10n-id="rule-require-creators"
+        preference="rule.require-creators"
+        native="true"
+      />
+      <!-- 修改作者大小写 -->
+      <checkbox
+        data-l10n-id="rule-correct-creators-case"
+        preference="rule.correct-creators-case"
+        native="true"
+      />
+      <!-- 修改作者中文拼音是否拆分 -->
+      <checkbox
+        data-l10n-id="rule-correct-creators-pinyin"
+        preference="rule.correct-creators-pinyin"
+        native="true"
+      />
+      <!-- correct-creators-punctuation -->
+      <checkbox
+        data-l10n-id="rule-correct-creators-punctuation"
+        preference="rule.correct-creators-punctuation"
+        native="true"
+      />
+    </groupbox>
+
+    <!-- General Field: Language -->
+    <groupbox>
+      <label><html:h2 data-l10n-id="section-language" /></label>
+      <checkbox
+        data-l10n-id="rule-require-language"
+        preference="rule.require-language"
+        native="true"
+      />
+      <vbox class="indented-pref">
+        <checkbox
+          id="__addonRef__-lang-only"
+          data-l10n-id="rule-require-language-option-only"
+          preference="rule.require-language.only"
+          native="true"
+        />
+        <vbox class="indented-pref">
+          <hbox align="center">
+            <checkbox
+              id="__addonRef__-lang-only-cmn"
+              data-l10n-id="rule-require-language-option-only-cmn"
+              preference="rule.require-language.only.cmn"
+              native="true"
+            />
+            <checkbox
+              id="__addonRef__-lang-only-eng"
+              data-l10n-id="rule-require-language-option-only-eng"
+              preference="rule.require-language.only.eng"
+              native="true"
+            />
+            <label data-l10n-id="rule-require-language-option-only-other" />
+            <html:input
+              type="text"
+              id="__addonRef__-lang-only-other"
+              preference="rule.require-language.only.other"
+            />
+            <label
+              data-l10n-id="rule-require-language-option-only-other-doc"
+              is="zotero-text-link"
+              class="zotero-text-link"
+              href="https://github.com/northword/zotero-format-metadata/blob/main/docs/features.md#require-language-require-language"
+            />
+          </hbox>
+          <description
+            data-l10n-id="rule-require-language-option-only-other-desc"
+            class="linter-pref-description"
+          />
+        </vbox>
+        <checkbox
+          data-l10n-id="rule-require-language-option-verify-before"
+          preference="rule.require-language.verify-before"
+          native="true"
+        />
+      </vbox>
+    </groupbox>
+
+    <!-- Article Related Field -->
+    <groupbox>
+      <label><html:h2 data-l10n-id="section-article" /></label>
+      <!-- 修正期刊名别称 -->
+      <checkbox
+        data-l10n-id="rule-correct-publication-title-alias"
+        preference="rule.correct-publication-title-alias"
+        native="true"
+      />
+      <!-- 修正期刊名大小写 -->
+      <checkbox
+        data-l10n-id="rule-correct-publication-title-case"
+        preference="rule.correct-publication-title-case"
+        native="true"
+      />
+
+      <!-- 字段：缩写 -->
+      <groupbox>
+        <!-- 更新期刊缩写 -->
+        <checkbox
+          data-l10n-id="rule-require-journal-abbr"
+          preference="rule.require-journal-abbr"
+          native="true"
+        />
+        <vbox class="indented-pref">
+          <checkbox
+            id="__addonRef__-abbr-infer"
+            data-l10n-id="rule-require-journal-abbr-option-infer"
+            preference="rule.require-journal-abbr.infer"
+            native="true"
+          />
+          <hbox align="center">
+            <label data-l10n-id="rule-require-journal-abbr-option-usefull" />
+            <checkbox
+              id="__addonRef__-abbr-usefull"
+              data-l10n-id="rule-require-journal-abbr-option-usefull-en"
+              preference="rule.require-journal-abbr.usefull"
+              native="true"
+            />
+            <checkbox
+              id="__addonRef__-abbr-usefull"
+              data-l10n-id="rule-require-journal-abbr-option-usefull-zh"
+              preference="rule.require-journal-abbr.usefullZh"
+              native="true"
+            />
+          </hbox>
+
+          <!-- 自定义缩写文件 -->
+          <hbox align="center">
+            <label
+              data-l10n-id="rule-require-journal-abbr-option-custom-data-label"
+            />
+            <html:input
+              style="flex: 1"
+              type="text"
+              readonly="true"
+              size="50"
+              id="__addonRef__-abbr-custom-path"
+              data-l10n-id="rule-require-journal-abbr-option-choose-custom-abbr-data-input"
+              preference="rule.require-journal-abbr.customDataPath"
+            />
+            <button
+              data-l10n-id="rule-require-journal-abbr-option-choose-custom-abbr-data-button"
+              id="__addonRef__-abbr-choose-custom-data-button"
+              native="true"
+            />
+          </hbox>
+          <description
+            data-l10n-id="rule-require-journal-abbr-option-custom-data-desc"
+            class="linter-pref-description"
+          />
+        </vbox>
+      </groupbox>
+
+      <!-- 字段：系列 (ESI 学科) -->
+      <groupbox>
+        <checkbox
+          data-l10n-id="rule-require-series-esi"
+          preference="rule.require-series-esi"
+          native="true"
+        />
+        <checkbox
+          data-l10n-id="rule-require-series-esi-option-overwrite"
+          preference="rule.require-series-esi.overwrite"
+        />
+        <vbox class="indented-pref">
+          <hbox align="center">
+            <label data-l10n-id="rule-require-series-esi-option-format" />
+            <html:input
+              type="text"
+              id="__addonRef__-esi-format"
+              size="20"
+              preference="rule.require-series-esi.format"
+            />
+          </hbox>
+          <description
+            data-l10n-id="rule-require-series-esi-option-format-desc"
+            class="linter-pref-description"
+          />
+
+          <!-- 自定义 ESI 数据集 -->
+          <hbox align="center">
+            <label
+              data-l10n-id="rule-require-series-esi-option-custom-data-label"
+            />
+            <html:input
+              style="flex: 1"
+              type="text"
+              readonly="true"
+              size="50"
+              id="__addonRef__-esi-custom-path"
+              data-l10n-id="rule-require-series-esi-option-choose-custom-data-input"
+              preference="rule.require-series-esi.customDataPath"
+            />
+            <button
+              data-l10n-id="rule-require-series-esi-option-choose-custom-data-button"
+              id="__addonRef__-esi-choose-custom-data-button"
+              native="true"
+            />
+          </hbox>
+          <description
+            data-l10n-id="rule-require-series-esi-option-custom-data-desc"
+            class="linter-pref-description"
+          />
+        </vbox>
+      </groupbox>
+
+      <!-- 期卷页 -->
+      <groupbox>
+        <!-- 去除期卷页0 -->
+        <checkbox
+          data-l10n-id="rule-no-issue-extra-zeros"
+          preference="rule.no-issue-extra-zeros"
+          native="true"
+        />
+        <checkbox
+          data-l10n-id="rule-no-pages-extra-zeros"
+          preference="rule.no-pages-extra-zeros"
+          native="true"
+        />
+        <checkbox
+          data-l10n-id="rule-no-volume-extra-zeros"
+          preference="rule.no-volume-extra-zeros"
+          native="true"
+        />
+        <!-- 页码连接符 -->
+        <checkbox
+          data-l10n-id="rule-correct-pages-connector"
+          preference="rule.correct-pages-connector"
+          native="true"
+        />
+        <!-- 页码范围 -->
+        <checkbox
+          data-l10n-id="rule-correct-pages-range"
+          preference="rule.correct-pages-range"
+          native="true"
+        />
+      </groupbox>
+    </groupbox>
+
+    <!-- 字段：会议论文相关 -->
+    <groupbox>
+      <label><html:h2 data-l10n-id="section-conference" /></label>
+      <!-- correct-proceedingsTitle-sentence-case -->
+      <checkbox
+        data-l10n-id="rule-correct-proceedingsTitle-sentence-case"
+        preference="rule.correct-proceedingsTitle-sentence-case"
+        native="true"
+      />
+
+      <!-- 更新会议名简写 -->
+      <checkbox
+        data-l10n-id="rule-correct-conference-abbr"
+        preference="rule.correct-conference-abbr"
+        native="true"
+      />
+      <description
+        data-l10n-id="rule-correct-conference-abbr-description"
+        class="indented-pref linter-pref-description"
+      />
+    </groupbox>
+
+    <!-- 字段：学位论文相关 -->
+    <groupbox>
+      <label><html:h2 data-l10n-id="section-thesis" /></label>
+      <!-- 纠正学位论文类别 -->
+      <checkbox
+        data-l10n-id="rule-correct-thesis-type"
+        preference="rule.correct-thesis-type"
+        native="true"
+      />
+      <!-- 更新大学字段 -->
+      <checkbox
+        data-l10n-id="rule-correct-university-punctuation"
+        preference="rule.correct-university-punctuation"
+        native="true"
+      />
+      <!-- 更新地点字段 -->
+      <checkbox
+        data-l10n-id="rule-require-university-place"
+        preference="rule.require-university-place"
+        native="true"
+      />
+    </groupbox>
+
+    <!-- 字段：书籍相关 -->
+    <groupbox>
+      <label><html:h2 data-l10n-id="section-book" /></label>
+      <!-- correct-edition-numeral -->
+      <checkbox
+        data-l10n-id="rule-correct-edition-numeral"
+        preference="rule.correct-edition-numeral"
+        native="true"
+      />
+      <!-- correct-value-numeral -->
+      <checkbox
+        data-l10n-id="rule-correct-volume-numeral"
+        preference="rule.correct-volume-numeral"
+        native="true"
+      />
+      <!-- correct-bookTitle-sentence-case -->
+      <checkbox
+        data-l10n-id="rule-correct-bookTitle-sentence-case"
+        preference="rule.correct-bookTitle-sentence-case"
+        native="true"
+      />
+    </groupbox>
+
+    <!-- 字段：专利相关 -->
+    <groupbox>
+      <label><html:h2 data-l10n-id="section-patent" /></label>
+      <checkbox
+        data-l10n-id="rule-correct-filing-date-format"
+        preference="rule.correct-filing-date-format"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-correct-issue-date-format"
+        preference="rule.correct-issue-date-format"
+        native="true"
+      />
+      <checkbox
+        data-l10n-id="rule-correct-priority-date-format"
+        preference="rule.correct-priority-date-format"
+        native="true"
+      />
+    </groupbox>
+
+    <!-- 标识符 -->
+    <groupbox>
+      <label><html:h2 data-l10n-id="section-identifier" /></label>
+      <!-- DOI: 需要 DOI -->
+      <checkbox
+        data-l10n-id="rule-require-doi"
+        preference="rule.require-doi"
+        native="true"
+      />
+      <!-- DOI: 无前缀 -->
+      <checkbox
+        data-l10n-id="rule-no-doi-prefix"
+        preference="rule.no-doi-prefix"
+        native="true"
+      />
+      <!-- DOI: 应为长型 -->
+      <checkbox
+        data-l10n-id="rule-correct-doi-long"
+        preference="rule.correct-doi-long"
+        native="true"
+      />
+    </groupbox>
+
+    <!-- General Field: Others -->
+    <groupbox>
+      <label><html:h2 data-l10n-id="section-others" /></label>
+      <!-- 更新日期格式 -->
+      <checkbox
+        data-l10n-id="rule-correct-date-format"
+        preference="rule.correct-date-format"
+        native="true"
+      />
+      <!-- Extra -->
+      <checkbox
+        data-l10n-id="rule-correct-extra-order"
+        preference="rule.correct-extra-order"
+        native="true"
+      />
+    </groupbox>
+  </groupbox>
+
+  <!-- 更新元数据 -->
+  <groupbox>
+    <label><html:h2 data-l10n-id="section-updateMetadata" /></label>
+    <!-- Request Options Everytimes -->
+    <checkbox
+      data-l10n-id="rule-tool-update-metadata-option-slient"
+      preference="rule.tool-update-metadata.option.slient"
+      native="true"
+    />
+
+    <!-- Default Dialog Options -->
+    <groupbox>
+      <label><html:h3>Default Settings</html:h3></label>
+      <hbox align="center">
+        <label data-l10n-id="rule-tool-update-metadata-dialog-mode"></label>
+        <radiogroup
+          orient="horizontal"
+          preference="rule.tool-update-metadata.option.mode"
+        >
+          <radio
+            data-l10n-id="rule-tool-update-metadata-dialog-mode-all"
+            value="all"
+          />
+          <radio
+            data-l10n-id="rule-tool-update-metadata-dialog-mode-blank"
+            value="blank"
+          />
+        </radiogroup>
+      </hbox>
+
+      <checkbox
+        data-l10n-id="rule-tool-update-metadata-dialog-allow-type-changed"
+        preference="rule.tool-update-metadata.option.allow-type-changed"
+        native="true"
+      />
+    </groupbox>
+
+    <!-- Semantic Scholar Token -->
+    <groupbox>
+      <label><html:h3>Data Provider Options</html:h3></label>
+      <hbox align="center">
+        <label
+          data-l10n-id="rule-tool-update-metadata-option-semanticScholarToken"
+        />
+        <html:input
+          style="flex: 1"
+          type="text"
+          size="60"
+          data-l10n-id="rule-tool-update-metadata-option-semanticScholarToken"
+          preference="semanticScholarToken"
+        />
+        <label
+          data-l10n-id="rule-tool-update-metadata-option-semanticScholarToken-link"
+          is="zotero-text-link"
+          class="zotero-text-link"
+          href="https://www.semanticscholar.org/product/api#api-key"
+        />
+      </hbox>
+      <description
+        data-l10n-id="rule-tool-update-metadata-option-semanticScholarToken-desc"
+        class="linter-pref-description"
+      />
+    </groupbox>
+  </groupbox>
+
+  <!-- 关于 -->
+  <groupbox>
+    <label><html:h2>About</html:h2></label>
+    <label
+      data-l10n-id="help-version"
+      data-l10n-args='{"time": "__buildTime__","name": "__addonName__","version":"__buildVersion__"}'
+    />
+  </groupbox>
+</vbox>

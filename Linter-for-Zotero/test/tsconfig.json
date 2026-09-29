@@ -1,0 +1,8 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": ["mocha", "chai", "zotero-types/entries/sandbox"]
+  },
+  "include": ["./**/*.spec.ts", "typings", "../src", "../typings"],
+  "exclude": []
+}

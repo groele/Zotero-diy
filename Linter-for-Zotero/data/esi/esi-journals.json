@@ -1,0 +1,2490 @@
+[
+  {
+    "title": "ACOUSTICAL PHYSICS",
+    "title20": "ACOUST PHYS+",
+    "title29": "ACOUST PHYS-ENGL TR",
+    "issn": "1063-7710",
+    "eissn": "1562-6865",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ACOUSTICS AUSTRALIA",
+    "title20": "ACOUST AUST",
+    "title29": "ACOUST AUST",
+    "issn": "0814-6039",
+    "eissn": "1839-2571",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ACS PHOTONICS",
+    "title20": "ACS PHOTONICS",
+    "title29": "ACS PHOTONICS",
+    "issn": "2330-4022",
+    "eissn": "",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ACTA ACUSTICA",
+    "title20": "ACTA ACUST",
+    "title29": "ACTA ACUST",
+    "issn": "",
+    "eissn": "2681-4617",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ACTA PHYSICA POLONICA A",
+    "title20": "ACTA PHYS POL A",
+    "title29": "ACTA PHYS POL A",
+    "issn": "0587-4246",
+    "eissn": "1898-794X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ACTA PHYSICA POLONICA B",
+    "title20": "ACTA PHYS POL B",
+    "title29": "ACTA PHYS POL B",
+    "issn": "0587-4254",
+    "eissn": "1509-5770",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ACTA PHYSICA SINICA",
+    "title20": "ACTA PHYS SIN-CH ED",
+    "title29": "ACTA PHYS SIN-CHINESE ED",
+    "issn": "1000-3290",
+    "eissn": "",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ADVANCED PHOTONICS",
+    "title20": "ADV PHOTONICS",
+    "title29": "ADV PHOTONICS",
+    "issn": "",
+    "eissn": "2577-5421",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ADVANCED QUANTUM TECHNOLOGIES",
+    "title20": "ADV QUANTUM TECHNOL",
+    "title29": "ADV QUANTUM TECHNOL",
+    "issn": "",
+    "eissn": "2511-9044",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ADVANCED SCIENCE",
+    "title20": "ADV SCI",
+    "title29": "ADVANCED SCI",
+    "issn": "",
+    "eissn": "2198-3844",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ADVANCES IN CONDENSED MATTER PHYSICS",
+    "title20": "ADV COND MATTER PHYS",
+    "title29": "ADV CONDENS MATTER PHYS",
+    "issn": "1687-8108",
+    "eissn": "1687-8124",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ADVANCES IN HIGH ENERGY PHYSICS",
+    "title20": "ADV HIGH ENERGY PHYS",
+    "title29": "ADV HIGH ENERGY PHYS",
+    "issn": "1687-7357",
+    "eissn": "1687-7365",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ADVANCES IN MATHEMATICAL PHYSICS",
+    "title20": "ADV MATH PHYS",
+    "title29": "ADV MATH PHYS",
+    "issn": "1687-9120",
+    "eissn": "1687-9139",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ADVANCES IN OPTICS AND PHOTONICS",
+    "title20": "ADV OPT PHOTONICS",
+    "title29": "ADV OPT PHOTONICS",
+    "issn": "1943-8206",
+    "eissn": "",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ADVANCES IN PHYSICS",
+    "title20": "ADV PHYS",
+    "title29": "ADVAN PHYS",
+    "issn": "0001-8732",
+    "eissn": "1460-6976",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ADVANCES IN PHYSICS-X",
+    "title20": "ADV PHYS-X",
+    "title29": "ADV PHYS-X",
+    "issn": "2374-6149",
+    "eissn": "2374-6149",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ADVANCES IN THEORETICAL AND MATHEMATICAL PHYSICS",
+    "title20": "ADV THEOR MATH PHYS",
+    "title29": "ADV THEOR MATH PHYS",
+    "issn": "1095-0761",
+    "eissn": "1095-0753",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "AMERICAN JOURNAL OF PHYSICS",
+    "title20": "AM J PHYS",
+    "title29": "AMER J PHYS",
+    "issn": "0002-9505",
+    "eissn": "1943-2909",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ANNALEN DER PHYSIK",
+    "title20": "ANN PHYS-BERLIN",
+    "title29": "ANN PHYS-BERLIN",
+    "issn": "0003-3804",
+    "eissn": "1521-3889",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ANNALES HENRI POINCARE",
+    "title20": "ANN HENRI POINCARE",
+    "title29": "ANN HENRI POINCARE",
+    "issn": "1424-0637",
+    "eissn": "1424-0661",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ANNALS OF PHYSICS",
+    "title20": "ANN PHYS-NEW YORK",
+    "title29": "ANN PHYS N Y",
+    "issn": "0003-4916",
+    "eissn": "1096-035X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ANNUAL REVIEW OF CONDENSED MATTER PHYSICS",
+    "title20": "ANNU REV CONDEN MA P",
+    "title29": "ANNU REV CONDENS MATTER PHYS",
+    "issn": "1947-5454",
+    "eissn": "1947-5462",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ANNUAL REVIEW OF FLUID MECHANICS",
+    "title20": "ANNU REV FLUID MECH",
+    "title29": "ANNU REV FLUID MECH",
+    "issn": "0066-4189",
+    "eissn": "1545-4479",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ANNUAL REVIEW OF NUCLEAR AND PARTICLE SCIENCE",
+    "title20": "ANNU REV NUCL PART S",
+    "title29": "ANNU REV NUCL PAR SCI",
+    "issn": "0163-8998",
+    "eissn": "1545-4134",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "APL PHOTONICS",
+    "title20": "APL PHOTONICS",
+    "title29": "APL PHOTONICS",
+    "issn": "2378-0967",
+    "eissn": "2378-0967",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "APPLIED ACOUSTICS",
+    "title20": "APPL ACOUST",
+    "title29": "APPL ACOUST",
+    "issn": "0003-682X",
+    "eissn": "1872-910X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "APPLIED OPTICS",
+    "title20": "APPL OPTICS",
+    "title29": "APPL OPT",
+    "issn": "1559-128X",
+    "eissn": "2155-3165",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "APPLIED PHYSICS A-MATERIALS SCIENCE & PROCESSING",
+    "title20": "APPL PHYS A-MATER",
+    "title29": "APPL PHYS A-MAT SCI PROCESS",
+    "issn": "0947-8396",
+    "eissn": "1432-0630",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "APPLIED PHYSICS B-LASERS AND OPTICS",
+    "title20": "APPL PHYS B-LASERS O",
+    "title29": "APPL PHYS B-LASERS OPT",
+    "issn": "0946-2171",
+    "eissn": "1432-0649",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "APPLIED PHYSICS EXPRESS",
+    "title20": "APPL PHYS EXPRESS",
+    "title29": "APPL PHYS EXPRESS",
+    "issn": "1882-0778",
+    "eissn": "1882-0786",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "APPLIED PHYSICS LETTERS",
+    "title20": "APPL PHYS LETT",
+    "title29": "APPL PHYS LETT",
+    "issn": "0003-6951",
+    "eissn": "1077-3118",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "APPLIED PHYSICS REVIEWS",
+    "title20": "APPL PHYS REV",
+    "title29": "APPL PHYS REV",
+    "issn": "1931-9401",
+    "eissn": "1931-9401",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "APPLIED RADIATION AND ISOTOPES",
+    "title20": "APPL RADIAT ISOTOPES",
+    "title29": "APPL RADIAT ISOTOPES",
+    "issn": "0969-8043",
+    "eissn": "1872-9800",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "APPLIED RHEOLOGY",
+    "title20": "APPL RHEOL",
+    "title29": "APPL RHEOL",
+    "issn": "1430-6395",
+    "eissn": "1617-8106",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ARCHIVES OF ACOUSTICS",
+    "title20": "ARCH ACOUST",
+    "title29": "ARCH ACOUST",
+    "issn": "0137-5075",
+    "eissn": "2300-262X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ASTRONOMY AND COMPUTING",
+    "title20": "ASTRON COMPUT",
+    "title29": "ASTRON COMPUT",
+    "issn": "2213-1337",
+    "eissn": "2213-1345",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ATOMIC DATA AND NUCLEAR DATA TABLES",
+    "title20": "ATOM DATA NUCL DATA",
+    "title29": "AT DATA NUCL DATA TABLES",
+    "issn": "0092-640X",
+    "eissn": "1090-2090",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "BRAZILIAN JOURNAL OF PHYSICS",
+    "title20": "BRAZ J PHYS",
+    "title29": "BRAZ J PHYS",
+    "issn": "0103-9733",
+    "eissn": "1678-4448",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "BULLETIN OF THE LEBEDEV PHYSICS INSTITUTE",
+    "title20": "B LEBEDEV PHYS INST+",
+    "title29": "BULL LEBEDEV PHYS INST",
+    "issn": "1068-3356",
+    "eissn": "1934-838X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CANADIAN JOURNAL OF PHYSICS",
+    "title20": "CAN J PHYS",
+    "title29": "CAN J PHYS",
+    "issn": "0008-4204",
+    "eissn": "1208-6045",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CHALCOGENIDE LETTERS",
+    "title20": "CHALCOGENIDE LETT",
+    "title29": "CHALCOGENIDE LETT",
+    "issn": "1584-8663",
+    "eissn": "1584-8663",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CHAOS",
+    "title20": "CHAOS",
+    "title29": "CHAOS",
+    "issn": "1054-1500",
+    "eissn": "1089-7682",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CHAOS SOLITONS & FRACTALS",
+    "title20": "CHAOS SOLITON FRACT",
+    "title29": "CHAOS SOLITON FRACTAL",
+    "issn": "0960-0779",
+    "eissn": "1873-2887",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CHINESE JOURNAL OF CHEMICAL PHYSICS",
+    "title20": "CHINESE J CHEM PHYS",
+    "title29": "CHIN J CHEM PHYS",
+    "issn": "1674-0068",
+    "eissn": "2327-2244",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CHINESE JOURNAL OF PHYSICS",
+    "title20": "CHINESE J PHYS",
+    "title29": "CHIN J PHYS",
+    "issn": "0577-9073",
+    "eissn": "0577-9073",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CHINESE OPTICS LETTERS",
+    "title20": "CHIN OPT LETT",
+    "title29": "CHIN OPT LETT",
+    "issn": "1671-7694",
+    "eissn": "1671-7694",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CHINESE PHYSICS B",
+    "title20": "CHINESE PHYS B",
+    "title29": "CHIN PHYS B",
+    "issn": "1674-1056",
+    "eissn": "2058-3834",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CHINESE PHYSICS C",
+    "title20": "CHINESE PHYS C",
+    "title29": "CHIN PHYS C",
+    "issn": "1674-1137",
+    "eissn": "2058-6132",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CHINESE PHYSICS LETTERS",
+    "title20": "CHINESE PHYS LETT",
+    "title29": "CHIN PHYS LETT",
+    "issn": "0256-307X",
+    "eissn": "1741-3540",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CLASSICAL AND QUANTUM GRAVITY",
+    "title20": "CLASSICAL QUANT GRAV",
+    "title29": "CLASS QUANTUM GRAVITY",
+    "issn": "0264-9381",
+    "eissn": "1361-6382",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "COMMUNICATIONS IN COMPUTATIONAL PHYSICS",
+    "title20": "COMMUN COMPUT PHYS",
+    "title29": "COMMUN COMPUT PHYS",
+    "issn": "1815-2406",
+    "eissn": "1991-7120",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "COMMUNICATIONS IN MATHEMATICAL PHYSICS",
+    "title20": "COMMUN MATH PHYS",
+    "title29": "COMMUN MATH PHYS",
+    "issn": "0010-3616",
+    "eissn": "1432-0916",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "COMMUNICATIONS IN NONLINEAR SCIENCE AND NUMERICAL SIMULATION",
+    "title20": "COMMUN NONLINEAR SCI",
+    "title29": "COMMUN NONLINEAR SCI NUMER SI",
+    "issn": "1007-5704",
+    "eissn": "1878-7274",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "COMMUNICATIONS IN NUMBER THEORY AND PHYSICS",
+    "title20": "COMMUN NUMBER THEORY",
+    "title29": "COMMUN NUMBER THEORY PHYS",
+    "issn": "1931-4523",
+    "eissn": "1931-4531",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "COMMUNICATIONS IN THEORETICAL PHYSICS",
+    "title20": "COMMUN THEOR PHYS",
+    "title29": "COMMUN THEOR PHYS",
+    "issn": "0253-6102",
+    "eissn": "1572-9494",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "COMMUNICATIONS PHYSICS",
+    "title20": "COMMUN PHYS-UK",
+    "title29": "COMMUN PHYS",
+    "issn": "2399-3650",
+    "eissn": "2399-3650",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "COMPTES RENDUS PHYSIQUE",
+    "title20": "CR PHYS",
+    "title29": "C R PHYS",
+    "issn": "1631-0705",
+    "eissn": "1878-1535",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "COMPUTER PHYSICS COMMUNICATIONS",
+    "title20": "COMPUT PHYS COMMUN",
+    "title29": "COMPUT PHYS COMMUN",
+    "issn": "0010-4655",
+    "eissn": "1879-2944",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CONDENSED MATTER PHYSICS",
+    "title20": "CONDENS MATTER PHYS",
+    "title29": "CONDENS MATTER PHYS",
+    "issn": "1607-324X",
+    "eissn": "2224-9079",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CONTEMPORARY PHYSICS",
+    "title20": "CONTEMP PHYS",
+    "title29": "CONTEMP PHYS",
+    "issn": "0010-7514",
+    "eissn": "1366-5812",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CONTRIBUTIONS TO PLASMA PHYSICS",
+    "title20": "CONTRIB PLASM PHYS",
+    "title29": "CONTRIB PLASM PHYS",
+    "issn": "0863-1042",
+    "eissn": "1521-3986",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CRITICAL REVIEWS IN SOLID STATE AND MATERIALS SCIENCES",
+    "title20": "CRIT REV SOLID STATE",
+    "title29": "CRIT REV SOLID STATE MAT SCI",
+    "issn": "1040-8436",
+    "eissn": "1547-6561",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CRYOGENICS",
+    "title20": "CRYOGENICS",
+    "title29": "CRYOGENICS",
+    "issn": "0011-2275",
+    "eissn": "1879-2235",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CURRENT APPLIED PHYSICS",
+    "title20": "CURR APPL PHYS",
+    "title29": "CURR APPL PHYS",
+    "issn": "1567-1739",
+    "eissn": "1878-1675",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "CURRENT OPTICS AND PHOTONICS",
+    "title20": "CURR OPT PHOTONICS",
+    "title29": "CURR OPT PHOTONICS",
+    "issn": "2508-7266",
+    "eissn": "2508-7274",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "DISCOVER NANO",
+    "title20": "DISCOV NANO",
+    "title29": "DISCOV NANO",
+    "issn": "",
+    "eissn": "2731-9229",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "DOKLADY PHYSICS",
+    "title20": "DOKL PHYS",
+    "title29": "DOKL PHYS",
+    "issn": "1028-3358",
+    "eissn": "1562-6903",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ECS JOURNAL OF SOLID STATE SCIENCE AND TECHNOLOGY",
+    "title20": "ECS J SOLID STATE SC",
+    "title29": "ECS J SOLID STATE SCI TECHNOL",
+    "issn": "2162-8769",
+    "eissn": "2162-8777",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ELIGHT",
+    "title20": "ELIGHT",
+    "title29": "ELIGHT",
+    "issn": "2097-1710",
+    "eissn": "2662-8643",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ENTROPY",
+    "title20": "ENTROPY-SWITZ",
+    "title29": "ENTROPY",
+    "issn": "",
+    "eissn": "1099-4300",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "EPJ QUANTUM TECHNOLOGY",
+    "title20": "EPJ QUANTUM TECHNOL",
+    "title29": "EPJ QUANTUM TECHNOL",
+    "issn": "2662-4400",
+    "eissn": "2196-0763",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "EPL",
+    "title20": "EPL-EUROPHYS LETT",
+    "title29": "EPL",
+    "issn": "0295-5075",
+    "eissn": "1286-4854",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "EUROPEAN JOURNAL OF PHYSICS",
+    "title20": "EUR J PHYS",
+    "title29": "EUR J PHYS",
+    "issn": "0143-0807",
+    "eissn": "1361-6404",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "EUROPEAN PHYSICAL JOURNAL A",
+    "title20": "EUR PHYS J A",
+    "title29": "EUR PHYS J A",
+    "issn": "1434-6001",
+    "eissn": "1434-601X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "EUROPEAN PHYSICAL JOURNAL B",
+    "title20": "EUR PHYS J B",
+    "title29": "EUR PHYS J B",
+    "issn": "1434-6028",
+    "eissn": "1434-6036",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "EUROPEAN PHYSICAL JOURNAL C",
+    "title20": "EUR PHYS J C",
+    "title29": "EUR PHYS J C",
+    "issn": "1434-6044",
+    "eissn": "1434-6052",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "EUROPEAN PHYSICAL JOURNAL D",
+    "title20": "EUR PHYS J D",
+    "title29": "EUR PHYS J D",
+    "issn": "1434-6060",
+    "eissn": "1434-6079",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "EUROPEAN PHYSICAL JOURNAL E",
+    "title20": "EUR PHYS J E",
+    "title29": "EUR PHYS J E",
+    "issn": "1292-8941",
+    "eissn": "1292-895X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "EUROPEAN PHYSICAL JOURNAL H",
+    "title20": "EUR PHYS J H",
+    "title29": "EUR PHYS J H",
+    "issn": "2102-6459",
+    "eissn": "2102-6467",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "EUROPEAN PHYSICAL JOURNAL PLUS",
+    "title20": "EUR PHYS J PLUS",
+    "title29": "EUR PHYS J PLUS",
+    "issn": "2190-5444",
+    "eissn": "2190-5444",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "EUROPEAN PHYSICAL JOURNAL-APPLIED PHYSICS",
+    "title20": "EUR PHYS J-APPL PHYS",
+    "title29": "EUR PHYS J-APPL PHYS",
+    "issn": "1286-0042",
+    "eissn": "1286-0050",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "EUROPEAN PHYSICAL JOURNAL-SPECIAL TOPICS",
+    "title20": "EUR PHYS J-SPEC TOP",
+    "title29": "EUR PHYS J-SPEC TOP",
+    "issn": "1951-6355",
+    "eissn": "1951-6401",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "FERROELECTRICS",
+    "title20": "FERROELECTRICS",
+    "title29": "FERROELECTRICS",
+    "issn": "0015-0193",
+    "eissn": "1563-5112",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "FERROELECTRICS LETTERS SECTION",
+    "title20": "FERROELECTRICS LETT",
+    "title29": "FERROELECTRICS LETT SECT",
+    "issn": "0731-5171",
+    "eissn": "1563-5228",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "FEW-BODY SYSTEMS",
+    "title20": "FEW-BODY SYST",
+    "title29": "FEW-BODY SYST",
+    "issn": "0177-7963",
+    "eissn": "1432-5411",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "FIBER AND INTEGRATED OPTICS",
+    "title20": "FIBER INTEGRATED OPT",
+    "title29": "FIBER INTEGRATED OPT",
+    "issn": "0146-8030",
+    "eissn": "1096-4681",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "FLUCTUATION AND NOISE LETTERS",
+    "title20": "FLUCT NOISE LETT",
+    "title29": "FLUCT NOISE LETT",
+    "issn": "0219-4775",
+    "eissn": "1793-6780",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "FORTSCHRITTE DER PHYSIK-PROGRESS OF PHYSICS",
+    "title20": "FORTSCHR PHYS",
+    "title29": "FORTSCHR PHYS",
+    "issn": "0015-8208",
+    "eissn": "1521-3978",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "FOUNDATIONS OF PHYSICS",
+    "title20": "FOUND PHYS",
+    "title29": "FOUND PHYS",
+    "issn": "0015-9018",
+    "eissn": "1572-9516",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "FRONTIERS IN PHYSICS",
+    "title20": "FRONT PHYS-LAUSANNE",
+    "title29": "FRONT PHYSICS",
+    "issn": "",
+    "eissn": "2296-424X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "FRONTIERS OF PHYSICS",
+    "title20": "FRONT PHYS-BEIJING",
+    "title29": "FRONT PHYS",
+    "issn": "2095-0462",
+    "eissn": "2095-0470",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "GENERAL RELATIVITY AND GRAVITATION",
+    "title20": "GEN RELAT GRAVIT",
+    "title29": "GEN RELATIV GRAVIT",
+    "issn": "0001-7701",
+    "eissn": "1572-9532",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "HIGH ENERGY DENSITY PHYSICS",
+    "title20": "HIGH ENERG DENS PHYS",
+    "title29": "HIGH ENERGY DENSITY PHYS",
+    "issn": "1574-1818",
+    "eissn": "1878-0563",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "HIGH POWER LASER SCIENCE AND ENGINEERING",
+    "title20": "HIGH POWER LASER SCI",
+    "title29": "HIGH POWER LASER SCI ENG",
+    "issn": "2095-4719",
+    "eissn": "2052-3289",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "HIGH PRESSURE RESEARCH",
+    "title20": "HIGH PRESSURE RES",
+    "title29": "HIGH PRESSURE RES",
+    "issn": "0895-7959",
+    "eissn": "1477-2299",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "HIGH TEMPERATURE",
+    "title20": "HIGH TEMP+",
+    "title29": "HIGH TEMP-ENGL TR",
+    "issn": "0018-151X",
+    "eissn": "1608-3156",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "IEEE JOURNAL OF QUANTUM ELECTRONICS",
+    "title20": "IEEE J QUANTUM ELECT",
+    "title29": "IEEE J QUANTUM ELECTRON",
+    "issn": "0018-9197",
+    "eissn": "1558-1713",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "IEEE MAGNETICS LETTERS",
+    "title20": "IEEE MAGN LETT",
+    "title29": "IEEE MAGN LETT",
+    "issn": "1949-307X",
+    "eissn": "1949-3088",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "IEEE PHOTONICS JOURNAL",
+    "title20": "IEEE PHOTONICS J",
+    "title29": "IEEE PHOTONICS J",
+    "issn": "1943-0655",
+    "eissn": "1943-0647",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "IEEE PHOTONICS TECHNOLOGY LETTERS",
+    "title20": "IEEE PHOTONIC TECH L",
+    "title29": "IEEE PHOTONIC TECHNOL LETT",
+    "issn": "1041-1135",
+    "eissn": "1941-0174",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "IEEE TRANSACTIONS ON APPLIED SUPERCONDUCTIVITY",
+    "title20": "IEEE T APPL SUPERCON",
+    "title29": "IEEE TRANS APPL SUPERCONDUCT",
+    "issn": "1051-8223",
+    "eissn": "1558-2515",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "IEEE TRANSACTIONS ON MAGNETICS",
+    "title20": "IEEE T MAGN",
+    "title29": "IEEE TRANS MAGN",
+    "issn": "0018-9464",
+    "eissn": "1941-0069",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "IEEE TRANSACTIONS ON NUCLEAR SCIENCE",
+    "title20": "IEEE T NUCL SCI",
+    "title29": "IEEE TRANS NUCL SCI",
+    "issn": "0018-9499",
+    "eissn": "1558-1578",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "IEEE TRANSACTIONS ON PLASMA SCIENCE",
+    "title20": "IEEE T PLASMA SCI",
+    "title29": "IEEE TRANS PLASMA SCI",
+    "issn": "0093-3813",
+    "eissn": "1939-9375",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "IMAGING SCIENCE JOURNAL",
+    "title20": "IMAGING SCI J",
+    "title29": "IMAGING SCI J",
+    "issn": "1368-2199",
+    "eissn": "1743-131X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "INDIAN JOURNAL OF PHYSICS",
+    "title20": "INDIAN J PHYS",
+    "title29": "INDIAN J PHYS",
+    "issn": "0973-1458",
+    "eissn": "0974-9845",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "INDIAN JOURNAL OF PURE & APPLIED PHYSICS",
+    "title20": "INDIAN J PURE AP PHY",
+    "title29": "INDIAN J PURE APPL PHYS",
+    "issn": "0019-5596",
+    "eissn": "0975-1041",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "INFRARED PHYSICS & TECHNOLOGY",
+    "title20": "INFRARED PHYS TECHN",
+    "title29": "INFRARED PHYS TECHNOL",
+    "issn": "1350-4495",
+    "eissn": "1879-0275",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "INTERNATIONAL JOURNAL OF GEOMETRIC METHODS IN MODERN PHYSICS",
+    "title20": "INT J GEOM METHODS M",
+    "title29": "INT J GEOM METHODS MOD PHYS",
+    "issn": "0219-8878",
+    "eissn": "1793-6977",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "INTERNATIONAL JOURNAL OF MODERN PHYSICS A",
+    "title20": "INT J MOD PHYS A",
+    "title29": "INT J MOD PHYS A",
+    "issn": "0217-751X",
+    "eissn": "1793-656X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "INTERNATIONAL JOURNAL OF MODERN PHYSICS B",
+    "title20": "INT J MOD PHYS B",
+    "title29": "INT J MOD PHYS B",
+    "issn": "0217-9792",
+    "eissn": "1793-6578",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "INTERNATIONAL JOURNAL OF MODERN PHYSICS C",
+    "title20": "INT J MOD PHYS C",
+    "title29": "INT J MOD PHYS C",
+    "issn": "0129-1831",
+    "eissn": "1793-6586",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "INTERNATIONAL JOURNAL OF MODERN PHYSICS E",
+    "title20": "INT J MOD PHYS E",
+    "title29": "INT J MOD PHYS E",
+    "issn": "0218-3013",
+    "eissn": "1793-6608",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "INTERNATIONAL JOURNAL OF OPTICS",
+    "title20": "INT J OPT",
+    "title29": "INT J OPT",
+    "issn": "1687-9384",
+    "eissn": "1687-9392",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "INTERNATIONAL JOURNAL OF PHOTOENERGY",
+    "title20": "INT J PHOTOENERGY",
+    "title29": "INT J PHOTOENERGY",
+    "issn": "1110-662X",
+    "eissn": "1687-529X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "INTERNATIONAL JOURNAL OF QUANTUM INFORMATION",
+    "title20": "INT J QUANTUM INF",
+    "title29": "INT J QUANTUM INF",
+    "issn": "0219-7499",
+    "eissn": "1793-6918",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "INTERNATIONAL JOURNAL OF THEORETICAL PHYSICS",
+    "title20": "INT J THEOR PHYS",
+    "title29": "INT J THEOR PHYS",
+    "issn": "0020-7748",
+    "eissn": "1572-9575",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "INVERSE PROBLEMS",
+    "title20": "INVERSE PROBL",
+    "title29": "INVERSE PROBL",
+    "issn": "0266-5611",
+    "eissn": "1361-6420",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "IONICS",
+    "title20": "IONICS",
+    "title29": "IONICS",
+    "issn": "0947-7047",
+    "eissn": "1862-0760",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JAPANESE JOURNAL OF APPLIED PHYSICS",
+    "title20": "JPN J APPL PHYS",
+    "title29": "JPN J APPL PHYS",
+    "issn": "0021-4922",
+    "eissn": "1347-4065",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JETP LETTERS",
+    "title20": "JETP LETT+",
+    "title29": "JETP LETT-ENGL TR",
+    "issn": "0021-3640",
+    "eissn": "1090-6487",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF APPLIED MECHANICS AND TECHNICAL PHYSICS",
+    "title20": "J APPL MECH TECH PH+",
+    "title29": "J APPL MECH TECH PHYS",
+    "issn": "0021-8944",
+    "eissn": "1573-8620",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF APPLIED PHYSICS",
+    "title20": "J APPL PHYS",
+    "title29": "J APPL PHYS",
+    "issn": "0021-8979",
+    "eissn": "1089-7550",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF COMPUTATIONAL AND THEORETICAL TRANSPORT",
+    "title20": "J COMPUT THEOR TRANS",
+    "title29": "J COMPUT THEOR TRANS",
+    "issn": "2332-4309",
+    "eissn": "2332-4325",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF COMPUTATIONAL PHYSICS",
+    "title20": "J COMPUT PHYS",
+    "title29": "J COMPUT PHYS",
+    "issn": "0021-9991",
+    "eissn": "1090-2716",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF CONTEMPORARY PHYSICS-ARMENIAN ACADEMY OF SCIENCES",
+    "title20": "J CONTEMP PHYS-ARME+",
+    "title29": "J CONTEMP PHYS-ARMEN ACAD SCI",
+    "issn": "1068-3372",
+    "eissn": "1934-9378",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF ENGINEERING THERMOPHYSICS",
+    "title20": "J ENG THERMOPHYS-RUS",
+    "title29": "J ENG THERMOPHYS",
+    "issn": "1810-2328",
+    "eissn": "1990-5432",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF EXPERIMENTAL AND THEORETICAL PHYSICS",
+    "title20": "J EXP THEOR PHYS+",
+    "title29": "J EXP THEOR PHYS",
+    "issn": "1063-7761",
+    "eissn": "1090-6509",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF HIGH ENERGY PHYSICS",
+    "title20": "J HIGH ENERGY PHYS",
+    "title29": "J HIGH ENERGY PHYS",
+    "issn": "",
+    "eissn": "1029-8479",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF INFRARED AND MILLIMETER WAVES",
+    "title20": "J INFRARED MILLIM W",
+    "title29": "J INFRARED MILIM WAVES",
+    "issn": "1001-9014",
+    "eissn": "",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF LOW TEMPERATURE PHYSICS",
+    "title20": "J LOW TEMP PHYS",
+    "title29": "J LOW TEMP PHYS",
+    "issn": "0022-2291",
+    "eissn": "1573-7357",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF LUMINESCENCE",
+    "title20": "J LUMIN",
+    "title29": "J LUMINESC",
+    "issn": "0022-2313",
+    "eissn": "1872-7883",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF MAGNETICS",
+    "title20": "J MAGN",
+    "title29": "J MAGN",
+    "issn": "1226-1750",
+    "eissn": "2233-6656",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF MAGNETISM AND MAGNETIC MATERIALS",
+    "title20": "J MAGN MAGN MATER",
+    "title29": "J MAGN MAGN MATER",
+    "issn": "0304-8853",
+    "eissn": "1873-4766",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF MATHEMATICAL PHYSICS",
+    "title20": "J MATH PHYS",
+    "title29": "J MATH PHYS-NY",
+    "issn": "0022-2488",
+    "eissn": "1089-7658",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF MODERN OPTICS",
+    "title20": "J MOD OPTIC",
+    "title29": "J MOD OPTIC",
+    "issn": "0950-0340",
+    "eissn": "1362-3044",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF NANOPHOTONICS",
+    "title20": "J NANOPHOTONICS",
+    "title29": "J NANOPHOTONICS",
+    "issn": "1934-2608",
+    "eissn": "",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF NON-CRYSTALLINE SOLIDS",
+    "title20": "J NON-CRYST SOLIDS",
+    "title29": "J NON-CRYST SOLIDS",
+    "issn": "0022-3093",
+    "eissn": "1873-4812",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF NON-EQUILIBRIUM THERMODYNAMICS",
+    "title20": "J NON-EQUIL THERMODY",
+    "title29": "J NON-EQUIL THERMODYN",
+    "issn": "0340-0204",
+    "eissn": "1437-4358",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF NONLINEAR MATHEMATICAL PHYSICS",
+    "title20": "J NONLINEAR MATH PHY",
+    "title29": "J NONLINEAR MATH PHYS",
+    "issn": "1402-9251",
+    "eissn": "1776-0852",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF NONLINEAR OPTICAL PHYSICS & MATERIALS",
+    "title20": "J NONLINEAR OPT PHYS",
+    "title29": "J NONLINEAR OPT PHYSICS MAT",
+    "issn": "0218-8635",
+    "eissn": "1793-6624",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF OPTICS",
+    "title20": "J OPTICS-UK",
+    "title29": "J OPT",
+    "issn": "2040-8978",
+    "eissn": "2040-8986",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF PHASE EQUILIBRIA AND DIFFUSION",
+    "title20": "J PHASE EQUILIB DIFF",
+    "title29": "J PHASE EQUILIB DIFFUS",
+    "issn": "1547-7037",
+    "eissn": "1863-7345",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF PHOTONICS FOR ENERGY",
+    "title20": "J PHOTON ENERGY",
+    "title29": "J PHOTONICS ENERGY",
+    "issn": "1947-7988",
+    "eissn": "1947-7988",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF PHYSICAL AND CHEMICAL REFERENCE DATA",
+    "title20": "J PHYS CHEM REF DATA",
+    "title29": "J PHYS CHEM REF DATA",
+    "issn": "0047-2689",
+    "eissn": "1529-7845",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF PHYSICS A-MATHEMATICAL AND THEORETICAL",
+    "title20": "J PHYS A-MATH THEOR",
+    "title29": "J PHYS A-MATH THEOR",
+    "issn": "1751-8113",
+    "eissn": "1751-8121",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF PHYSICS AND CHEMISTRY OF SOLIDS",
+    "title20": "J PHYS CHEM SOLIDS",
+    "title29": "J PHYS CHEM SOLIDS",
+    "issn": "0022-3697",
+    "eissn": "1879-2553",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF PHYSICS B-ATOMIC MOLECULAR AND OPTICAL PHYSICS",
+    "title20": "J PHYS B-AT MOL OPT",
+    "title29": "J PHYS-B-AT MOL OPT PHYS",
+    "issn": "0953-4075",
+    "eissn": "1361-6455",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF PHYSICS D-APPLIED PHYSICS",
+    "title20": "J PHYS D APPL PHYS",
+    "title29": "J PHYS-D-APPL PHYS",
+    "issn": "0022-3727",
+    "eissn": "1361-6463",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF PHYSICS G-NUCLEAR AND PARTICLE PHYSICS",
+    "title20": "J PHYS G NUCL PARTIC",
+    "title29": "J PHYS G-NUCL PARTICLE PHYS",
+    "issn": "0954-3899",
+    "eissn": "1361-6471",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF PHYSICS-CONDENSED MATTER",
+    "title20": "J PHYS-CONDENS MAT",
+    "title29": "J PHYS-CONDENS MATTER",
+    "issn": "0953-8984",
+    "eissn": "1361-648X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF PLASMA PHYSICS",
+    "title20": "J PLASMA PHYS",
+    "title29": "J PLASMA PHYS",
+    "issn": "0022-3778",
+    "eissn": "1469-7807",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF RHEOLOGY",
+    "title20": "J RHEOL",
+    "title29": "J RHEOL",
+    "issn": "0148-6055",
+    "eissn": "1520-8516",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF STATISTICAL MECHANICS-THEORY AND EXPERIMENT",
+    "title20": "J STAT MECH-THEORY E",
+    "title29": "J STAT MECH-THEORY EXP",
+    "issn": "1742-5468",
+    "eissn": "1742-5468",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF STATISTICAL PHYSICS",
+    "title20": "J STAT PHYS",
+    "title29": "J STATIST PHYS",
+    "issn": "0022-4715",
+    "eissn": "1572-9613",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF SUPERCONDUCTIVITY AND NOVEL MAGNETISM",
+    "title20": "J SUPERCOND NOV MAGN",
+    "title29": "J SUPERCOND NOV MAGN",
+    "issn": "1557-1939",
+    "eissn": "1557-1947",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF SYNCHROTRON RADIATION",
+    "title20": "J SYNCHROTRON RADIAT",
+    "title29": "J SYNCHROTRON RADIAT",
+    "issn": "0909-0495",
+    "eissn": "1600-5775",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF THE ACOUSTICAL SOCIETY OF AMERICA",
+    "title20": "J ACOUST SOC AM",
+    "title29": "J ACOUST SOC AMER",
+    "issn": "0001-4966",
+    "eissn": "1520-8524",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF THE EUROPEAN OPTICAL SOCIETY-RAPID PUBLICATIONS",
+    "title20": "J EUR OPT SOC-RAPID",
+    "title29": "J EUR OPT SOC-RAPID PUBL",
+    "issn": "1990-2573",
+    "eissn": "1990-2573",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF THE KOREAN PHYSICAL SOCIETY",
+    "title20": "J KOREAN PHYS SOC",
+    "title29": "J KOREAN PHYS SOC",
+    "issn": "0374-4884",
+    "eissn": "1976-8524",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF THE OPTICAL SOCIETY OF AMERICA A-OPTICS IMAGE SCIENCE AND VISION",
+    "title20": "J OPT SOC AM A",
+    "title29": "J OPT SOC AM A-OPT IMAGE SCI",
+    "issn": "1084-7529",
+    "eissn": "1520-8532",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF THE OPTICAL SOCIETY OF AMERICA B-OPTICAL PHYSICS",
+    "title20": "J OPT SOC AM B",
+    "title29": "J OPT SOC AM B-OPT PHYSICS",
+    "issn": "0740-3224",
+    "eissn": "1520-8540",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF THE PHYSICAL SOCIETY OF JAPAN",
+    "title20": "J PHYS SOC JPN",
+    "title29": "J PHYS SOC JPN",
+    "issn": "0031-9015",
+    "eissn": "",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF THEORETICAL AND COMPUTATIONAL ACOUSTICS",
+    "title20": "J THEOR COMPUT ACOUS",
+    "title29": "J THEOR COMPUT ACOUST",
+    "issn": "2591-7285",
+    "eissn": "2591-7811",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF TURBULENCE",
+    "title20": "J TURBUL",
+    "title29": "J TURBUL",
+    "issn": "1468-5248",
+    "eissn": "1468-5248",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "JOURNAL OF X-RAY SCIENCE AND TECHNOLOGY",
+    "title20": "J X-RAY SCI TECHNOL",
+    "title29": "J X-RAY SCI TECHNOL",
+    "issn": "0895-3996",
+    "eissn": "1095-9114",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "LASER & PHOTONICS REVIEWS",
+    "title20": "LASER PHOTONICS REV",
+    "title29": "LASER PHOTONICS REV",
+    "issn": "1863-8880",
+    "eissn": "1863-8899",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "LASER AND PARTICLE BEAMS",
+    "title20": "LASER PART BEAMS",
+    "title29": "LASER PART BEAM",
+    "issn": "0263-0346",
+    "eissn": "1469-803X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "LASER PHYSICS",
+    "title20": "LASER PHYS",
+    "title29": "LASER PHYS",
+    "issn": "1054-660X",
+    "eissn": "1555-6611",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "LASER PHYSICS LETTERS",
+    "title20": "LASER PHYS LETT",
+    "title29": "LASER PHYS LETT",
+    "issn": "1612-2011",
+    "eissn": "1612-202X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "LETTERS IN MATHEMATICAL PHYSICS",
+    "title20": "LETT MATH PHYS",
+    "title29": "LETT MATH PHYS",
+    "issn": "0377-9017",
+    "eissn": "1573-0530",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "LIGHT-SCIENCE & APPLICATIONS",
+    "title20": "LIGHT-SCI APPL",
+    "title29": "LIGHT-SCI APPL",
+    "issn": "2095-5545",
+    "eissn": "2047-7538",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "LITHUANIAN JOURNAL OF PHYSICS",
+    "title20": "LITH J PHYS",
+    "title29": "LITH J PHYS",
+    "issn": "1648-8504",
+    "eissn": "1648-8504",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "LIVING REVIEWS IN RELATIVITY",
+    "title20": "LIVING REV RELATIV",
+    "title29": "LIVING REV RELATIV",
+    "issn": "2367-3613",
+    "eissn": "1433-8351",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "LOW TEMPERATURE PHYSICS",
+    "title20": "LOW TEMP PHYS+",
+    "title29": "LOW TEMP PHYS",
+    "issn": "1063-777X",
+    "eissn": "1090-6517",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "MAGNETOHYDRODYNAMICS",
+    "title20": "MAGNETOHYDRODYNAMICS",
+    "title29": "MAGNETOHYDRODYNAMICS",
+    "issn": "0024-998X",
+    "eissn": "1574-0579",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "MAPAN-JOURNAL OF METROLOGY SOCIETY OF INDIA",
+    "title20": "MAPAN-J METROL SOC I",
+    "title29": "MAPAN-J METROL SOC INDIA",
+    "issn": "0970-3950",
+    "eissn": "0974-9853",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "MATTER AND RADIATION AT EXTREMES",
+    "title20": "MATTER RADIAT EXTREM",
+    "title29": "MATTER RADIAT EXTREM",
+    "issn": "2468-2047",
+    "eissn": "2468-080X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "MECHANICS OF SOLIDS",
+    "title20": "MECH SOLIDS+",
+    "title29": "MECH SOLIDS",
+    "issn": "0025-6544",
+    "eissn": "1934-7936",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "METROLOGY AND MEASUREMENT SYSTEMS",
+    "title20": "METROL MEAS SYST",
+    "title29": "METROL MEAS SYST",
+    "issn": "0860-8229",
+    "eissn": "2300-1941",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "MICRO & NANO LETTERS",
+    "title20": "MICRO NANO LETT",
+    "title29": "MICRO NANO LETT",
+    "issn": "",
+    "eissn": "1750-0443",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "MICRO AND NANOSTRUCTURES",
+    "title20": "MICRO NANOSTRUCTURES",
+    "title29": "MICRO NANOSTRUCTURES",
+    "issn": "",
+    "eissn": "2773-0123",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "MODERN PHYSICS LETTERS A",
+    "title20": "MOD PHYS LETT A",
+    "title29": "MOD PHYS LETT A",
+    "issn": "0217-7323",
+    "eissn": "1793-6632",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "MODERN PHYSICS LETTERS B",
+    "title20": "MOD PHYS LETT B",
+    "title29": "MOD PHYS LETT B",
+    "issn": "0217-9849",
+    "eissn": "1793-6640",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "MOLECULAR PHYSICS",
+    "title20": "MOL PHYS",
+    "title29": "MOL PHYS",
+    "issn": "0026-8976",
+    "eissn": "1362-3028",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "MOSCOW UNIVERSITY PHYSICS BULLETIN",
+    "title20": "MOSC U PHYS B+",
+    "title29": "MOSC UNIV PHYS BULL",
+    "issn": "0027-1349",
+    "eissn": "1934-8460",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NANO",
+    "title20": "NANO",
+    "title29": "NANO",
+    "issn": "1793-2920",
+    "eissn": "1793-7094",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NANO RESEARCH",
+    "title20": "NANO RES",
+    "title29": "NANO RES",
+    "issn": "1998-0124",
+    "eissn": "1998-0000",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NANO TODAY",
+    "title20": "NANO TODAY",
+    "title29": "NANO TODAY",
+    "issn": "1748-0132",
+    "eissn": "1878-044X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NANOPHOTONICS",
+    "title20": "NANOPHOTONICS-BERLIN",
+    "title29": "NANOPHOTONICS",
+    "issn": "2192-8606",
+    "eissn": "2192-8614",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NANOSCALE",
+    "title20": "NANOSCALE",
+    "title29": "NANOSCALE",
+    "issn": "2040-3364",
+    "eissn": "2040-3372",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NATURE PHOTONICS",
+    "title20": "NAT PHOTONICS",
+    "title29": "NAT PHOTONICS",
+    "issn": "1749-4885",
+    "eissn": "1749-4893",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NATURE PHYSICS",
+    "title20": "NAT PHYS",
+    "title29": "NAT PHYS",
+    "issn": "1745-2473",
+    "eissn": "1745-2481",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NATURE REVIEWS PHYSICS",
+    "title20": "NAT REV PHYS",
+    "title29": "NAT REV PHYS",
+    "issn": "",
+    "eissn": "2522-5820",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NEW JOURNAL OF PHYSICS",
+    "title20": "NEW J PHYS",
+    "title29": "NEW J PHYS",
+    "issn": "1367-2630",
+    "eissn": "1367-2630",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NPJ QUANTUM INFORMATION",
+    "title20": "NPJ QUANTUM INFORM",
+    "title29": "NPJ QUANTUM INF",
+    "issn": "",
+    "eissn": "2056-6387",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NPJ QUANTUM MATERIALS",
+    "title20": "NPJ QUANTUM MATER",
+    "title29": "NPJ QUANTUM MATER",
+    "issn": "",
+    "eissn": "2397-4648",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NUCLEAR DATA SHEETS",
+    "title20": "NUCL DATA SHEETS",
+    "title29": "NUCL DATA SHEETS",
+    "issn": "0090-3752",
+    "eissn": "1095-9904",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NUCLEAR FUSION",
+    "title20": "NUCL FUSION",
+    "title29": "NUCL FUSION",
+    "issn": "0029-5515",
+    "eissn": "1741-4326",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NUCLEAR INSTRUMENTS & METHODS IN PHYSICS RESEARCH SECTION A-ACCELERATORS SPECTROMETERS DETECTORS AND ASSOCIATED EQUIPMENT",
+    "title20": "NUCL INSTRUM METH A",
+    "title29": "NUCL INSTRUM METH PHYS RES A",
+    "issn": "0168-9002",
+    "eissn": "1872-9576",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NUCLEAR INSTRUMENTS & METHODS IN PHYSICS RESEARCH SECTION B-BEAM INTERACTIONS WITH MATERIALS AND ATOMS",
+    "title20": "NUCL INSTRUM METH B",
+    "title29": "NUCL INSTRUM METH PHYS RES B",
+    "issn": "0168-583X",
+    "eissn": "1872-9584",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NUCLEAR PHYSICS A",
+    "title20": "NUCL PHYS A",
+    "title29": "NUCL PHYS A",
+    "issn": "0375-9474",
+    "eissn": "1873-1554",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NUCLEAR PHYSICS B",
+    "title20": "NUCL PHYS B",
+    "title29": "NUCL PHYS B",
+    "issn": "0550-3213",
+    "eissn": "1873-1562",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NUCLEAR SCIENCE AND TECHNIQUES",
+    "title20": "NUCL SCI TECH",
+    "title29": "NUCL SCI TECH",
+    "issn": "1001-8042",
+    "eissn": "2210-3147",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "NUKLEONIKA",
+    "title20": "NUKLEONIKA",
+    "title29": "NUKLEONIKA",
+    "issn": "0029-5922",
+    "eissn": "1508-5791",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "OPEN PHYSICS",
+    "title20": "OPEN PHYS",
+    "title29": "OPEN PHYS",
+    "issn": "2391-5471",
+    "eissn": "2391-5471",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "OPEN SYSTEMS & INFORMATION DYNAMICS",
+    "title20": "OPEN SYST INF DYN",
+    "title29": "OPEN SYST INF DYN",
+    "issn": "1230-1612",
+    "eissn": "1793-7191",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "OPTICA",
+    "title20": "OPTICA",
+    "title29": "OPTICA",
+    "issn": "2334-2536",
+    "eissn": "2334-2536",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "OPTICAL REVIEW",
+    "title20": "OPT REV",
+    "title29": "OPT REV",
+    "issn": "1340-6000",
+    "eissn": "1349-9432",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "OPTICS COMMUNICATIONS",
+    "title20": "OPT COMMUN",
+    "title29": "OPT COMMUN",
+    "issn": "0030-4018",
+    "eissn": "1873-0310",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "OPTICS EXPRESS",
+    "title20": "OPT EXPRESS",
+    "title29": "OPT EXPRESS",
+    "issn": "1094-4087",
+    "eissn": "1094-4087",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "OPTICS LETTERS",
+    "title20": "OPT LETT",
+    "title29": "OPTICS LETTERS",
+    "issn": "0146-9592",
+    "eissn": "1539-4794",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "OPTO-ELECTRONIC ADVANCES",
+    "title20": "OPTO-ELECTRON ADV",
+    "title29": "OPTO-ELECTRON ADV",
+    "issn": "2096-4579",
+    "eissn": "2097-3993",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ORGANIC ELECTRONICS",
+    "title20": "ORG ELECTRON",
+    "title29": "ORG ELECTRON",
+    "issn": "1566-1199",
+    "eissn": "1878-5530",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHASE TRANSITIONS",
+    "title20": "PHASE TRANSIT",
+    "title29": "PHASE TRANSIT",
+    "issn": "0141-1594",
+    "eissn": "1029-0338",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHILOSOPHICAL MAGAZINE LETTERS",
+    "title20": "PHIL MAG LETT",
+    "title29": "PHIL MAG LETT",
+    "issn": "0950-0839",
+    "eissn": "1362-3036",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHILOSOPHICAL TRANSACTIONS OF THE ROYAL SOCIETY A-MATHEMATICAL PHYSICAL AND ENGINEERING SCIENCES",
+    "title20": "PHILOS T R SOC A",
+    "title29": "PHILOS TRANS R SOC A",
+    "issn": "1364-503X",
+    "eissn": "1471-2962",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHOTONIC SENSORS",
+    "title20": "PHOTONIC SENS",
+    "title29": "PHOTONIC SENS",
+    "issn": "1674-9251",
+    "eissn": "2190-7439",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHOTONICS",
+    "title20": "PHOTONICS-BASEL",
+    "title29": "PHOTONICS",
+    "issn": "",
+    "eissn": "2304-6732",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHOTONICS AND NANOSTRUCTURES-FUNDAMENTALS AND APPLICATIONS",
+    "title20": "PHOTONIC NANOSTRUCT",
+    "title29": "PHOTONICS NANOSTRUCT",
+    "issn": "1569-4410",
+    "eissn": "1569-4429",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHOTONICS RESEARCH",
+    "title20": "PHOTONICS RES",
+    "title29": "PHOTONICS RES",
+    "issn": "2327-9125",
+    "eissn": "2327-9125",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICA A-STATISTICAL MECHANICS AND ITS APPLICATIONS",
+    "title20": "PHYSICA A",
+    "title29": "PHYSICA A",
+    "issn": "0378-4371",
+    "eissn": "1873-2119",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICA B-CONDENSED MATTER",
+    "title20": "PHYSICA B",
+    "title29": "PHYSICA B",
+    "issn": "0921-4526",
+    "eissn": "1873-2135",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICA C-SUPERCONDUCTIVITY AND ITS APPLICATIONS",
+    "title20": "PHYSICA C",
+    "title29": "PHYSICA C",
+    "issn": "0921-4534",
+    "eissn": "1873-2143",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICA D-NONLINEAR PHENOMENA",
+    "title20": "PHYSICA D",
+    "title29": "PHYSICA D",
+    "issn": "0167-2789",
+    "eissn": "1872-8022",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICA E-LOW-DIMENSIONAL SYSTEMS & NANOSTRUCTURES",
+    "title20": "PHYSICA E",
+    "title29": "PHYSICA E",
+    "issn": "1386-9477",
+    "eissn": "1873-1759",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICA SCRIPTA",
+    "title20": "PHYS SCRIPTA",
+    "title29": "PHYS SCR",
+    "issn": "0031-8949",
+    "eissn": "1402-4896",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICA STATUS SOLIDI A-APPLICATIONS AND MATERIALS SCIENCE",
+    "title20": "PHYS STATUS SOLIDI A",
+    "title29": "PHYS STATUS SOLIDI A-APPL MAT",
+    "issn": "1862-6300",
+    "eissn": "1862-6319",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICA STATUS SOLIDI B-BASIC SOLID STATE PHYSICS",
+    "title20": "PHYS STATUS SOLIDI B",
+    "title29": "PHYS STATUS SOLIDI B-BASIC SO",
+    "issn": "0370-1972",
+    "eissn": "1521-3951",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICA STATUS SOLIDI-RAPID RESEARCH LETTERS",
+    "title20": "PHYS STATUS SOLIDI-R",
+    "title29": "PHYS STATUS SOLIDI-RAPID RE L",
+    "issn": "1862-6254",
+    "eissn": "1862-6270",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICAL REVIEW A",
+    "title20": "PHYS REV A",
+    "title29": "PHYS REV A",
+    "issn": "2469-9926",
+    "eissn": "2469-9934",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICAL REVIEW ACCELERATORS AND BEAMS",
+    "title20": "PHYS REV ACCEL BEAMS",
+    "title29": "PHYS REV ACCEL BEAMS",
+    "issn": "",
+    "eissn": "2469-9888",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICAL REVIEW APPLIED",
+    "title20": "PHYS REV APPL",
+    "title29": "PHYS REV APPL",
+    "issn": "2331-7019",
+    "eissn": "2331-7019",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICAL REVIEW B",
+    "title20": "PHYS REV B",
+    "title29": "PHYS REV B",
+    "issn": "2469-9950",
+    "eissn": "2469-9969",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICAL REVIEW C",
+    "title20": "PHYS REV C",
+    "title29": "PHYS REV C",
+    "issn": "2469-9985",
+    "eissn": "2469-9993",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICAL REVIEW D",
+    "title20": "PHYS REV D",
+    "title29": "PHYS REV D",
+    "issn": "2470-0010",
+    "eissn": "2470-0029",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICAL REVIEW E",
+    "title20": "PHYS REV E",
+    "title29": "PHYS REV E",
+    "issn": "2470-0045",
+    "eissn": "2470-0053",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICAL REVIEW FLUIDS",
+    "title20": "PHYS REV FLUIDS",
+    "title29": "PHYS REV FLUIDS",
+    "issn": "2469-990X",
+    "eissn": "2469-990X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICAL REVIEW LETTERS",
+    "title20": "PHYS REV LETT",
+    "title29": "PHYS REV LETT",
+    "issn": "0031-9007",
+    "eissn": "1079-7114",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICAL REVIEW PHYSICS EDUCATION RESEARCH",
+    "title20": "PHYS REV PHYS EDUC R",
+    "title29": "PHYS REV PHYS EDUC RES",
+    "issn": "2469-9896",
+    "eissn": "2469-9896",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICAL REVIEW X",
+    "title20": "PHYS REV X",
+    "title29": "PHYS REV X",
+    "issn": "2160-3308",
+    "eissn": "2160-3308",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICS IN PERSPECTIVE",
+    "title20": "PHYS PERSPECT",
+    "title29": "PHYS PERSPECT",
+    "issn": "1422-6944",
+    "eissn": "1422-6960",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICS LETTERS A",
+    "title20": "PHYS LETT A",
+    "title29": "PHYS LETT A",
+    "issn": "0375-9601",
+    "eissn": "1873-2429",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICS LETTERS B",
+    "title20": "PHYS LETT B",
+    "title29": "PHYS LETT B",
+    "issn": "0370-2693",
+    "eissn": "1873-2445",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICS OF ATOMIC NUCLEI",
+    "title20": "PHYS ATOM NUCL+",
+    "title29": "PHYS ATOM NUCL-ENGL TR",
+    "issn": "1063-7788",
+    "eissn": "1562-692X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICS OF FLUIDS",
+    "title20": "PHYS FLUIDS",
+    "title29": "PHYS FLUIDS",
+    "issn": "1070-6631",
+    "eissn": "1089-7666",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICS OF PARTICLES AND NUCLEI",
+    "title20": "PHYS PART NUCLEI+",
+    "title29": "PHYS PART NUCLEI",
+    "issn": "1063-7796",
+    "eissn": "1531-8559",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICS OF PLASMAS",
+    "title20": "PHYS PLASMAS",
+    "title29": "PHYS PLASMAS",
+    "issn": "1070-664X",
+    "eissn": "1089-7674",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICS OF THE SOLID STATE",
+    "title20": "PHYS SOLID STATE+",
+    "title29": "PHYS SOLID STATE",
+    "issn": "1063-7834",
+    "eissn": "1090-6460",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICS OF WAVE PHENOMENA",
+    "title20": "PHYS WAVE PHENOM",
+    "title29": "PHYS WAVE PHENOM",
+    "issn": "1541-308X",
+    "eissn": "1934-807X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICS REPORTS-REVIEW SECTION OF PHYSICS LETTERS",
+    "title20": "PHYS REP",
+    "title29": "PHYS REP-REV SECT PHYS LETT",
+    "issn": "0370-1573",
+    "eissn": "1873-6270",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICS TEACHER",
+    "title20": "PHYS TEACH",
+    "title29": "PHYS TEACH",
+    "issn": "0031-921X",
+    "eissn": "1943-4928",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICS TODAY",
+    "title20": "PHYS TODAY",
+    "title29": "PHYS TODAY",
+    "issn": "0031-9228",
+    "eissn": "1945-0699",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICS WORLD",
+    "title20": "PHYS WORLD",
+    "title29": "PHYS WORLD",
+    "issn": "0953-8585",
+    "eissn": "2058-7058",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PHYSICS-USPEKHI",
+    "title20": "PHYS-USP+",
+    "title29": "PHYS-USP",
+    "issn": "1063-7869",
+    "eissn": "1468-4780",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PLASMA PHYSICS AND CONTROLLED FUSION",
+    "title20": "PLASMA PHYS CONTR F",
+    "title29": "PLASMA PHYS CONTROL FUSION",
+    "issn": "0741-3335",
+    "eissn": "1361-6587",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PLASMA PHYSICS REPORTS",
+    "title20": "PLASMA PHYS REP+",
+    "title29": "PLASMA PHYSICS REPORTS",
+    "issn": "1063-780X",
+    "eissn": "1562-6938",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PLASMA SCIENCE & TECHNOLOGY",
+    "title20": "PLASMA SCI TECHNOL",
+    "title29": "PLASMA SCI TECHNOL",
+    "issn": "1009-0630",
+    "eissn": "2058-6272",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PLASMA SOURCES SCIENCE & TECHNOLOGY",
+    "title20": "PLASMA SOURCES SCI T",
+    "title29": "PLASMA SOURCES SCI TECHNOL",
+    "issn": "0963-0252",
+    "eissn": "1361-6595",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "POWDER DIFFRACTION",
+    "title20": "POWDER DIFFR",
+    "title29": "POWDER DIFFR",
+    "issn": "0885-7156",
+    "eissn": "1945-7413",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PRAMANA-JOURNAL OF PHYSICS",
+    "title20": "PRAMANA-J PHYS",
+    "title29": "PRAMANA-J PHYS",
+    "issn": "0304-4289",
+    "eissn": "0973-7111",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PROCEEDINGS OF THE ROYAL SOCIETY A-MATHEMATICAL PHYSICAL AND ENGINEERING SCIENCES",
+    "title20": "P ROY SOC A-MATH PHY",
+    "title29": "PROC R SOC A",
+    "issn": "1364-5021",
+    "eissn": "1471-2946",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PROGRESS IN PARTICLE AND NUCLEAR PHYSICS",
+    "title20": "PROG PART NUCL PHYS",
+    "title29": "PROG PART NUCL PHYSICS",
+    "issn": "0146-6410",
+    "eissn": "1873-2224",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PROGRESS IN SURFACE SCIENCE",
+    "title20": "PROG SURF SCI",
+    "title29": "PROG SURF SCI",
+    "issn": "0079-6816",
+    "eissn": "1878-4240",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PROGRESS OF THEORETICAL AND EXPERIMENTAL PHYSICS",
+    "title20": "PROG THEOR EXP PHYS",
+    "title29": "PROG THEOR EXP PHYS",
+    "issn": "2050-3911",
+    "eissn": "2050-3911",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "PRX QUANTUM",
+    "title20": "PRX QUANTUM",
+    "title29": "PRX QUANTUM",
+    "issn": "",
+    "eissn": "2691-3399",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "QUANTITATIVE INFRARED THERMOGRAPHY JOURNAL",
+    "title20": "QUANT INFR THERM J",
+    "title29": "QUANT INFRARED THERMOGR J",
+    "issn": "1768-6733",
+    "eissn": "2116-7176",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "QUANTUM",
+    "title20": "QUANTUM-AUSTRIA",
+    "title29": "QUANTUM",
+    "issn": "2521-327X",
+    "eissn": "2521-327X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "QUANTUM INFORMATION & COMPUTATION",
+    "title20": "QUANTUM INF COMPUT",
+    "title29": "QUANTUM INF COMPUT",
+    "issn": "1533-7146",
+    "eissn": "3106-0544",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "QUANTUM INFORMATION PROCESSING",
+    "title20": "QUANTUM INF PROCESS",
+    "title29": "QUANTUM INF PROCESS",
+    "issn": "1570-0755",
+    "eissn": "1573-1332",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "QUANTUM SCIENCE AND TECHNOLOGY",
+    "title20": "QUANTUM SCI TECHNOL",
+    "title29": "QUANTUM SCI TECHNOL",
+    "issn": "2058-9565",
+    "eissn": "2058-9565",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "RADIATION EFFECTS AND DEFECTS IN SOLIDS",
+    "title20": "RADIAT EFF DEFECT S",
+    "title29": "RADIAT EFF DEFECT SOLID",
+    "issn": "1042-0150",
+    "eissn": "1029-4953",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "RADIATION MEASUREMENTS",
+    "title20": "RADIAT MEAS",
+    "title29": "RADIAT MEAS",
+    "issn": "1350-4487",
+    "eissn": "1879-0925",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "RADIATION PHYSICS AND CHEMISTRY",
+    "title20": "RADIAT PHYS CHEM",
+    "title29": "RADIAT PHYS CHEM",
+    "issn": "0969-806X",
+    "eissn": "1879-0895",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "RADIOPHYSICS AND QUANTUM ELECTRONICS",
+    "title20": "RADIOPHYS QUANT EL+",
+    "title29": "RADIOPHYS QUANTUM ELECTRON",
+    "issn": "0033-8443",
+    "eissn": "1573-9120",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "RENDICONTI LINCEI-SCIENZE FISICHE E NATURALI",
+    "title20": "REND LINCEI-SCI FIS",
+    "title29": "REND LINCEI-SCI FIS NAT",
+    "issn": "2037-4631",
+    "eissn": "1720-0776",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "REPORTS ON MATHEMATICAL PHYSICS",
+    "title20": "REP MATH PHYS",
+    "title29": "REP MATH PHYS",
+    "issn": "0034-4877",
+    "eissn": "1879-0674",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "REPORTS ON PROGRESS IN PHYSICS",
+    "title20": "REP PROG PHYS",
+    "title29": "REP PROGR PHYS",
+    "issn": "0034-4885",
+    "eissn": "1361-6633",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "REVIEWS IN MATHEMATICAL PHYSICS",
+    "title20": "REV MATH PHYS",
+    "title29": "REV MATH PHYS",
+    "issn": "0129-055X",
+    "eissn": "1793-6659",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "REVIEWS OF MODERN PHYSICS",
+    "title20": "REV MOD PHYS",
+    "title29": "REV MOD PHYS",
+    "issn": "0034-6861",
+    "eissn": "1539-0756",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "REVISTA MEXICANA DE FISICA",
+    "title20": "REV MEX FIS",
+    "title29": "REV MEX FIS",
+    "issn": "0035-001X",
+    "eissn": "0035-001X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "RHEOLOGICA ACTA",
+    "title20": "RHEOL ACTA",
+    "title29": "RHEOL ACTA",
+    "issn": "0035-4511",
+    "eissn": "1435-1528",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "RIVISTA DEL NUOVO CIMENTO",
+    "title20": "RIV NUOVO CIMENTO",
+    "title29": "RIV NUOVO CIMENTO",
+    "issn": "0393-697X",
+    "eissn": "1826-9850",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ROMANIAN JOURNAL OF PHYSICS",
+    "title20": "ROM J PHYS",
+    "title29": "ROM J PHYS",
+    "issn": "1221-146X",
+    "eissn": "1221-146X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "ROMANIAN REPORTS IN PHYSICS",
+    "title20": "ROM REP PHYS",
+    "title29": "ROM REP PHYS",
+    "issn": "1221-1451",
+    "eissn": "1841-8759",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "RUSSIAN JOURNAL OF MATHEMATICAL PHYSICS",
+    "title20": "RUSS J MATH PHYS",
+    "title29": "RUSS J MATH PHYS",
+    "issn": "1061-9208",
+    "eissn": "1555-6638",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "RUSSIAN PHYSICS JOURNAL",
+    "title20": "RUSS PHYS J+",
+    "title29": "RUSS PHYS J",
+    "issn": "1064-8887",
+    "eissn": "1573-9228",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SCIENCE CHINA-PHYSICS MECHANICS & ASTRONOMY",
+    "title20": "SCI CHINA PHYS MECH",
+    "title29": "SCI CHINA-PHYS MECH ASTRON",
+    "issn": "1674-7348",
+    "eissn": "1869-1927",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SCIPOST PHYSICS",
+    "title20": "SCIPOST PHYS",
+    "title29": "SCIPOST PHYS",
+    "issn": "2542-4653",
+    "eissn": "2542-4653",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SEMICONDUCTOR SCIENCE AND TECHNOLOGY",
+    "title20": "SEMICOND SCI TECH",
+    "title29": "SEMICOND SCI TECHNOL",
+    "issn": "0268-1242",
+    "eissn": "1361-6641",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SEMICONDUCTORS",
+    "title20": "SEMICONDUCTORS+",
+    "title29": "SEMICONDUCTORS-ENGL TR",
+    "issn": "1063-7826",
+    "eissn": "1090-6479",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SOLID STATE COMMUNICATIONS",
+    "title20": "SOLID STATE COMMUN",
+    "title29": "SOLID STATE COMMUN",
+    "issn": "0038-1098",
+    "eissn": "1879-2766",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SOLID STATE IONICS",
+    "title20": "SOLID STATE IONICS",
+    "title29": "SOLID STATE IONICS",
+    "issn": "0167-2738",
+    "eissn": "1872-7689",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SOLID STATE SCIENCES",
+    "title20": "SOLID STATE SCI",
+    "title29": "SOLID STATE SCI",
+    "issn": "1293-2558",
+    "eissn": "1873-3085",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SOLID-STATE ELECTRONICS",
+    "title20": "SOLID STATE ELECTRON",
+    "title29": "SOLID STATE ELECTRON",
+    "issn": "0038-1101",
+    "eissn": "1879-2405",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SPIN",
+    "title20": "SPIN-SINGAPORE",
+    "title29": "SPIN",
+    "issn": "2010-3247",
+    "eissn": "2010-3255",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "STRUCTURAL DYNAMICS-US",
+    "title20": "STRUCT DYNAM-US",
+    "title29": "STRUCT DYN-US",
+    "issn": "",
+    "eissn": "2329-7778",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SUPERCONDUCTOR SCIENCE & TECHNOLOGY",
+    "title20": "SUPERCOND SCI TECH",
+    "title29": "SUPERCONDUCT SCI TECHNOL",
+    "issn": "0953-2048",
+    "eissn": "1361-6668",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SURFACE AND INTERFACE ANALYSIS",
+    "title20": "SURF INTERFACE ANAL",
+    "title29": "SURF INTERFACE ANAL",
+    "issn": "0142-2421",
+    "eissn": "1096-9918",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SURFACE REVIEW AND LETTERS",
+    "title20": "SURF REV LETT",
+    "title29": "SURF REV LETTERS",
+    "issn": "0218-625X",
+    "eissn": "1793-6667",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SURFACE SCIENCE",
+    "title20": "SURF SCI",
+    "title29": "SURFACE SCI",
+    "issn": "0039-6028",
+    "eissn": "1879-2758",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SURFACE SCIENCE REPORTS",
+    "title20": "SURF SCI REP",
+    "title29": "SURF SCI REP",
+    "issn": "0167-5729",
+    "eissn": "1879-274X",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SYMMETRY INTEGRABILITY AND GEOMETRY-METHODS AND APPLICATIONS",
+    "title20": "SYMMETRY INTEGR GEOM",
+    "title29": "SYMMETRY INTEGR GEOM",
+    "issn": "1815-0659",
+    "eissn": "",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "SYNTHETIC METALS",
+    "title20": "SYNTHETIC MET",
+    "title29": "SYNTHET METAL",
+    "issn": "0379-6779",
+    "eissn": "0379-6779",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "TECHNICAL PHYSICS",
+    "title20": "TECH PHYS+",
+    "title29": "TECH PHYS",
+    "issn": "1063-7842",
+    "eissn": "1090-6525",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "TECHNICAL PHYSICS LETTERS",
+    "title20": "TECH PHYS LETT+",
+    "title29": "TECH PHYS LETT",
+    "issn": "1063-7850",
+    "eissn": "1090-6533",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "THEORETICAL AND COMPUTATIONAL FLUID DYNAMICS",
+    "title20": "THEOR COMP FLUID DYN",
+    "title29": "THEOR COMPUT FLUID DYNAMICS",
+    "issn": "0935-4964",
+    "eissn": "1432-2250",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "THEORETICAL AND MATHEMATICAL PHYSICS",
+    "title20": "THEOR MATH PHYS+",
+    "title29": "THEOR MATH PHYS-ENGL TR",
+    "issn": "0040-5779",
+    "eissn": "1573-9333",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "UKRAINIAN JOURNAL OF PHYSICAL OPTICS",
+    "title20": "UKR J PHYS OPT",
+    "title29": "UKR J PHYS OPT",
+    "issn": "1609-1833",
+    "eissn": "",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "UNIVERSE",
+    "title20": "UNIVERSE-BASEL",
+    "title29": "UNIVERSE",
+    "issn": "",
+    "eissn": "2218-1997",
+    "category": "PHYSICS"
+  },
+  {
+    "title": "WAVE MOTION",
+    "title20": "WAVE MOTION",
+    "title29": "WAVE MOTION",
+    "issn": "0165-2125",
+    "eissn": "1878-433X",
+    "category": "PHYSICS"
+  }
+]

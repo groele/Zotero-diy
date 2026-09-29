@@ -1,0 +1,95 @@
+name: Bug report
+description: File a bug / issue
+title: "[Bug] "
+labels:
+  - bug
+  # - Needs Triage
+assignees: northword
+body:
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the bug you encountered.
+      options:
+        - label: I have searched the existing issues
+          required: true
+
+  - type: textarea
+    attributes:
+      label: Environment
+      description: |
+        examples:
+          - **OS**: Windows 11 22H2
+          - **Zotero Version**: 7.0.0
+          - **Addon Version**: 1.0.0
+      value: |
+        - OS:
+        - Zotero Version:
+        - Addon Version:
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: |
+        A clear and concise description of what the bug is.
+        If applicable, add screenshots and log to help explain your problem.
+    validations:
+      required: true
+
+  - type: textarea
+    id: item-json
+    attributes:
+      label: Item RDF export
+      render: XML
+      description: |
+        Please export the Zotero item(s) related to this bug as RDF and paste it below.
+
+        **Steps to export item(s) as Zotero RDF:**
+        1. Select the item(s) in Zotero.
+        2. Right-click → **Export Item...**.
+        3. In the dialog, choose **Zotero RDF** as the format.
+        4. Click **OK** and save the file.
+        5. Open the saved file in a text editor and copy its content here.
+
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: |
+        Provide clear steps to reproduce the problem. For example:
+          1. Open item X
+          2. Apply rule Y
+          3. See error
+    validations:
+      required: false
+
+  - type: textarea
+    id: debug-output
+    attributes:
+      label: Debug output
+      description: |
+        If possible, please provide debug output. To enable debug output in Zotero:
+
+        1. Open **Help → Debug Output Logging → Enable**.
+        2. Reproduce the bug.
+        3. Open **Help → Debug Output Logging → View Output**.
+        4. Copy the log content here, or save it (**File → Save...**) and drag it into this textarea.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Anything else?
+      description: |
+        Provide any extra information that might help us understand the issue.
+        For example, related links, references, or context about your workflow.
+    validations:
+      required: false
