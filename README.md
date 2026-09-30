@@ -10,7 +10,7 @@
 |---|---|---:|---|---|
 | Zotero Citation | 协助维护 Zotero 与 Word 集成引用信息，并在 Zotero 条目列表中显示引用状态。 | 40.0.3（候选维护版） | `6.999`–`10.0.*`，以子项目 `manifest.json` 为准 | [项目说明](./zotero%20citation/README.md) · [审查记录](./zotero%20citation/PROJECT_AUDIT.md) |
 | ZoteroPreview | 在 Zotero 条目侧栏和 Reader 侧栏预览参考文献及正文引用样式，并提供复制操作。 | 40.0.1 | `8.0`–`10.0.*`，以子项目 `manifest.json` 为准 | [项目说明](./zotero%20preview/README.md) · [审查记录](./zotero%20preview/AUDIT.md) · [XPI 安装包](./zotero%20preview/dist/ZoteroPreview-40.0.1.xpi) |
-| Linter for Zotero | 校验、整理和补全文献元数据，支持化学式上下标、缩写、全学科 ESI 和 Nature Index 标记。 | 4.2.0 | `10.0`–`10.999`；已在 Windows Zotero 10.0.3 验证 | [项目说明](./Linter-for-Zotero/README.md) · [审查记录](./Linter-for-Zotero/docs/index-data-2026-09-30.md) · [XPI 安装包](./Linter-for-Zotero/dist/linter-for-zotero.xpi) |
+| Linter for Zotero | 校验、整理和补全文献元数据，支持化学式上下标、缩写、全学科 ESI 和 Nature Index 标记。 | 10.0.0 | `10.0`–`10.999`；已在 Windows Zotero 10.0.3 验证 | [项目说明](./Linter-for-Zotero/README.md) · [V10 发布记录](./Linter-for-Zotero/docs/release-notes-v10.md) · [XPI 安装包](./Linter-for-Zotero/dist/linter-for-zotero.xpi) |
 
 兼容范围是各插件清单中声明的范围，不代表已在该范围内所有 Zotero 构建上完成实机验收。尤其是 Zotero 主版本升级后，请先阅读子项目的兼容说明和已知限制。
 
@@ -28,7 +28,7 @@ Zotero Citation 依赖 Zotero 与 Word 的集成环境，当前子项目标记�
 
 ### 安装 Linter for Zotero
 
-下载 [Linter 4.2.0 XPI](./Linter-for-Zotero/dist/linter-for-zotero.xpi)，在 Zotero 插件管理器中从文件安装。它保留上游 Linter 的插件 ID，会替换同 ID 的安装；操作与验证范围见 [项目说明](./Linter-for-Zotero/README.md)。
+下载 [Linter 10.0.0 XPI](./Linter-for-Zotero/dist/linter-for-zotero.xpi)，在 Zotero 插件管理器中从文件安装。它保留上游 Linter 的插件 ID，会替换同 ID 的安装；操作与验证范围见 [项目说明](./Linter-for-Zotero/README.md)。
 
 ## 构建与测试
 

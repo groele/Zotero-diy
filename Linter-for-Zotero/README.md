@@ -1,25 +1,25 @@
 # Linter for Zotero — Zotero DIY 维护版
 
-用于校验、整理和补全文献元数据的 Zotero 插件。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 维护，当前版本 **4.2.0**。安装清单声明兼容 Zotero **10.0–10.999**；已在 Windows 的 Zotero **10.0.3** 中完成真实运行测试。
+用于校验、整理和补全文献元数据的 Zotero 插件。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 维护，当前版本 **10.0.0（V10）**。安装清单声明兼容 Zotero **10.0–10.999**；已在 Windows 的 Zotero **10.0.3** 中完成真实运行测试。
 
 本目录包含完整源码、参考数据、测试、审查记录和可安装的 XPI。上游版权和 AGPL-3.0 许可证保留；上游项目介绍见 [原始 README](docs/UPSTREAM-README.md)。
 
 ## 安装
 
-下载 [Linter for Zotero 4.2.0 安装包](dist/linter-for-zotero.xpi)，在 Zotero 的插件管理器中选择「从文件安装插件」，再选择该 XPI。安装包的更新地址指向本项目的 `dist/update.json`。
+下载 [Linter for Zotero 10.0.0 安装包](dist/linter-for-zotero.xpi)，在 Zotero 的插件管理器中选择「从文件安装插件」，再选择该 XPI。安装包的更新地址指向本项目的 `dist/update.json`。
 
 本维护版保留上游插件 ID，因此安装会替换同 ID 的上游 Linter。建议先在测试资料库检查自己的规则设置，再对正式资料库执行批量整理。
 
 ## 功能与操作
 
-- 41 项标准规则及 8 项工具：标题、化学式上下标、作者、语言、日期、卷期页、DOI、期刊／会议缩写、学校所在地及 ESI 分类等。
-- 7 项手动工具：标题书名号、作者扩展、指定语言、更新元数据、短 DOI、CSL Extra 和清理 Extra。手动工具不参与自动整理。
+- 41 项标准规则及 8 项工具：标题、化学式上下标、作者、语言、日期、卷期页、DOI、期刊／会议缩写、学校所在地、全学科 ESI 和 Nature Index 标记等。
+- 8 项手动工具：标题书名号、作者扩展、指定语言、更新元数据、短 DOI、CSL Extra、清理 Extra 和 Nature Index 期刊识别。手动工具不参与自动整理。
 - 标题设置增加「自动格式化化学式上下标」，默认关闭；可通过菜单或 `Ctrl+Alt+S` 对选中条目执行，macOS 使用 `Cmd+Alt+S`。
 - 快捷键可录制、禁用和恢复默认，重复组合与无效输入会提示；设置使用紧凑布局，支持窄窗口换行。
 - 数据先校验、再处理，统一事务保存并提供批次撤销；取消组合工具会停止后续规则，超时后阻止通过规则接口继续写入。
 - 无匹配结果时保留人工缩写；非 ESI 系列默认保留。外部元数据服务支持回退，空值不覆盖已有字段。
 
-建议按「核对类型与 DOI → 补充元数据 → 少量条目整理 → 核对报告 → 分类批量整理」操作。详细配置、数据格式与处理顺序见 [元数据整理流程](docs/metadata-workflow-zh.md)，功能审查及限制见 [逻辑审查记录](docs/logic-audit-2026-09-29.md)。
+条目右键菜单的「Linter 其他小工具」中可执行「识别并标记 Nature Index 期刊」；成功识别后添加 `Nature Index` 标签，并可在列表的 Nature Index 列中查看。建议按「核对类型与 DOI → 补充元数据 → 少量条目整理 → 核对报告 → 分类批量整理」操作。详细配置、数据格式与处理顺序见 [元数据整理流程](docs/metadata-workflow-zh.md)，功能审查及限制见 [逻辑审查记录](docs/logic-audit-2026-09-29.md) 与 [V10 发布记录](docs/release-notes-v10.md)。
 
 ![紧凑快捷键设置](docs/assets/shortcuts-compact.png)
 

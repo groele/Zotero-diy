@@ -357,6 +357,8 @@ describe("data processing resilience in Zotero", function () {
     assert.equal(columns.length, 2);
     const countESI = (menus: any[]): number => menus.reduce((count, menu) => count + (menu.l10nID === "linter-rule-require-series-esi-menu-item" ? 1 : 0) + countESI(menu.menus || []), 0);
     assert.equal(countESI(entries.flatMap((entry: any) => entry.menus)), 1);
+    const countNatureIndex = (menus: any[]): number => menus.reduce((count, menu) => count + (menu.l10nID === "linter-tool-mark-nature-index-menu-item" ? 1 : 0) + countNatureIndex(menu.menus || []), 0);
+    assert.equal(countNatureIndex(entries.flatMap((entry: any) => entry.menus)), 1, "Nature Index marking has a localized item-menu entry");
     const item = await create("rich text preview");
     pref("richtext.preview", true);
     await win.ZoteroPane.selectItem(item.id);

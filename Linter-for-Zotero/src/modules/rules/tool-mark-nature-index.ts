@@ -12,6 +12,9 @@ export const ToolMarkNatureIndex = defineRule<Options>({
   scope: "item",
   category: "tool",
   targetItemTypes: ["journalArticle"],
+  getItemMenu: () => ({
+    l10nID: "tool-mark-nature-index-menu-item",
+  }),
 
   async prepare({ items }) {
     if (!items.some(item => item.itemType === "journalArticle"))

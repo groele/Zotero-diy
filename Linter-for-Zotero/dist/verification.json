@@ -1,9 +1,9 @@
 {
-  "version": "4.2.0",
+  "version": "10.0.0",
   "date": "2026-09-30",
   "upstreamCommit": "2b747409e8c3df866fca327a8ad859d770694a5b",
   "artifact": "linter-for-zotero.xpi",
-  "sha256": "c6649e59d562d646463b4b0fd15f32543b9ae0aebea55cdee4352417a7f14657",
+  "sha256": "85020927d7b5230aaa2dec6eebf0df5d041c991e8551c9444a2287e494757d39",
   "productionXpiInstalledInIsolatedZotero": true,
   "environment": {
     "os": "Windows",
@@ -14,8 +14,8 @@
   },
   "checks": {
     "unit": {
-      "passed": 363,
-      "files": 44
+      "passed": 368,
+      "files": 46
     },
     "e2e": {
       "passed": 29,
@@ -27,6 +27,7 @@
   },
   "coverage": [
     "49 registered rules and tools",
+    "localized Nature Index item-menu entry",
     "22 ESI fields and all-field journal matching",
     "Nature Index journal tagging and duplicate prevention",
     "database transaction retry and undo/redo",
