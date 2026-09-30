@@ -1,8 +1,14 @@
-# Linter for Zotero V10 — 10.0.0
+# Linter for Zotero V10 — 10.0.1
+
+## 10.0.1
+
+- Flattened the item context menu so every Linter action is directly under **Linter**. Section dividers remain, but there are no second-level tool submenus.
+
+## 10.0.0
 
 ## Added
 
-- Added a localized Nature Index action to the Zotero item context menu under **Linter other tools**. The action recognizes selected journal articles by exact title, unambiguous title alias, or ISSN/eISSN, then adds the `Nature Index` tag without changing bibliographic fields or existing tags.
+- Added a localized Nature Index action directly to the Zotero item context menu. The action recognizes selected journal articles by exact title, unambiguous title alias, or ISSN/eISSN, then adds the `Nature Index` tag without changing bibliographic fields or existing tags.
 - Added a Nature Index marker column to the item list. It displays a check for tagged journal articles.
 - Bundled the June 2026 Nature Index list (177 journals and one conference proceeding) and Clarivate ESI 2026 Release 6 (12,245 journal titles across all 22 ESI categories).
 

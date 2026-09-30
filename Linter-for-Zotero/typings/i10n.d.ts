@@ -31,7 +31,6 @@ export type FluentMessageId =
   | 'menu-field-correct-extra-order'
   | 'menu-field-correct-title-punctuation'
   | 'menu-standard'
-  | 'menuTools-label'
   | 'menuitem-label'
   | 'menuitem-stdFormatFlow'
   | 'no-case'

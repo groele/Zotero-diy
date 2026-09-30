@@ -222,42 +222,32 @@ function registerItemMenus() {
           },
         },
         makeSmartSeparator(section4, [section5]),
+        makeItemMenu("tool-title-guillemet"),
+        makeSmartSeparator(toolSec0, [toolSec1, toolSec2, toolSec3]),
+        makeItemMenu("no-doi-prefix"),
+        makeItemMenu("tool-get-short-doi"),
         {
-          menuType: "submenu",
-          l10nID: getLocaleID("menuTools-label"),
-          icon,
+          menuType: "menuitem",
+          l10nID: getLocaleID("rule-correct-date-format-menu-item"),
           onShowing(_event, context) {
-            context.setVisible(hasAnyVisible(section5));
+            context.setVisible(isMenuVisible("correct-date-format"));
+            context.setEnabled(hasMenuItems(context));
           },
-          menus: [
-            makeItemMenu("tool-title-guillemet"),
-            makeSmartSeparator(toolSec0, [toolSec1, toolSec2]),
-            makeItemMenu("no-doi-prefix"),
-            makeItemMenu("tool-get-short-doi"),
-            {
-              menuType: "menuitem",
-              l10nID: getLocaleID("rule-correct-date-format-menu-item"),
-              onShowing(_event, context) {
-                context.setVisible(isMenuVisible("correct-date-format"));
-                context.setEnabled(hasMenuItems(context));
-              },
-              async onCommand(event, context) {
-                await addon.hooks.onLintInBatch([
-                  "correct-date-format",
-                  "correct-filing-date-format",
-                  "correct-issue-date-format",
-                  "correct-priority-date-format",
-                ], await menuItems(context));
-              },
-            },
-            makeItemMenu("tool-clean-extra"),
-            makeSmartSeparator(toolSec1, [toolSec2]),
-            makeItemMenu("tool-csl-helper"),
-            makeItemMenu("tool-creators-ext"),
-            makeSmartSeparator(toolSec2, [toolSec3]),
-            makeItemMenu("tool-mark-nature-index"),
-          ],
+          async onCommand(event, context) {
+            await addon.hooks.onLintInBatch([
+              "correct-date-format",
+              "correct-filing-date-format",
+              "correct-issue-date-format",
+              "correct-priority-date-format",
+            ], await menuItems(context));
+          },
         },
+        makeItemMenu("tool-clean-extra"),
+        makeSmartSeparator(toolSec1, [toolSec2, toolSec3]),
+        makeItemMenu("tool-csl-helper"),
+        makeItemMenu("tool-creators-ext"),
+        makeSmartSeparator(toolSec2, [toolSec3]),
+        makeItemMenu("tool-mark-nature-index"),
       ],
     },
   ];
