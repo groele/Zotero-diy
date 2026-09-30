@@ -1,12 +1,12 @@
 # Linter for Zotero — Zotero DIY 维护版
 
-用于校验、整理和补全文献元数据的 Zotero 插件。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 维护，当前版本 **10.0.1（V10）**。安装清单声明兼容 Zotero **10.0–10.999**；已在 Windows 的 Zotero **10.0.3** 中完成真实运行测试。
+用于校验、整理和补全文献元数据的 Zotero 插件。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 维护，当前版本 **10.0.2（V10）**。安装清单声明兼容 Zotero **10.0–10.999**；已在 Windows 的 Zotero **10.0.3** 中完成真实运行测试。
 
 本目录包含完整源码、参考数据、测试、审查记录和可安装的 XPI。上游版权和 AGPL-3.0 许可证保留；上游项目介绍见 [原始 README](docs/UPSTREAM-README.md)。
 
 ## 安装
 
-下载 [Linter for Zotero 10.0.1 安装包](dist/linter-for-zotero.xpi)，在 Zotero 的插件管理器中选择「从文件安装插件」，再选择该 XPI。安装包的更新地址指向本项目的 `dist/update.json`。
+下载 [Linter for Zotero 10.0.2 安装包](dist/linter-for-zotero.xpi)，在 Zotero 的插件管理器中选择「从文件安装插件」，再选择该 XPI。安装包的更新地址指向本项目的 `dist/update.json`。
 
 本维护版保留上游插件 ID，因此安装会替换同 ID 的上游 Linter。建议先在测试资料库检查自己的规则设置，再对正式资料库执行批量整理。
 
@@ -19,7 +19,7 @@
 - 数据先校验、再处理，统一事务保存并提供批次撤销；取消组合工具会停止后续规则，超时后阻止通过规则接口继续写入。
 - 无匹配结果时保留人工缩写；非 ESI 系列默认保留。外部元数据服务支持回退，空值不覆盖已有字段。
 
-条目右键菜单中，所有功能均直接列在 **Linter** 一级菜单下；可选中条目后执行「识别并标记 Nature Index 期刊」，识别结果以 `Nature Index` 标签和条目列表标记列展示。建议按「核对类型与 DOI → 补充元数据 → 少量条目整理 → 核对报告 → 分类批量整理」操作。详细配置、数据格式与处理顺序见 [元数据整理流程](docs/metadata-workflow-zh.md)，功能审查及限制见 [逻辑审查记录](docs/logic-audit-2026-09-29.md) 与 [V10 发布记录](docs/release-notes-v10.md)。
+条目右键菜单中，所有功能均直接列在 **Linter** 一级菜单下；ESI 识别文本写入「系列」和「档案」，Nature Index 识别标记写入「档案编号」并添加 `Nature Index` 标签及列表标记列。目标字段中已有文本会保留，识别标记按分号分隔并可重复更新。建议按「核对类型与 DOI → 补充元数据 → 少量条目整理 → 核对报告 → 分类批量整理」操作。详细配置、数据格式与处理顺序见 [元数据整理流程](docs/metadata-workflow-zh.md)，功能审查及限制见 [逻辑审查记录](docs/logic-audit-2026-09-29.md) 与 [V10 发布记录](docs/release-notes-v10.md)。
 
 ![紧凑快捷键设置](docs/assets/shortcuts-compact.png)
 

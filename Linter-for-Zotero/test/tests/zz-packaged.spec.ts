@@ -13,6 +13,10 @@ describe("production XPI installation", function () {
     const item = new Zotero.Item("journalArticle");
     item.setField("title", "Packaged MoS2");
     item.setField("publicationTitle", "Physical Review Letters");
+    assert.isTrue(Zotero.ItemFields.isValidForType(Zotero.ItemFields.getID("archive"), item.itemTypeID), "journal articles support the Archive field");
+    assert.isTrue(Zotero.ItemFields.isValidForType(Zotero.ItemFields.getID("archiveLocation"), item.itemTypeID), "journal articles support the Archive Location field shown as 档案编号");
+    item.setField("archive", "Institutional archive");
+    item.setField("archiveLocation", "Local record 42");
     item.addTag("user-topic");
     await item.saveTx();
     const crossDisciplinary = new Zotero.Item("journalArticle");
@@ -39,16 +43,21 @@ describe("production XPI installation", function () {
       assert.equal(item.getField("title", false, true), "Packaged MoS<sub>2</sub>");
       assert.isNotEmpty(item.getField("journalAbbreviation"));
       assert.include(item.getField("series"), "ESI");
+      assert.equal(item.getField("archive"), `Institutional archive; ${item.getField("series")}`);
+      assert.equal(item.getField("archiveLocation"), "Local record 42; Nature Index");
       assert.isTrue(item.hasTag("Nature Index"));
       assert.isTrue(item.hasTag("user-topic"));
       assert.include(crossDisciplinary.getField("series"), "综合交叉学科" + "ESI");
+      assert.include(crossDisciplinary.getField("archive"), "综合交叉学科" + "ESI");
       assert.isTrue(crossDisciplinary.hasTag("Nature Index"));
+      assert.include(crossDisciplinary.getField("archiveLocation"), "Nature Index");
       assert.isFalse(unmatched.hasTag("Nature Index"), "partial title matches should not be tagged");
       assert.equal(plugin.runner.lastResult.failed, 0);
       assert.isFalse(item.hasChanged());
       await plugin.hooks.onLintInBatch(["tool-mark-nature-index"], [item]);
       await item.reload(["itemData"], true);
       assert.equal(item.getTags().filter((tag: any) => tag.tag === "Nature Index").length, 1, "repeated marking should not duplicate the tag");
+      assert.equal(item.getField("archiveLocation"), "Local record 42; Nature Index", "repeated marking should not duplicate the field marker");
     }
     finally {
       await item.eraseTx();

@@ -1,4 +1,10 @@
-# Linter for Zotero V10 — 10.0.1
+# Linter for Zotero V10 — 10.0.2
+
+## 10.0.2
+
+- ESI recognition now mirrors the selected discipline text into Zotero's Archive field, and Nature Index marking writes `Nature Index` into Archive Location (shown as「档案编号」in Simplified Chinese).
+- Existing Archive and Archive Location text is retained. Repeated recognition updates the managed marker instead of adding duplicates.
+- Preserved existing series-field behavior and Nature Index tags while saving all field changes through the batch transaction.
 
 ## 10.0.1
 
@@ -21,6 +27,6 @@
 
 ## Validation
 
-- 368 unit tests passed across 46 test files.
+- 372 unit tests passed across 47 test files.
 - 29 E2E tests passed in an isolated Windows Zotero 10.0.3 profile, including the localized Nature Index menu entry and production XPI dataset loading.
 - Production build, type checks, ESLint, and AutoCorrect passed.

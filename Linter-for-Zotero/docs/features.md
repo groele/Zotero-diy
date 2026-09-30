@@ -116,11 +116,11 @@ Uses a built-in dataset (JabRef + Woodward Library) to look up journal abbreviat
 
 ### Require ESI Discipline in Series (`require-series-esi`)
 
-Fills the item's `series` (系列) field with the journal's Essential Science Indicators (ESI) discipline category (e.g., `物理学ESI`).
+Fills the item's `series` (系列) field with the journal's Essential Science Indicators (ESI) discipline category (e.g., `物理学ESI`) and mirrors the recognized category into `archive` (档案), preserving unrelated existing text.
 
 - **Matching**: Matches journal items by print ISSN, electronic eISSN, full publication title, and abbreviation.
 - **Customizable Format**: Supports formatting templates using `{subject}` (e.g., `物理学`), `{category}` (e.g., `PHYSICS`), and `{en}` (e.g., `Physics`). Default: `{subject}ESI`.
-- **Custom Dataset**: Built-in support for physics ESI, with the option to load custom datasets (JSON or CSV).
+- **Custom Dataset**: Built-in support for all 22 ESI disciplines in the Clarivate 2026 Release 6 dataset, with the option to load custom datasets (JSON or CSV).
 - **Preservation**: Existing non-ESI series information is preserved unless the overwrite option is enabled. Invalid custom data produces a warning and falls back to bundled data.
 
 ### No Leading Zeros (`no-issue-extra-zeros`, `no-pages-extra-zeros`, `no-volume-extra-zeros`)

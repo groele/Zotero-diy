@@ -1,9 +1,9 @@
 {
-  "version": "10.0.1",
+  "version": "10.0.2",
   "date": "2026-09-30",
   "upstreamCommit": "2b747409e8c3df866fca327a8ad859d770694a5b",
   "artifact": "linter-for-zotero.xpi",
-  "sha256": "89506e831a6f2d7c69e6e9263be3f6a940c684834a663c4637861f4c664860e9",
+  "sha256": "6f6db94fe8c45ac8279099fac2459714334f0b01c0980193e75636c558a247f9",
   "productionXpiInstalledInIsolatedZotero": true,
   "environment": {
     "os": "Windows",
@@ -14,8 +14,8 @@
   },
   "checks": {
     "unit": {
-      "passed": 368,
-      "files": 46
+      "passed": 372,
+      "files": 47
     },
     "e2e": {
       "passed": 29,
@@ -29,8 +29,9 @@
     "49 registered rules and tools",
     "all Linter item actions are first-level menu entries",
     "localized Nature Index item-menu entry",
+    "ESI classification stored in Archive while preserving existing text",
+    "Nature Index marker stored in Archive Location with duplicate prevention",
     "22 ESI fields and all-field journal matching",
-    "Nature Index journal tagging and duplicate prevention",
     "database transaction retry and undo/redo",
     "menus, shortcuts and window lifecycle",
     "custom CSV and BOM JSON files",

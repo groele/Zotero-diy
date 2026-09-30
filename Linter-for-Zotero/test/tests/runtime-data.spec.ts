@@ -64,12 +64,14 @@ describe("real reference files and PDF indexing", function () {
     await plugin().hooks.onLintInBatch(["require-journal-abbr", "require-series-esi"], [item]);
     assert.equal(item.getField("journalAbbreviation"), "Spec. J.");
     assert.equal(item.getField("series"), "Manual series");
+    assert.equal(item.getField("archive"), ["环境与生态学", "社会科学总论"].map(name => `${name}${"ESI"}`).join(" / "));
     assert.equal(plugin().runner.lastResult.failed, 0);
     pref("rule.require-journal-abbr.customDataPath", json);
     pref("rule.require-series-esi.overwrite", true);
     await plugin().hooks.onLintInBatch(["require-journal-abbr", "require-series-esi"], [item]);
     assert.equal(item.getField("journalAbbreviation"), "Custom. J.");
     assert.equal(item.getField("series"), ["环境与生态学", "社会科学总论"].map(name => `${name}${"ESI"}`).join(" / "));
+    assert.equal(item.getField("archive"), ["环境与生态学", "社会科学总论"].map(name => `${name}${"ESI"}`).join(" / "));
     assert.isFalse(item.hasChanged());
     assert.equal(plugin().runner.lastResult.failed, 0);
   });

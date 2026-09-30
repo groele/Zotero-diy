@@ -3,7 +3,7 @@
     "zotero-format-metadata@northword.cn": {
       "updates": [
         {
-          "version": "10.0.1",
+          "version": "10.0.2",
           "update_link": "https://raw.githubusercontent.com/groele/Zotero-diy/main/Linter-for-Zotero/dist/linter-for-zotero.xpi",
           "applications": {
             "zotero": {

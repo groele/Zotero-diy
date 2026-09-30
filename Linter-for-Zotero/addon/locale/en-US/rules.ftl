@@ -202,7 +202,7 @@ rule-require-journal-abbr-option-custom-data-desc =
 
 ## require-series-esi
 rule-require-series-esi =
-  .label = Series field should contain journal ESI discipline
+  .label = Identify journal ESI discipline and write it to Series and Archive
 rule-require-series-esi-menu-item =
   .label = Get Journal ESI Category
 rule-require-series-esi-menu-field =
@@ -211,7 +211,7 @@ tool-mark-nature-index =
   .label = Mark Nature Index journals
 tool-mark-nature-index-menu-item =
   .label = Identify and mark Nature Index journals
-tool-mark-nature-index-description = Adds the Nature Index Zotero tag to selected journals matched by the official title, abbreviation, or ISSN list. It does not change journal metadata or overwrite or remove other tags.
+tool-mark-nature-index-description = Adds the Nature Index Zotero tag and writes the marker to Archive Location for selected journals matched by the official title, abbreviation, or ISSN list. Existing archive-location text and tags are preserved.
 
 rule-require-series-esi-option-format = Display format:
 rule-require-series-esi-option-format-desc = Supported variables: { "{" }subject{ "}" } (Chinese name, e.g. "物理学"), { "{" }category{ "}" } (Uppercase English, e.g. "PHYSICS"), { "{" }en{ "}" } (English title case, e.g. "Physics"). Default: { "{" }subject{ "}" }ESI.

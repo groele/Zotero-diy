@@ -2,7 +2,9 @@ import type { ESILookupMaps } from "../../utils/esi";
 import { DataLoader } from "../../utils/data-loader";
 import { formatESICategories, matchESICategories } from "../../utils/esi";
 import { getString } from "../../utils/locale";
+import { upsertMetadataMarker } from "../../utils/metadata-marker";
 import { getPref } from "../../utils/prefs";
+import { isFieldValidForItemType } from "../../utils/zotero";
 import { defineRule } from "./rule-base";
 
 interface Options {
@@ -68,12 +70,19 @@ export const RequireSeriesESI = defineRule<Options>({
     const currentSeries = (item.getField("series") as string) || "";
     if (currentSeries && currentSeries !== formatted && !options.overwrite && !/ESI/i.test(currentSeries)) {
       report({ level: "warning", message: getString("rule-require-series-esi-preserved") });
-      return;
     }
-
-    if (currentSeries !== formatted) {
+    else if (currentSeries !== formatted) {
       debug(`Updating series from "${currentSeries}" to "${formatted}"`);
       item.setField("series", formatted);
+    }
+
+    if (isFieldValidForItemType("archive", item.itemType)) {
+      const currentArchive = (item.getField("archive") as string) || "";
+      const nextArchive = upsertMetadataMarker(currentArchive, formatted, value => /\bESI\b/i.test(value));
+      if (currentArchive !== nextArchive) {
+        item.setField("archive", nextArchive);
+        debug(`Updated ESI marker in archive field to "${nextArchive}"`);
+      }
     }
   },
   prepare,

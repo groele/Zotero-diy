@@ -1,6 +1,8 @@
 import type { NatureIndexLookupMaps } from "../../utils/nature-index";
 import { DataLoader } from "../../utils/data-loader";
+import { upsertMetadataMarker } from "../../utils/metadata-marker";
 import { isNatureIndexJournal, NATURE_INDEX_TAG } from "../../utils/nature-index";
+import { isFieldValidForItemType } from "../../utils/zotero";
 import { defineRule } from "./rule-base";
 
 interface Options {
@@ -33,6 +35,14 @@ export const ToolMarkNatureIndex = defineRule<Options>({
     if (matched && !item.hasTag(NATURE_INDEX_TAG)) {
       item.addTag(NATURE_INDEX_TAG);
       debug(`Added ${NATURE_INDEX_TAG} tag to item ${item.id}`);
+    }
+    if (matched && isFieldValidForItemType("archiveLocation", item.itemType)) {
+      const currentArchiveLocation = (item.getField("archiveLocation") as string) || "";
+      const nextArchiveLocation = upsertMetadataMarker(currentArchiveLocation, NATURE_INDEX_TAG, value => value.toLowerCase() === NATURE_INDEX_TAG.toLowerCase());
+      if (currentArchiveLocation !== nextArchiveLocation) {
+        item.setField("archiveLocation", nextArchiveLocation);
+        debug(`Updated Nature Index marker in archive location field to "${nextArchiveLocation}"`);
+      }
     }
   },
 });
