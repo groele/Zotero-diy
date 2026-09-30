@@ -1,4 +1,10 @@
-# Linter for Zotero V10 — 10.0.2
+# Linter for Zotero V10 — 10.0.3
+
+## 10.0.3
+
+- Reorganized the preferences panel with explicit journal abbreviation, ESI, and pagination subgroups; fixed duplicate rule controls and duplicate IDs.
+- Updated context-menu settings to describe the actual first-level Linter menu, localized the remaining hard-coded section headings, and removed outdated restart instructions.
+- Masked the Semantic Scholar API key field and clarified when settings take effect.
 
 ## 10.0.2
 

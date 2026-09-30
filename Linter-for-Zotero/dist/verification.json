@@ -1,9 +1,9 @@
 {
-  "version": "10.0.2",
+  "version": "10.0.3",
   "date": "2026-09-30",
   "upstreamCommit": "2b747409e8c3df866fca327a8ad859d770694a5b",
   "artifact": "linter-for-zotero.xpi",
-  "sha256": "6f6db94fe8c45ac8279099fac2459714334f0b01c0980193e75636c558a247f9",
+  "sha256": "11936998841901b1050e1cdbddb93ad23c34b08968ab9da0a07877562fa83d82",
   "productionXpiInstalledInIsolatedZotero": true,
   "environment": {
     "os": "Windows",
@@ -14,8 +14,8 @@
   },
   "checks": {
     "unit": {
-      "passed": 372,
-      "files": 47
+      "passed": 376,
+      "files": 48
     },
     "e2e": {
       "passed": 29,
@@ -31,6 +31,8 @@
     "localized Nature Index item-menu entry",
     "ESI classification stored in Archive while preserving existing text",
     "Nature Index marker stored in Archive Location with duplicate prevention",
+    "settings panel localization, unique preference controls and IDs, grouped metadata options",
+    "Semantic Scholar API key masked in settings",
     "22 ESI fields and all-field journal matching",
     "database transaction retry and undo/redo",
     "menus, shortcuts and window lifecycle",

@@ -58,7 +58,10 @@
       preference="richtext.hotkey"
       native="true"
     />
-    <label data-l10n-id="restart-needed" class="linter-pref-description" />
+    <description
+      data-l10n-id="richtext-settings-description"
+      class="linter-pref-description"
+    />
   </groupbox>
 
   <groupbox class="linter-shortcuts-section">
@@ -247,7 +250,7 @@
       />
     </groupbox>
 
-    <!-- 子菜单：其他小工具 -->
+    <!-- Linter 一级菜单：其他功能 -->
     <groupbox>
       <label><html:h3 data-l10n-id="section-menu-tools" /></label>
       <checkbox
@@ -455,12 +458,6 @@
         data-l10n-id="rule-correct-shortTitle-sentence-case-description"
         class="indented-pref linter-pref-description"
       />
-      <!-- correct-title-chemical-formula -->
-      <checkbox
-        data-l10n-id="rule-correct-title-chemical-formula"
-        preference="rule.correct-title-chemical-formula"
-        native="true"
-      />
     </groupbox>
 
     <!-- General Field: Creators -->
@@ -565,6 +562,7 @@
 
       <!-- 字段：缩写 -->
       <groupbox>
+        <label><html:h3 data-l10n-id="section-article-abbreviation" /></label>
         <!-- 更新期刊缩写 -->
         <checkbox
           data-l10n-id="rule-require-journal-abbr"
@@ -581,13 +579,13 @@
           <hbox align="center">
             <label data-l10n-id="rule-require-journal-abbr-option-usefull" />
             <checkbox
-              id="__addonRef__-abbr-usefull"
+              id="__addonRef__-abbr-usefull-en"
               data-l10n-id="rule-require-journal-abbr-option-usefull-en"
               preference="rule.require-journal-abbr.usefull"
               native="true"
             />
             <checkbox
-              id="__addonRef__-abbr-usefull"
+              id="__addonRef__-abbr-usefull-zh"
               data-l10n-id="rule-require-journal-abbr-option-usefull-zh"
               preference="rule.require-journal-abbr.usefullZh"
               native="true"
@@ -623,16 +621,18 @@
 
       <!-- 字段：系列 (ESI 学科) -->
       <groupbox>
+        <label><html:h3 data-l10n-id="section-article-esi" /></label>
         <checkbox
           data-l10n-id="rule-require-series-esi"
           preference="rule.require-series-esi"
           native="true"
         />
-        <checkbox
-          data-l10n-id="rule-require-series-esi-option-overwrite"
-          preference="rule.require-series-esi.overwrite"
-        />
         <vbox class="indented-pref">
+          <checkbox
+            data-l10n-id="rule-require-series-esi-option-overwrite"
+            preference="rule.require-series-esi.overwrite"
+            native="true"
+          />
           <hbox align="center">
             <label data-l10n-id="rule-require-series-esi-option-format" />
             <html:input
@@ -676,6 +676,7 @@
 
       <!-- 期卷页 -->
       <groupbox>
+        <label><html:h3 data-l10n-id="section-article-pagination" /></label>
         <!-- 去除期卷页0 -->
         <checkbox
           data-l10n-id="rule-no-issue-extra-zeros"
@@ -848,7 +849,7 @@
 
     <!-- Default Dialog Options -->
     <groupbox>
-      <label><html:h3>Default Settings</html:h3></label>
+      <label><html:h3 data-l10n-id="metadata-update-defaults" /></label>
       <hbox align="center">
         <label data-l10n-id="rule-tool-update-metadata-dialog-mode"></label>
         <radiogroup
@@ -875,15 +876,17 @@
 
     <!-- Semantic Scholar Token -->
     <groupbox>
-      <label><html:h3>Data Provider Options</html:h3></label>
+      <label><html:h3 data-l10n-id="metadata-provider-options" /></label>
       <hbox align="center">
         <label
           data-l10n-id="rule-tool-update-metadata-option-semanticScholarToken"
         />
         <html:input
           style="flex: 1"
-          type="text"
-          size="60"
+          type="password"
+          size="30"
+          autocomplete="new-password"
+          spellcheck="false"
           data-l10n-id="rule-tool-update-metadata-option-semanticScholarToken"
           preference="semanticScholarToken"
         />
@@ -903,7 +906,7 @@
 
   <!-- 关于 -->
   <groupbox>
-    <label><html:h2>About</html:h2></label>
+    <label><html:h2 data-l10n-id="section-about" /></label>
     <label
       data-l10n-id="help-version"
       data-l10n-args='{"time": "__buildTime__","name": "__addonName__","version":"__buildVersion__"}'

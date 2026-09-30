@@ -89,6 +89,19 @@ describe("metadata workflow in Zotero", function () {
       await (win as any).Zotero_Preferences.waitForFirstPaneLoad();
       const doc = win.document;
       await doc.l10n!.translateFragment(doc.getElementById("linter")!);
+      const linterPane = doc.getElementById("linter")!;
+      const preferenceKeys = [...linterPane.querySelectorAll<HTMLElement>("[preference]")]
+        .map(element => element.getAttribute("preference"));
+      assert.equal(new Set(preferenceKeys).size, preferenceKeys.length, "each preference should have one visible control");
+      const controlIDs = [...linterPane.querySelectorAll<HTMLElement>("[id]")].map(element => element.id);
+      assert.equal(new Set(controlIDs).size, controlIDs.length, "settings controls should have unique IDs");
+      for (const id of ["section-menu-tools", "section-article-abbreviation", "section-article-esi", "section-article-pagination", "metadata-update-defaults", "metadata-provider-options", "section-about"]) {
+        const heading = linterPane.querySelector(`[data-l10n-id='linter-${id}']`);
+        assert.isNotNull(heading, `settings group ${id} should be present`);
+        assert.isNotEmpty(heading!.textContent!.trim(), `settings group ${id} should be localized`);
+      }
+      assert.notInclude(linterPane.querySelector("[data-l10n-id='linter-section-menu-tools']")!.textContent!, "子菜单");
+      assert.equal(linterPane.querySelector<HTMLInputElement>(`[preference='${prefix}.semanticScholarToken']`)?.type, "password", "the API key should be masked in the settings panel");
       const rule = doc.querySelector(`[preference='${prefix}.rule.correct-title-chemical-formula']`) as XULElement;
       assert.isNotNull(rule);
       assert.isNotEmpty(rule.getAttribute("label")!);

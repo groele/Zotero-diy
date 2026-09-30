@@ -213,7 +213,7 @@ tool-mark-nature-index-menu-item =
   .label = Identify and mark Nature Index journals
 tool-mark-nature-index-description = Adds the Nature Index Zotero tag and writes the marker to Archive Location for selected journals matched by the official title, abbreviation, or ISSN list. Existing archive-location text and tags are preserved.
 
-rule-require-series-esi-option-format = Display format:
+rule-require-series-esi-option-format = Recognition text format (written to Series and Archive):
 rule-require-series-esi-option-format-desc = Supported variables: { "{" }subject{ "}" } (Chinese name, e.g. "物理学"), { "{" }category{ "}" } (Uppercase English, e.g. "PHYSICS"), { "{" }en{ "}" } (English title case, e.g. "Physics"). Default: { "{" }subject{ "}" }ESI.
 rule-require-series-esi-option-custom-data-label = Custom dataset file:
 rule-require-series-esi-option-choose-custom-data-button =
@@ -349,7 +349,7 @@ rule-tool-update-metadata-option-semanticScholarToken = Semantic Scholar API Key
   .placeholder = Semantic Scholar Token
 rule-tool-update-metadata-option-semanticScholarToken-desc =
   When updating field data, the plugin queries its bibliographic data from Semantic Scholar.
-  By default, all unauthenticated users share a rate limit of 1k requests per second, and you can increase the rate limit by applying for a free API Key.
+  The API key is stored in Zotero preferences and displayed as a password. Request a key to use Semantic Scholar's authenticated quota.
 rule-tool-update-metadata-option-semanticScholarToken-link = Request API key
 
 rule-tool-update-metadata-option-slient =
