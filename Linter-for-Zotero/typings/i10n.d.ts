@@ -195,6 +195,7 @@ export type FluentMessageId =
   | 'section-general'
   | 'section-identifier'
   | 'section-item'
+  | 'section-item-description'
   | 'section-language'
   | 'section-menu'
   | 'section-menu-description'

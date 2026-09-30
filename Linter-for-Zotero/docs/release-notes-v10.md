@@ -1,4 +1,10 @@
-# Linter for Zotero V10 — 10.0.3
+# Linter for Zotero V10 — 10.0.4
+
+## 10.0.4
+
+- Added native, keyboard-accessible collapsible headings to item-type rule groups. Common item, title, and journal-article settings stay expanded; less frequently changed groups start collapsed to shorten the panel.
+- Added bilingual guidance clarifying that collapsing a group only changes its visibility and does not disable its rules.
+- Verified expand/collapse behavior and retained preference controls in a live Zotero settings pane.
 
 ## 10.0.3
 
@@ -33,6 +39,6 @@
 
 ## Validation
 
-- 372 unit tests passed across 47 test files.
+- 376 unit tests passed across 48 test files.
 - 29 E2E tests passed in an isolated Windows Zotero 10.0.3 profile, including the localized Nature Index menu entry and production XPI dataset loading.
 - Production build, type checks, ESLint, and AutoCorrect passed.

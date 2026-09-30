@@ -1,9 +1,9 @@
 {
-  "version": "10.0.3",
+  "version": "10.0.4",
   "date": "2026-09-30",
   "upstreamCommit": "2b747409e8c3df866fca327a8ad859d770694a5b",
   "artifact": "linter-for-zotero.xpi",
-  "sha256": "11936998841901b1050e1cdbddb93ad23c34b08968ab9da0a07877562fa83d82",
+  "sha256": "57774f4fde32bae2b7b89cb96e9bdaa7f3aaafa78051a4afe606fb6550cb0f5c",
   "productionXpiInstalledInIsolatedZotero": true,
   "environment": {
     "os": "Windows",
@@ -32,6 +32,7 @@
     "ESI classification stored in Archive while preserving existing text",
     "Nature Index marker stored in Archive Location with duplicate prevention",
     "settings panel localization, unique preference controls and IDs, grouped metadata options",
+    "keyboard-accessible collapsible rule groups and retained preference controls",
     "Semantic Scholar API key masked in settings",
     "22 ESI fields and all-field journal matching",
     "database transaction retry and undo/redo",

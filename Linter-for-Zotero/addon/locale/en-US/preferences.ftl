@@ -47,6 +47,7 @@ menu-field-correct-extra-order =
 
 ## 分组标题
 section-item = Item Level Rules
+section-item-description = Expand or collapse a group by selecting its heading. Collapsing only changes visibility; it does not disable rules.
 section-rich-text = Rich Text Edit Tools
 section-title = Title
 section-creators = Creators

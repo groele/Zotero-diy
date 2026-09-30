@@ -47,6 +47,7 @@ menu-field-correct-extra-order =
 
 ## 分组标题
 section-item = 条目级规则
+section-item-description = 点击分组标题可展开或收起；收起只影响显示，不会停用规则。
 section-rich-text = 富文本编辑工具
 section-title = 标题
 section-creators = 作者与创作者

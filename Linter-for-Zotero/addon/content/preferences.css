@@ -2,6 +2,30 @@
   font-size: 0.85em;
 }
 
+.linter-pref-collapsible {
+  margin-block: 0.35em;
+}
+
+.linter-pref-collapsible > summary {
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.linter-pref-collapsible > summary:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.linter-pref-collapsible > summary h2 {
+  display: inline;
+  margin: 0;
+  font-size: 1.15em;
+}
+
+.linter-pref-collapsible > groupbox {
+  margin-block-start: 0.25em;
+}
+
 .linter-shortcut-label {
   min-width: 0;
   margin: 0;

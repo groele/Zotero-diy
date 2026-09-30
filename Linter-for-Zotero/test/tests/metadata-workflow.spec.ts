@@ -90,6 +90,19 @@ describe("metadata workflow in Zotero", function () {
       const doc = win.document;
       await doc.l10n!.translateFragment(doc.getElementById("linter")!);
       const linterPane = doc.getElementById("linter")!;
+      for (const id of ["section-item-description", "section-creators", "section-conference"]) {
+        const heading = linterPane.querySelector(`[data-l10n-id='linter-${id}']`);
+        assert.isNotNull(heading, `collapsible settings group ${id} should be present`);
+        assert.isNotEmpty(heading!.textContent!.trim(), `collapsible settings group ${id} should be localized`);
+      }
+      const creatorsHeading = linterPane.querySelector("[data-l10n-id='linter-section-creators']")!;
+      const creatorsGroup = creatorsHeading.closest("details") as HTMLDetailsElement;
+      assert.isFalse(creatorsGroup.open, "less frequently changed creator rules should start collapsed");
+      assert.isNotNull(creatorsGroup.querySelector(`[preference='${prefix}.rule.require-creators']`), "collapsed rules remain registered in the panel");
+      creatorsGroup.querySelector<HTMLElement>("summary")!.click();
+      assert.isTrue(creatorsGroup.open, "selecting a group heading should expand the group");
+      creatorsGroup.querySelector<HTMLElement>("summary")!.click();
+      assert.isFalse(creatorsGroup.open, "selecting the heading again should collapse the group");
       const preferenceKeys = [...linterPane.querySelectorAll<HTMLElement>("[preference]")]
         .map(element => element.getAttribute("preference"));
       assert.equal(new Set(preferenceKeys).size, preferenceKeys.length, "each preference should have one visible control");
