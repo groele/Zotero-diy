@@ -1,9 +1,9 @@
 {
-  "version": "4.1.0",
-  "date": "2026-09-29",
+  "version": "4.2.0",
+  "date": "2026-09-30",
   "upstreamCommit": "2b747409e8c3df866fca327a8ad859d770694a5b",
   "artifact": "linter-for-zotero.xpi",
-  "sha256": "b75aa8e5224aa053f734c5efc7db7631b420642650a18dbd595988acc6601e8d",
+  "sha256": "c6649e59d562d646463b4b0fd15f32543b9ae0aebea55cdee4352417a7f14657",
   "productionXpiInstalledInIsolatedZotero": true,
   "environment": {
     "os": "Windows",
@@ -14,19 +14,21 @@
   },
   "checks": {
     "unit": {
-      "passed": 179,
-      "files": 21
+      "passed": 363,
+      "files": 44
     },
     "e2e": {
-      "zh-CN": 29,
-      "en-US": 29
+      "passed": 29,
+      "environment": "Windows Zotero 10.0.3"
     },
     "eslintAndAutoCorrect": "passed",
     "productionBuildAndTypecheck": "passed",
     "e2eTypecheck": "passed"
   },
   "coverage": [
-    "48 registered rules and tools",
+    "49 registered rules and tools",
+    "22 ESI fields and all-field journal matching",
+    "Nature Index journal tagging and duplicate prevention",
     "database transaction retry and undo/redo",
     "menus, shortcuts and window lifecycle",
     "custom CSV and BOM JSON files",

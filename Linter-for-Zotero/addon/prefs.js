@@ -118,6 +118,7 @@ pref("menu.correct-date-format", true);
 pref("menu.tool-clean-extra", true);
 pref("menu.tool-csl-helper", true);
 pref("menu.tool-creators-ext", true);
+pref("menu.tool-mark-nature-index", true);
 pref("menu.correct-title-punctuation", true);
 pref("menu.correct-extra-order", true);
 
@@ -130,6 +131,7 @@ pref("rule.tool-clean-extra", true);
 pref("rule.tool-csl-helper", true);
 pref("rule.tool-creators-ext", true);
 pref("rule.tool-get-short-doi", true);
+pref("rule.tool-mark-nature-index", true);
 
 // --------------------
 // Other settings

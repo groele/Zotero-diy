@@ -125,13 +125,14 @@ export const MENU_SECTIONS = {
     "tool-csl-helper",
     "tool-creators-ext",
   ],
+  toolSec3: ["tool-mark-nature-index"],
 };
 
 function registerItemMenus() {
   const isMenuVisible = (key: string): boolean => getPref(`menu.${key}` as any, true) ?? true;
 
-  const { section0, section1, section2, section3, section4, toolSec0, toolSec1, toolSec2 } = MENU_SECTIONS;
-  const section5 = [...toolSec0, ...toolSec1, ...toolSec2];
+  const { section0, section1, section2, section3, section4, toolSec0, toolSec1, toolSec2, toolSec3 } = MENU_SECTIONS;
+  const section5 = [...toolSec0, ...toolSec1, ...toolSec2, ...toolSec3];
 
   const hasAnyVisible = (keys: string[]) => keys.some(isMenuVisible);
 
@@ -253,6 +254,8 @@ function registerItemMenus() {
             makeSmartSeparator(toolSec1, [toolSec2]),
             makeItemMenu("tool-csl-helper"),
             makeItemMenu("tool-creators-ext"),
+            makeSmartSeparator(toolSec2, [toolSec3]),
+            makeItemMenu("tool-mark-nature-index"),
           ],
         },
       ],

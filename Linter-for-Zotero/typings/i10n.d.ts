@@ -10,6 +10,7 @@ export type FluentMessageId =
   | 'enable-richtext-preview'
   | 'enable-richtext-toolbar'
   | 'field-abbr'
+  | 'field-nature-index'
   | 'help-version'
   | 'info-batch-break'
   | 'info-batch-cancelled'
@@ -221,6 +222,9 @@ export type FluentMessageId =
   | 'small-caps'
   | 'subscript'
   | 'supscript'
+  | 'tool-mark-nature-index'
+  | 'tool-mark-nature-index-description'
+  | 'tool-mark-nature-index-menu-item'
   | 'undo-action-lint-metadata'
   | 'unimplemented'
   | 'wip';

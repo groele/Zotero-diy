@@ -47,5 +47,6 @@ type ID =
   | "tool-set-language"
   | "tool-update-metadata"
   | "tool-get-short-doi"
+  | "tool-mark-nature-index"
   | "tool-csl-helper"
   | "tool-clean-extra"

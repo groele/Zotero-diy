@@ -105,6 +105,7 @@ declare namespace _ZoteroTypes {
       "menu.tool-clean-extra": boolean;
       "menu.tool-csl-helper": boolean;
       "menu.tool-creators-ext": boolean;
+      "menu.tool-mark-nature-index": boolean;
       "menu.correct-title-punctuation": boolean;
       "menu.correct-extra-order": boolean;
       "rule.tool-set-language": boolean;
@@ -113,6 +114,7 @@ declare namespace _ZoteroTypes {
       "rule.tool-csl-helper": boolean;
       "rule.tool-creators-ext": boolean;
       "rule.tool-get-short-doi": boolean;
+      "rule.tool-mark-nature-index": boolean;
       "cleanExtra": boolean;
     };
   }

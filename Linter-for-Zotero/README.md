@@ -1,18 +1,18 @@
 # Linter for Zotero — Zotero DIY 维护版
 
-用于校验、整理和补全文献元数据的 Zotero 插件。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 维护，当前版本 **4.1.0**。安装清单声明兼容 Zotero **10.0–10.999**；已在 Windows 的 Zotero **10.0.3** 中完成真实运行测试。
+用于校验、整理和补全文献元数据的 Zotero 插件。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 维护，当前版本 **4.2.0**。安装清单声明兼容 Zotero **10.0–10.999**；已在 Windows 的 Zotero **10.0.3** 中完成真实运行测试。
 
 本目录包含完整源码、参考数据、测试、审查记录和可安装的 XPI。上游版权和 AGPL-3.0 许可证保留；上游项目介绍见 [原始 README](docs/UPSTREAM-README.md)。
 
 ## 安装
 
-下载 [Linter for Zotero 4.1.0 安装包](dist/linter-for-zotero.xpi)，在 Zotero 的插件管理器中选择「从文件安装插件」，再选择该 XPI。安装包的更新地址指向本项目的 `dist/update.json`。
+下载 [Linter for Zotero 4.2.0 安装包](dist/linter-for-zotero.xpi)，在 Zotero 的插件管理器中选择「从文件安装插件」，再选择该 XPI。安装包的更新地址指向本项目的 `dist/update.json`。
 
 本维护版保留上游插件 ID，因此安装会替换同 ID 的上游 Linter。建议先在测试资料库检查自己的规则设置，再对正式资料库执行批量整理。
 
 ## 功能与操作
 
-- 41 项标准规则：标题、化学式上下标、作者、语言、日期、卷期页、DOI、期刊／会议缩写、学校所在地及 ESI 分类等。
+- 41 项标准规则及 8 项工具：标题、化学式上下标、作者、语言、日期、卷期页、DOI、期刊／会议缩写、学校所在地及 ESI 分类等。
 - 7 项手动工具：标题书名号、作者扩展、指定语言、更新元数据、短 DOI、CSL Extra 和清理 Extra。手动工具不参与自动整理。
 - 标题设置增加「自动格式化化学式上下标」，默认关闭；可通过菜单或 `Ctrl+Alt+S` 对选中条目执行，macOS 使用 `Cmd+Alt+S`。
 - 快捷键可录制、禁用和恢复默认，重复组合与无效输入会提示；设置使用紧凑布局，支持窄窗口换行。
@@ -44,7 +44,9 @@ E2E 脚本先构建生产 XPI，再启动独立测试资料库，并实际安装
 
 ## 参考数据
 
-内置数据包括 26,700 条期刊缩写、117 条会议缩写、1,410 条学校所在地和 311 条物理学 ESI 记录。可配置自定义 JSON／CSV；数据结构不正确时会提示并回退到内置数据。ESI 表来自本目录的 `物理学ESI.xlsx`，不代表覆盖所有学科或最新名单。
+内置数据包括 26,700 条期刊缩写、117 条会议缩写、1,410 条学校所在地、Clarivate 2026 年第 6 期全部 22 个学科的 12,245 条 ESI 期刊记录，以及 Nature Index 2026 年 6 月的 177 种期刊和 1 个会议名单。ESI 支持刊名、缩写和 ISSN 识别；Nature Index 支持期刊刊名、已知缩写和 ISSN 识别，并可由工具菜单给 Zotero 条目添加「Nature Index」标签。Nature Index 学科按文章分类，因此插件只标记名单成员，不把学科归属推断为期刊属性。可配置自定义 ESI JSON／CSV；数据结构不正确时会提示并回退到内置数据。
+
+ESI 和 Nature Index 数据的来源、范围、更新时间及授权边界见 [`data/esi/README.md`](data/esi/README.md) 与 [`data/nature-index/README.md`](data/nature-index/README.md)。Clarivate 公布的 ESI 范围含 22 个学科，不含艺术与人文学科；“覆盖所有学科”在此指 Clarivate ESI 所定义的学科范围。
 
 期刊数据来源保留为 Git 子模块。克隆集合仓库时使用 `git clone --recurse-submodules`，或在仓库根目录执行 `git submodule update --init --recursive`。`pnpm update-data` 使用 Bash、Python 和相应数据生成依赖；更新 ESI 工作簿需要 `openpyxl`。普通构建使用已生成的数据，不需要重新生成或安装 Python。
 

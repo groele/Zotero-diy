@@ -1,7 +1,9 @@
 import type { ESIJournalEntry, ESILookupMaps } from "./esi";
+import type { NatureIndexLookupMaps } from "./nature-index";
 import csv from "csvtojson";
 import { buildESILookupMaps } from "./esi";
 import { createLogger } from "./logger";
+import { buildNatureIndexLookupMaps } from "./nature-index";
 import { normalizeKey } from "./str";
 
 const logger = createLogger("data-loader");
@@ -73,7 +75,17 @@ export class DataLoader {
       return maps;
     });
   }
+
+  static getNatureIndexJournalMaps(): Promise<NatureIndexLookupMaps> {
+    return this.derived("nature-index", async () => {
+      const data = await this.load("natureIndexJournals");
+      if (!data.venues?.length)
+        throw new TypeError("Expected the Nature Index dataset to contain publication venues");
+      return buildNatureIndexLookupMaps(data.venues);
+    });
+  }
   static async load(key: "esiJournals"): Promise<ESIJournalEntry[]>;
+  static async load(key: "natureIndexJournals"): Promise<{ venues: { title: string; type: "journal" | "conference"; aliases?: string[]; issn?: string[] }[] }>;
 
   static async load(key: "journalAbbr" | "conferencesAbbr" | "universityPlace" | "iso6393To6391"): Promise<Data>;
   static async load(key: "json", path: string): Promise<Data>;
@@ -132,6 +144,8 @@ export class DataLoader {
         return { type: "json", path: `${rootURI}data/university-list/university-place.json` };
       case "esiJournals":
         return { type: "json", path: `${rootURI}data/esi/esi-journals.json` };
+      case "natureIndexJournals":
+        return { type: "json", path: `${rootURI}data/nature-index/nature-index-journals.json` };
       default:
         if (!path)
           throw new Error("path must be provided when key is csv or json");

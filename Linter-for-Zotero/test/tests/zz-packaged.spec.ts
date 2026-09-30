@@ -13,7 +13,16 @@ describe("production XPI installation", function () {
     const item = new Zotero.Item("journalArticle");
     item.setField("title", "Packaged MoS2");
     item.setField("publicationTitle", "Physical Review Letters");
+    item.addTag("user-topic");
     await item.saveTx();
+    const crossDisciplinary = new Zotero.Item("journalArticle");
+    crossDisciplinary.setField("title", "Packaged interdisciplinary test");
+    crossDisciplinary.setField("publicationTitle", "Nature Communications");
+    await crossDisciplinary.saveTx();
+    const unmatched = new Zotero.Item("journalArticle");
+    unmatched.setField("title", "Near match test");
+    unmatched.setField("publicationTitle", "Nature Communications Research");
+    await unmatched.saveTx();
     try {
       const { AddonManager } = ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs") as any;
       const installed = await AddonManager.installTemporaryAddon(Zotero.File.pathToFile(packagePath));
@@ -23,17 +32,28 @@ describe("production XPI installation", function () {
         await Zotero.Promise.delay(50);
       const plugin = (Zotero as any)[config.addonInstance];
       assert.isTrue(plugin.data.alive);
-      await plugin.hooks.onLintInBatch(["correct-title-chemical-formula", "require-journal-abbr", "require-series-esi"], [item]);
+      await plugin.hooks.onLintInBatch(["correct-title-chemical-formula", "require-journal-abbr", "require-series-esi", "tool-mark-nature-index"], [item, crossDisciplinary, unmatched]);
       await item.reload(["itemData"], true);
+      await crossDisciplinary.reload(["itemData"], true);
+      await unmatched.reload(["itemData"], true);
       assert.equal(item.getField("title", false, true), "Packaged MoS<sub>2</sub>");
       assert.isNotEmpty(item.getField("journalAbbreviation"));
       assert.include(item.getField("series"), "ESI");
-      assert.equal(plugin.runner.lastResult.saved, 1);
+      assert.isTrue(item.hasTag("Nature Index"));
+      assert.isTrue(item.hasTag("user-topic"));
+      assert.include(crossDisciplinary.getField("series"), "综合交叉学科" + "ESI");
+      assert.isTrue(crossDisciplinary.hasTag("Nature Index"));
+      assert.isFalse(unmatched.hasTag("Nature Index"), "partial title matches should not be tagged");
       assert.equal(plugin.runner.lastResult.failed, 0);
       assert.isFalse(item.hasChanged());
+      await plugin.hooks.onLintInBatch(["tool-mark-nature-index"], [item]);
+      await item.reload(["itemData"], true);
+      assert.equal(item.getTags().filter((tag: any) => tag.tag === "Nature Index").length, 1, "repeated marking should not duplicate the tag");
     }
     finally {
       await item.eraseTx();
+      await crossDisciplinary.eraseTx();
+      await unmatched.eraseTx();
       Zotero.Prefs.set(autoKey, previous as boolean, true);
     }
   });

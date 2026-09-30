@@ -354,7 +354,7 @@ describe("data processing resilience in Zotero", function () {
     const entries = (Zotero.MenuManager as any)._menuManager.getCustomMenuOptions("main/library/item").filter((entry: any) => entry.pluginID === config.addonID);
     assert.equal(entries.length, 1, "the main menu is registered only once");
     const columns = (Zotero.ItemTreeManager as any).getCustomColumns(undefined, { pluginID: config.addonID });
-    assert.equal(columns.length, 1);
+    assert.equal(columns.length, 2);
     const countESI = (menus: any[]): number => menus.reduce((count, menu) => count + (menu.l10nID === "linter-rule-require-series-esi-menu-item" ? 1 : 0) + countESI(menu.menus || []), 0);
     assert.equal(countESI(entries.flatMap((entry: any) => entry.menus)), 1);
     const item = await create("rich text preview");
@@ -377,7 +377,8 @@ describe("data processing resilience in Zotero", function () {
     const otherInput = win.document.createElementNS("http://www.w3.org/1999/xhtml", "input") as HTMLInputElement;
     win.document.documentElement!.appendChild(otherInput);
     otherInput.focus();
-    await Zotero.Promise.delay(50);
+    for (let attempt = 0; attempt < 20 && win.document.getElementById("zotero-textarea-preview"); attempt++)
+      await Zotero.Promise.delay(25);
     assert.isNull(win.document.getElementById("zotero-textarea-preview"), `preview closes after blur: active=${win.document.activeElement?.localName}`);
     otherInput.remove();
   });

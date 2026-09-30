@@ -149,7 +149,8 @@ describe("eSI utility functions", () => {
 
       const data = JSON.parse(fs.readFileSync(datasetPath, "utf-8"));
       expect(Array.isArray(data)).toBe(true);
-      expect(data.length).toBe(311);
+      expect(data.length).toBeGreaterThan(12_000);
+      expect(new Set(data.flatMap((entry: { category: string }) => entry.category.split(";").map(category => category.trim()))).size).toBe(22);
 
       const maps = buildESILookupMaps(data);
 

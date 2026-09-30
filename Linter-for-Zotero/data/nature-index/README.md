@@ -1,0 +1,9 @@
+# Nature Index journal list
+
+`nature-index-journals.json` records the publication titles currently listed by Nature Index. The [official FAQ](https://www.nature.com/nature-index/faq) identifies 178 venues in the June 2026 release: 177 journals and one conference. The update script reads only the official title list, removes the changing article-count display, and enriches exact title matches with identifiers and abbreviations already present in this project.
+
+The June 2026 method assigns subject areas to **articles**, not to journals. This file therefore records Nature Index membership only; it does not infer a fixed discipline, a journal ranking, or article-level inclusion from a journal match. The plugin adds the Zotero tag `Nature Index` only after the user runs its marking tool on selected journal items.
+
+The publisher describes its most recent 12 months of Nature Index data as available under CC BY-NC-SA 4.0 in its [brief guide](https://www.nature.com/nature-index/brief-guide). The output contains only publication identifiers and matching aliases, not Nature Index article records, counts, institution data, or ranking data. Review the upstream terms for the license that applies to the current title-list content. All rights to the name Nature Index belong to Springer Nature.
+
+Refresh the title snapshot with `python data/nature-index/generate-nature-index-data.py`. The script validates that it finds 177 journals and one conference before replacing the generated JSON. If nature.com serves a bot challenge to a scripted client, it preserves the last verified 178-title snapshot and refreshes only the exact identifier enrichment available in the local ESI and journal-abbreviation datasets; the recorded snapshot date remains unchanged.

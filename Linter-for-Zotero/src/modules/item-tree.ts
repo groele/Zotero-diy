@@ -1,11 +1,11 @@
 import { getString } from "../utils/locale";
 
-let registeredColumn: string | false = false;
+const registeredColumns: string[] = [];
 
 export function registerExtraColumns() {
-  if (registeredColumn)
+  if (registeredColumns.length)
     return;
-  registeredColumn = Zotero.ItemTreeManager.registerColumn({
+  const abbreviationColumn = Zotero.ItemTreeManager.registerColumn({
     dataKey: "abbr",
     label: getString("field-abbr"),
     dataProvider: (item, _dataKey) => {
@@ -25,10 +25,23 @@ export function registerExtraColumns() {
     pluginID: addon.data.config.addonID,
     zoteroPersist: ["width", "hidden", "sortDirection"],
   });
+  if (abbreviationColumn)
+    registeredColumns.push(abbreviationColumn);
+  const natureIndexColumn = Zotero.ItemTreeManager.registerColumn({
+    dataKey: "natureIndex",
+    label: getString("field-nature-index"),
+    dataProvider: (item) => {
+      if (!addon?.data?.alive || item.itemType !== "journalArticle")
+        return "";
+      return item.hasTag("Nature Index") ? "✓" : "";
+    },
+    pluginID: addon.data.config.addonID,
+    zoteroPersist: ["width", "hidden", "sortDirection"],
+  });
+  if (natureIndexColumn)
+    registeredColumns.push(natureIndexColumn);
 }
 
 export function unregisterExtraColumns() {
-  if (registeredColumn)
-    Zotero.ItemTreeManager.unregisterColumn(registeredColumn);
-  registeredColumn = false;
+  registeredColumns.splice(0).forEach(id => Zotero.ItemTreeManager.unregisterColumn(id));
 }

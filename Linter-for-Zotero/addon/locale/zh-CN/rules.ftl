@@ -208,6 +208,11 @@ rule-require-series-esi-menu-item =
   .label = 获取期刊 ESI 学科
 rule-require-series-esi-menu-field =
   .label = 获取 ESI 学科（Linter）
+tool-mark-nature-index =
+  .label = 标记 Nature Index 期刊
+tool-mark-nature-index-menu-item =
+  .label = 识别并标记 Nature Index 期刊
+tool-mark-nature-index-description = 对期刊名称、缩写或 ISSN 与官方名单匹配的期刊添加 Zotero 标签「Nature Index」。不会修改期刊元数据，也不覆盖或删除其他标签。
 
 rule-require-series-esi-option-format = 显示格式：
 rule-require-series-esi-option-format-desc = 支持变量：{ "{" }subject{ "}" }（中文学科，如“物理学”）、{ "{" }category{ "}" }（英文学科大写，如“PHYSICS”）、{ "{" }en{ "}" }（英文学科，如“Physics”）。默认格式为：{ "{" }subject{ "}" }ESI（即“物理学 ESI”）。
@@ -216,7 +221,7 @@ rule-require-series-esi-option-choose-custom-data-button =
   .label = 选择
 rule-require-series-esi-option-choose-custom-data-input =
   .placeholder = ESI 数据文件的路径
-rule-require-series-esi-option-custom-data-desc = 自定义 ESI 文件支持 JSON 和 CSV 格式。若未指定则使用内置数据（包含物理学 ESI 等）。
+rule-require-series-esi-option-custom-data-desc = 支持 JSON 和 CSV。内置 Clarivate 2026 年第 6 期主期刊表，含全部 22 个 ESI 学科和 12,245 个规范化刊名；自定义文件会替换内置名单。
 
 
 ## require-doi

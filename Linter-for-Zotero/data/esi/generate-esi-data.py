@@ -58,6 +58,17 @@ def scan_excel_files() -> list[Path]:
         if candidate.exists() and not candidate.name.startswith("~$"):
             files.add(candidate)
 
+    # Prefer an official master list over older local discipline-only extracts.
+    # Otherwise a previously curated subject workbook could widen one subject
+    # and assign journals to conflicting fields after the master list updates.
+    master_lists = [p for p in files if re.search(r"esi-master-journal-list-\d+-\d{4}\.xlsx$", p.name, re.IGNORECASE)]
+    if master_lists:
+        def release_key(path: Path) -> tuple[int, int]:
+            match = re.search(r"esi-master-journal-list-(\d+)-(\d{4})\.xlsx$", path.name, re.IGNORECASE)
+            return int(match.group(2)), int(match.group(1))
+
+        return [max(master_lists, key=release_key)]
+
     return sorted(files)
 
 def main():

@@ -46,7 +46,7 @@ describe("menu module", () => {
       expect(Rules.getStandard().every(rule => !rule.id.startsWith("tool-"))).toBe(true);
     });
 
-    it("covers all 21 menu items across all sections", () => {
+    it("covers all 22 menu items across all sections", () => {
       const allItemIDs = [
         ...MENU_SECTIONS.section0,
         ...MENU_SECTIONS.section1,
@@ -56,11 +56,12 @@ describe("menu module", () => {
         ...MENU_SECTIONS.toolSec0,
         ...MENU_SECTIONS.toolSec1,
         ...MENU_SECTIONS.toolSec2,
+        ...MENU_SECTIONS.toolSec3,
       ];
 
-      expect(allItemIDs).toHaveLength(21);
+      expect(allItemIDs).toHaveLength(22);
       const uniqueIDs = new Set(allItemIDs);
-      expect(uniqueIDs.size).toBe(21);
+      expect(uniqueIDs.size).toBe(22);
     });
 
     it("references valid registered rules for all rule-based menu items", () => {
@@ -72,6 +73,7 @@ describe("menu module", () => {
         ...MENU_SECTIONS.toolSec0,
         ...MENU_SECTIONS.toolSec1,
         ...MENU_SECTIONS.toolSec2,
+        ...MENU_SECTIONS.toolSec3,
       ];
 
       const allRegisteredIDs = new Set(Rules.getAll().map(r => r.id));

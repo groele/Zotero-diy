@@ -23,6 +23,7 @@ export default defineConfig({
       "data/conference-abbr.json",
       "data/university-list/university-place.json",
       "data/esi/esi-journals.json",
+      "data/nature-index/nature-index-journals.json",
     ],
     define: {
       ...pkg.config,

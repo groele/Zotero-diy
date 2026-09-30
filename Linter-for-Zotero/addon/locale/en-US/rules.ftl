@@ -207,6 +207,11 @@ rule-require-series-esi-menu-item =
   .label = Get Journal ESI Category
 rule-require-series-esi-menu-field =
   .label = Get ESI Category (Linter)
+tool-mark-nature-index =
+  .label = Mark Nature Index journals
+tool-mark-nature-index-menu-item =
+  .label = Identify and mark Nature Index journals
+tool-mark-nature-index-description = Adds the Nature Index Zotero tag to selected journals matched by the official title, abbreviation, or ISSN list. It does not change journal metadata or overwrite or remove other tags.
 
 rule-require-series-esi-option-format = Display format:
 rule-require-series-esi-option-format-desc = Supported variables: { "{" }subject{ "}" } (Chinese name, e.g. "物理学"), { "{" }category{ "}" } (Uppercase English, e.g. "PHYSICS"), { "{" }en{ "}" } (English title case, e.g. "Physics"). Default: { "{" }subject{ "}" }ESI.
@@ -215,7 +220,7 @@ rule-require-series-esi-option-choose-custom-data-button =
   .label = Browse
 rule-require-series-esi-option-choose-custom-data-input =
   .placeholder = Path of custom ESI dataset
-rule-require-series-esi-option-custom-data-desc = Supports JSON and CSV formats. Uses built-in data (including physics ESI) if unspecified.
+rule-require-series-esi-option-custom-data-desc = Supports JSON and CSV. Built-in data uses Clarivate's 2026 Release 6 master list: 12,245 normalized journals across all 22 ESI fields. A custom file replaces the built-in list.
 
 
 ## require-doi

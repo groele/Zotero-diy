@@ -282,8 +282,12 @@ export class RichTextToolBar {
   private onBlur = (event: Event): void => {
     this.window.clearTimeout(this.refreshTimer);
     this.close();
-    if (event.target !== this.window)
-      this.onFocus(event);
+    if (event.target === this.window)
+      return;
+    const relatedTarget = (event as FocusEvent).relatedTarget as Element | null;
+    if (relatedTarget && !relatedTarget.closest?.("editable-text[fieldname='title']"))
+      return;
+    this.onFocus(event);
   };
 
   private onInput = (): void => {
