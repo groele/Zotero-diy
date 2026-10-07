@@ -1,32 +1,56 @@
-.linter-pref-description {
+.metaref-settings-search {
+  box-sizing: border-box;
+  width: 100%;
+  margin-block: 8px;
+}
+
+#metaref [hidden] {
+  display: none !important;
+}
+
+#metaref hbox {
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+#metaref input {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.metaref-settings-empty {
+  padding-block: 12px;
+}
+
+.metaref-pref-description {
   font-size: 0.85em;
 }
 
-.linter-pref-collapsible {
+.metaref-pref-collapsible {
   margin-block: 0.35em;
 }
 
-.linter-pref-collapsible > summary {
+.metaref-pref-collapsible > summary {
   cursor: pointer;
   border-radius: 3px;
 }
 
-.linter-pref-collapsible > summary:focus-visible {
+.metaref-pref-collapsible > summary:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
-.linter-pref-collapsible > summary h2 {
+.metaref-pref-collapsible > summary h2 {
   display: inline;
   margin: 0;
   font-size: 1.15em;
 }
 
-.linter-pref-collapsible > groupbox {
+.metaref-pref-collapsible > groupbox {
   margin-block-start: 0.25em;
 }
 
-.linter-shortcut-label {
+.metaref-shortcut-label {
   min-width: 0;
   margin: 0;
   white-space: normal;
@@ -34,19 +58,19 @@
   text-align: left;
 }
 
-.linter-shortcut-list {
-  container: linter-shortcuts / inline-size;
+.metaref-shortcut-list {
+  container: metaref-shortcuts / inline-size;
   min-width: 0;
 }
 
-.linter-shortcut-input {
+.metaref-shortcut-input {
   box-sizing: border-box;
   min-width: 0;
   width: 100%;
   margin: 0;
 }
 
-.linter-shortcut-row {
+.metaref-shortcut-row {
   display: grid;
   grid-template-columns:
     8.5em minmax(7em, 1fr) minmax(6.5em, 1fr)
@@ -57,24 +81,24 @@
   border-bottom: 1px solid color-mix(in srgb, currentColor 12%, transparent);
 }
 
-.linter-shortcut-row:last-child {
+.metaref-shortcut-row:last-child {
   border-bottom: 0;
 }
 
-.linter-shortcut-actions {
+.metaref-shortcut-actions {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.linter-shortcut-actions .linter-shortcut-action {
+.metaref-shortcut-actions .metaref-shortcut-action {
   min-width: 0;
   margin: 0;
   padding: 3px 7px;
   font-size: 0.9em;
 }
 
-.linter-shortcut-preview {
+.metaref-shortcut-preview {
   min-width: 0;
   margin: 0;
   overflow: hidden;
@@ -85,74 +109,89 @@
   opacity: 0.75;
 }
 
-@container linter-shortcuts (max-width: 30em) {
-  .linter-shortcut-row {
+@container metaref-shortcuts (max-width: 30em) {
+  .metaref-shortcut-row {
     grid-template-columns: minmax(7em, 0.85fr) minmax(0, 1.5fr) max-content;
     column-gap: 8px;
     row-gap: 2px;
   }
 
-  .linter-shortcut-label {
+  .metaref-shortcut-label {
     grid-column: 1;
     grid-row: 1 / 3;
   }
 
-  .linter-shortcut-input {
+  .metaref-shortcut-input {
     grid-column: 2;
     grid-row: 1;
   }
 
-  .linter-shortcut-preview {
+  .metaref-shortcut-preview {
     grid-column: 2;
     grid-row: 2;
   }
 
-  .linter-shortcut-actions {
+  .metaref-shortcut-actions {
     grid-column: 3;
     grid-row: 1 / 3;
   }
 }
 
-@container linter-shortcuts (max-width: 22em) {
-  .linter-shortcut-row {
+@container metaref-shortcuts (max-width: 22em) {
+  .metaref-shortcut-row {
     grid-template-columns: minmax(0, 1fr) max-content;
   }
 
-  .linter-shortcut-label {
+  .metaref-shortcut-label {
     grid-column: 1 / -1;
     grid-row: 1;
     margin-block-end: 2px;
   }
 
-  .linter-shortcut-input {
+  .metaref-shortcut-input {
     grid-column: 1;
     grid-row: 2;
   }
 
-  .linter-shortcut-preview {
+  .metaref-shortcut-preview {
     grid-column: 1;
     grid-row: 3;
   }
 
-  .linter-shortcut-actions {
+  .metaref-shortcut-actions {
     grid-column: 2;
     grid-row: 2 / 4;
   }
 }
 
-.linter-shortcut-input[aria-invalid="true"] {
+.metaref-shortcut-input[aria-invalid="true"] {
   outline: 2px solid #c43b3b;
 }
 
-.linter-shortcut-status {
+.metaref-shortcut-status {
   margin-block-start: 6px;
 }
 
-.linter-shortcut-status:empty {
+.metaref-shortcut-status:empty {
   display: none;
 }
 
-.linter-shortcut-input:focus {
+.metaref-shortcut-input:focus {
   background-color: Highlight;
   color: HighlightText;
+}
+
+.journal-database-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.journal-database-status {
+  margin-block: 6px;
+  overflow-wrap: anywhere;
+}
+
+.journal-database-status:empty {
+  display: none;
 }

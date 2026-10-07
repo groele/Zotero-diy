@@ -108,6 +108,8 @@ function getPropValue(item: any, possibleKeys: string[]): string {
 export function buildESILookupMaps(entries: any[]): ESILookupMaps {
   const issnMap = new Map<string, string[]>();
   const titleMap = new Map<string, string[]>();
+  const titleOwners = new Map<string, Set<string>>();
+  const names = Object.keys(ESI_CATEGORIES).sort((a, b) => b.length - a.length);
 
   const appendToMap = (map: Map<string, string[]>, key: string, category: string) => {
     if (!key || !category)
@@ -128,7 +130,6 @@ export function buildESILookupMaps(entries: any[]): ESILookupMaps {
     if (!rawCategory)
       continue;
 
-    const names = Object.keys(ESI_CATEGORIES).sort((a, b) => b.length - a.length);
     let protectedCategory = rawCategory.toUpperCase();
     names.forEach((name, index) => {
       protectedCategory = protectedCategory.replaceAll(name, `\u0000${index}\u0000`);
@@ -145,6 +146,7 @@ export function buildESILookupMaps(entries: any[]): ESILookupMaps {
 
     const rawIssns = [issn, eissn].filter(s => s && s !== "****-****");
     const extractedIssns = rawIssns.flatMap(extractISSNs);
+    const identity = JSON.stringify([normalizeTitleKey(title), [...new Set(extractedIssns)].sort()]);
 
     for (const category of categories) {
       for (const code of extractedIssns) {
@@ -154,23 +156,23 @@ export function buildESILookupMaps(entries: any[]): ESILookupMaps {
       for (const t of [title, title20, title29]) {
         if (t) {
           const normKey = normalizeTitleKey(t);
-          if (normKey)
+          if (normKey) {
+            const owners = titleOwners.get(normKey) ?? new Set<string>();
+            owners.add(identity);
+            titleOwners.set(normKey, owners);
             appendToMap(titleMap, normKey, category);
+          }
         }
       }
     }
   }
 
-  return { issnMap, titleMap };
-}
+  for (const [key, owners] of titleOwners) {
+    if (owners.size > 1)
+      titleMap.delete(key);
+  }
 
-/**
- * Checks whether an existing value appears to be an ESI discipline tag
- */
-export function isEsiValue(value: string): boolean {
-  if (!value)
-    return false;
-  return /ESI/i.test(value) || Object.values(ESI_CATEGORIES).some(cat => value.includes(cat.zh) || value.includes(cat.en));
+  return { issnMap, titleMap };
 }
 
 /**
@@ -223,15 +225,6 @@ export function matchESICategories(options: MatchESIOptions): string[] | undefin
     const match = maps.titleMap.get(key);
     if (match && match.length > 0)
       return match;
-
-    // Subtitle prefix fallback (e.g. "Physical Review B: Condensed Matter" -> "Physical Review B")
-    if (publicationTitle.includes(":") || publicationTitle.includes(" - ")) {
-      const mainTitle = publicationTitle.split(/:| - /)[0].trim();
-      const mainKey = normalizeTitleKey(mainTitle);
-      const subMatch = maps.titleMap.get(mainKey);
-      if (subMatch && subMatch.length > 0)
-        return subMatch;
-    }
   }
 
   // 3. Match by journal abbreviation

@@ -1,5 +1,3 @@
-pref("version", "__buildVersion__");
-
 // --------------------
 // Lint global settings
 // --------------------
@@ -49,10 +47,10 @@ pref("rule.require-journal-abbr.infer", true);
 pref("rule.require-journal-abbr.usefull", false);
 pref("rule.require-journal-abbr.usefullZh", false);
 pref("rule.require-journal-abbr.customDataPath", "");
-pref("rule.require-series-esi", true);
-pref("rule.require-series-esi.format", "{subject}ESI");
-pref("rule.require-series-esi.customDataPath", "");
-pref("rule.require-series-esi.overwrite", false);
+pref("insights.esiFormat", "{subject}ESI");
+pref("insights.esiCustomDataPath", "");
+pref("insights.showPane", true);
+pref("insights.natureCustomDataPath", "");
 pref("rule.require-university-place", true);
 pref("rule.require-doi", true);
 pref("rule.require-creators", true);
@@ -107,7 +105,7 @@ pref("menu.tool-set-language", true);
 pref("menu.correct-publication-title-alias", true);
 pref("menu.correct-publication-title-case", true);
 pref("menu.require-journal-abbr", true);
-pref("menu.require-series-esi", true);
+pref("menu.tool-query-esi", true);
 pref("menu.correct-conference-abbr", true);
 pref("menu.require-university-place", true);
 pref("menu.tool-update-metadata", true);
@@ -118,7 +116,7 @@ pref("menu.correct-date-format", true);
 pref("menu.tool-clean-extra", true);
 pref("menu.tool-csl-helper", true);
 pref("menu.tool-creators-ext", true);
-pref("menu.tool-mark-nature-index", true);
+pref("menu.tool-query-nature-index", true);
 pref("menu.correct-title-punctuation", true);
 pref("menu.correct-extra-order", true);
 
@@ -131,7 +129,7 @@ pref("rule.tool-clean-extra", true);
 pref("rule.tool-csl-helper", true);
 pref("rule.tool-creators-ext", true);
 pref("rule.tool-get-short-doi", true);
-pref("rule.tool-mark-nature-index", true);
+pref("rule.tool-query-nature-index", true);
 
 // --------------------
 // Other settings

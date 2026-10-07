@@ -318,7 +318,7 @@ export class LintRunner {
         if (savedCount > 0) {
           // @ts-expect-error - Zotero.UndoHistory not yet typed in zotero-types
           Zotero.UndoHistory?.stageAction?.(
-            "linter-undo-action-lint-metadata",
+            "metaref-undo-action-lint-metadata",
             { count: savedCount },
           );
         }
@@ -333,7 +333,7 @@ export class LintRunner {
           if (item.id)
             await item.reload(["primaryData", "itemData", "creators", "tags", "collections", "relations"], true);
           item.fromJSON(snapshots.get(item)!, { strict: true });
-          await item.saveTx({ skipSelect: true, ...{ undoAction: "linter-undo-action-lint-metadata", undoActionArgs: { count: 1 } } });
+          await item.saveTx({ skipSelect: true, ...{ undoAction: "metaref-undo-action-lint-metadata", undoActionArgs: { count: 1 } } });
           this.saved++;
         }
         catch (itemErr) {

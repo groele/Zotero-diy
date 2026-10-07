@@ -4,7 +4,7 @@ This file provides guidance to AI coding agents when working with code in this r
 
 ## Overview
 
-"Linter for Zotero" (package name `zotero-format-metadata`) is a Zotero plugin that validates and formats item metadata. It is built on the [zotero-plugin-template](https://github.com/windingwind/zotero-plugin-template) and [zotero-plugin-scaffold](https://github.com/northword/zotero-plugin-scaffold) toolchain, and bundled with esbuild into an ESM script loaded by Zotero (a Firefox/Gecko `firefox115` runtime — not Node).
+"MetaRef for Zotero" (package name `metaref-for-zotero`) is a Zotero plugin that validates and formats item metadata. It is built on the [zotero-plugin-template](https://github.com/windingwind/zotero-plugin-template) and [zotero-plugin-scaffold](https://github.com/northword/zotero-plugin-scaffold) toolchain, and bundled with esbuild into an ESM script loaded by Zotero (a Firefox/Gecko `firefox115` runtime — not Node).
 
 Target: Zotero 10.0–10.999 (validated on Windows Zotero 10.0.3). Package manager: **pnpm** (12.3.4, pinned in package.json). Node v22+ required for development.
 
@@ -41,7 +41,7 @@ Two test tiers exist because plugin code depends on the Zotero global runtime:
 
 ### Lifecycle: Bootstrap → sandbox globals → hooks
 
-1. `addon/bootstrap.js` is the XPCOM bootstrap. On startup it loads the bundled script `content/scripts/linter.js` (from `src/index.ts` via esbuild) into a sandbox `ctx` that also acts as `_globalThis`.
+1. `addon/bootstrap.js` is the XPCOM bootstrap. On startup it loads the bundled script `content/scripts/metaref.js` (from `src/index.ts` via esbuild) into a sandbox `ctx` that also acts as `_globalThis`.
 2. `src/index.ts` bootstraps globals (`Zotero`, `ztoolkit`, `addon`) and instantiates the `Addon` class (`src/addon.ts`), which holds shared `data` and the singleton `LintRunner`.
 3. `src/hooks.ts` implements Zotero lifecycle hooks (`onStartup`, `onMainWindowLoad`, `onNotify`, `onShortcuts`, `onLintInBatch`, etc.). `onNotify` auto-lints newly added items when pref `lint.onAdded` is set.
 4. `src/addon.ts` holds shared `data` (config, env, ztoolkit, locale, prefs window, dialogs), lifecycle `hooks`, small public `api`, and the `LintRunner`.

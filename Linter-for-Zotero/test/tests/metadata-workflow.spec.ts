@@ -84,18 +84,50 @@ describe("metadata workflow in Zotero", function () {
     const win = Zotero.Utilities.Internal.openPreferences(pane.id)! as Window & typeof globalThis;
     assert.isNotNull(win);
     try {
-      for (let attempt = 0; attempt < 100 && !win.document.getElementById("linter-shortcut-chemicalFormula"); attempt++)
+      for (let attempt = 0; attempt < 100 && !win.document.getElementById("metaref-shortcut-chemicalFormula"); attempt++)
         await Zotero.Promise.delay(100);
       await (win as any).Zotero_Preferences.waitForFirstPaneLoad();
       const doc = win.document;
-      await doc.l10n!.translateFragment(doc.getElementById("linter")!);
-      const linterPane = doc.getElementById("linter")!;
+      await doc.l10n!.translateFragment(doc.getElementById("metaref")!);
+      const metarefPane = doc.getElementById("metaref")!;
+      await plugin().hooks.onPrefsEvent("load", { window: win });
+      await plugin().hooks.onPrefsEvent("load", { window: win });
+      assert.lengthOf(metarefPane.querySelectorAll(".metaref-shortcut-actions"), 7, "reloading the pane must not duplicate shortcut buttons");
+      const search = metarefPane.querySelector<HTMLInputElement>(".metaref-settings-search")!;
+      search.value = "no-such-setting-qa-12345";
+      search.dispatchEvent(new win.Event("input", { bubbles: true }));
+      assert.isFalse(metarefPane.querySelector<HTMLElement>(".metaref-settings-empty")!.hidden);
+      search.dispatchEvent(new win.KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+      assert.equal(search.value, "");
+      assert.isTrue(metarefPane.querySelector<HTMLElement>(".metaref-settings-empty")!.hidden);
+      const creatorDetails = metarefPane.querySelector("[data-l10n-id='metaref-section-creators']")!.closest("details") as HTMLDetailsElement;
+      const creatorLabel = metarefPane.querySelector(`[preference='${prefix}.rule.require-creators']`)!.getAttribute("label")!;
+      search.value = creatorLabel;
+      search.dispatchEvent(new win.Event("input", { bubbles: true }));
+      assert.isFalse(creatorDetails.hidden);
+      assert.isTrue(creatorDetails.open, "search reveals matches inside collapsed rule groups");
+      search.value = "";
+      search.dispatchEvent(new win.Event("input", { bubbles: true }));
+      assert.isFalse(creatorDetails.open, "clearing search restores the original collapsed state");
+      const resets = metarefPane.querySelectorAll("button[data-l10n-id='metaref-settings-custom-data-reset']");
+      assert.lengthOf(resets, 4);
+      const resetPath = resets[0].parentElement!.querySelector("input[preference]") as HTMLInputElement;
+      const resetPref = resetPath.getAttribute("preference")!;
+      const originalPath = Zotero.Prefs.get(resetPref, true);
+      Zotero.Prefs.set(resetPref, "missing-qa.csv", true);
+      resets[0].dispatchEvent(new win.Event("command", { bubbles: true }));
+      assert.equal(Zotero.Prefs.get(resetPref, true), "");
+      assert.equal(resetPath.value, "");
+      Zotero.Prefs.set(resetPref, originalPath as string, true);
+      const concurrency = metarefPane.querySelector<HTMLInputElement>(`[preference='${prefix}.lint.numConcurrent']`)!;
+      assert.equal(concurrency.min, "1");
+      assert.equal(concurrency.max, "16");
       for (const id of ["section-item-description", "section-creators", "section-conference"]) {
-        const heading = linterPane.querySelector(`[data-l10n-id='linter-${id}']`);
+        const heading = metarefPane.querySelector(`[data-l10n-id='metaref-${id}']`);
         assert.isNotNull(heading, `collapsible settings group ${id} should be present`);
         assert.isNotEmpty(heading!.textContent!.trim(), `collapsible settings group ${id} should be localized`);
       }
-      const creatorsHeading = linterPane.querySelector("[data-l10n-id='linter-section-creators']")!;
+      const creatorsHeading = metarefPane.querySelector("[data-l10n-id='metaref-section-creators']")!;
       const creatorsGroup = creatorsHeading.closest("details") as HTMLDetailsElement;
       assert.isFalse(creatorsGroup.open, "less frequently changed creator rules should start collapsed");
       assert.isNotNull(creatorsGroup.querySelector(`[preference='${prefix}.rule.require-creators']`), "collapsed rules remain registered in the panel");
@@ -103,27 +135,34 @@ describe("metadata workflow in Zotero", function () {
       assert.isTrue(creatorsGroup.open, "selecting a group heading should expand the group");
       creatorsGroup.querySelector<HTMLElement>("summary")!.click();
       assert.isFalse(creatorsGroup.open, "selecting the heading again should collapse the group");
-      const preferenceKeys = [...linterPane.querySelectorAll<HTMLElement>("[preference]")]
+      const preferenceKeys = [...metarefPane.querySelectorAll<HTMLElement>("[preference]")]
         .map(element => element.getAttribute("preference"));
       assert.equal(new Set(preferenceKeys).size, preferenceKeys.length, "each preference should have one visible control");
-      const controlIDs = [...linterPane.querySelectorAll<HTMLElement>("[id]")].map(element => element.id);
+      const controlIDs = [...metarefPane.querySelectorAll<HTMLElement>("[id]")].map(element => element.id);
       assert.equal(new Set(controlIDs).size, controlIDs.length, "settings controls should have unique IDs");
-      for (const id of ["section-menu-tools", "section-article-abbreviation", "section-article-esi", "section-article-pagination", "metadata-update-defaults", "metadata-provider-options", "section-about"]) {
-        const heading = linterPane.querySelector(`[data-l10n-id='linter-${id}']`);
+      for (const id of ["menu-group-maintenance", "section-article-abbreviation", "section-article-esi", "section-article-pagination", "metadata-update-defaults", "metadata-provider-options", "section-about"]) {
+        const heading = metarefPane.querySelector(`[data-l10n-id='metaref-${id}']`);
         assert.isNotNull(heading, `settings group ${id} should be present`);
         assert.isNotEmpty(heading!.textContent!.trim(), `settings group ${id} should be localized`);
       }
-      assert.notInclude(linterPane.querySelector("[data-l10n-id='linter-section-menu-tools']")!.textContent!, "子菜单");
-      assert.equal(linterPane.querySelector<HTMLInputElement>(`[preference='${prefix}.semanticScholarToken']`)?.type, "password", "the API key should be masked in the settings panel");
+      assert.notInclude(metarefPane.querySelector("[data-l10n-id='metaref-menu-group-maintenance']")!.textContent!, "子菜单");
+      assert.equal(metarefPane.querySelector<HTMLInputElement>(`[preference='${prefix}.semanticScholarToken']`)?.type, "password", "the API key should be masked in the settings panel");
       const rule = doc.querySelector(`[preference='${prefix}.rule.correct-title-chemical-formula']`) as XULElement;
       assert.isNotNull(rule);
       assert.isNotEmpty(rule.getAttribute("label")!);
       (rule as any).checked = true;
       rule.dispatchEvent(new win.Event("command", { bubbles: true }));
       assert.isTrue(Zotero.Prefs.get(`${prefix}.rule.correct-title-chemical-formula`, true));
-      const input = doc.getElementById("linter-shortcut-chemicalFormula") as HTMLInputElement;
+      const spaces = metarefPane.querySelector<HTMLInputElement>(`[preference='${prefix}.rule.correct-title-chemical-formula.normalize-spaces']`)!;
+      assert.isFalse(spaces.disabled);
+      (rule as any).checked = false;
+      rule.dispatchEvent(new win.Event("command", { bubbles: true }));
+      assert.isTrue(spaces.disabled);
+      (rule as any).checked = true;
+      rule.dispatchEvent(new win.Event("command", { bubbles: true }));
+      const input = doc.getElementById("metaref-shortcut-chemicalFormula") as HTMLInputElement;
       assert.isNotNull(input);
-      const reset = input.parentElement!.querySelector("button[data-l10n-id='linter-shortcut-reset']")!;
+      const reset = input.parentElement!.querySelector("button[data-l10n-id='metaref-shortcut-reset']")!;
       assert.equal(input.value, "accel,alt,S", "initial shortcut value");
       input.value = "accel,b,c";
       input.dispatchEvent(new win.Event("input", { bubbles: true }));
@@ -132,20 +171,20 @@ describe("metadata workflow in Zotero", function () {
       reset.dispatchEvent(new win.Event("command", { bubbles: true }));
       win.resizeTo(780, 720);
       await Zotero.Promise.delay(100);
-      for (const row of doc.querySelectorAll<HTMLElement>(".linter-shortcut-row")) {
+      for (const row of doc.querySelectorAll<HTMLElement>(".metaref-shortcut-row")) {
         assert.isAtMost(row.scrollWidth, row.clientWidth + 1, "shortcut row must wrap inside preferences");
       }
-      const list = doc.querySelector<HTMLElement>(".linter-shortcut-list")!;
+      const list = doc.querySelector<HTMLElement>(".metaref-shortcut-list")!;
       win.resizeTo(1000, 760);
       const layouts = [];
       for (const width of [570, 470, 350]) {
         list.style.width = `${width}px`;
         list.scrollIntoView({ block: "center" });
         await Zotero.Promise.delay(100);
-        const rows = [...list.querySelectorAll<HTMLElement>(".linter-shortcut-row")];
+        const rows = [...list.querySelectorAll<HTMLElement>(".metaref-shortcut-row")];
         const metrics = rows.map((row: HTMLElement) => {
           const rect = row.getBoundingClientRect();
-          const buttons = [...row.querySelectorAll<HTMLElement>(".linter-shortcut-action")];
+          const buttons = [...row.querySelectorAll<HTMLElement>(".metaref-shortcut-action")];
           const [clear, reset] = buttons.map(button => button.getBoundingClientRect());
           assert.isAtMost(Math.abs(clear.top - reset.top), 1, "action buttons stay together");
           assert.isAtMost(reset.right, rect.right + 1, "actions remain within the row");
@@ -154,7 +193,7 @@ describe("metadata workflow in Zotero", function () {
           return { height: rect.height, width: rect.width, buttonTop: clear.top, resetTop: reset.top };
         });
         const rect = list.getBoundingClientRect();
-        const screenshotPath = PathUtils.join(PathUtils.tempDir, `linter-shortcuts-${Zotero.locale}-${width}.png`);
+        const screenshotPath = PathUtils.join(PathUtils.tempDir, `metaref-shortcuts-${Zotero.locale}-${width}.png`);
         const canvas = doc.createElementNS("http://www.w3.org/1999/xhtml", "canvas") as HTMLCanvasElement;
         canvas.width = Math.ceil(rect.width);
         canvas.height = Math.ceil(rect.height);
@@ -168,9 +207,9 @@ describe("metadata workflow in Zotero", function () {
       }
       await Zotero.File.putContentsAsync(PathUtils.join(Zotero.DataDirectory.dir, "shortcut-layout.json"), JSON.stringify(layouts));
       list.style.removeProperty("width");
-      for (const field of doc.querySelectorAll<HTMLInputElement>(".linter-shortcut-input")) {
-        assert.match(field.id, /^linter-shortcut-/);
-        assert.isNotNull(field.parentElement?.querySelector("button[data-l10n-id='linter-shortcut-reset']"));
+      for (const field of doc.querySelectorAll<HTMLInputElement>(".metaref-shortcut-input")) {
+        assert.match(field.id, /^metaref-shortcut-/);
+        assert.isNotNull(field.parentElement?.querySelector("button[data-l10n-id='metaref-shortcut-reset']"));
       }
       const event = (key: string, code: string, extra = {}) => new win.KeyboardEvent("keydown", {
         key,

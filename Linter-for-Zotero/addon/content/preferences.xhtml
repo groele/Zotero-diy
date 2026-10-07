@@ -8,6 +8,17 @@
   id="__addonRef__"
   onload="Zotero.__addonInstance__.hooks.onPrefsEvent('load', { window })"
 >
+  <html:input
+    class="metaref-settings-search"
+    type="search"
+    data-l10n-id="settings-search"
+  />
+  <description
+    class="metaref-settings-empty"
+    data-l10n-id="settings-no-results"
+    hidden="true"
+    aria-live="polite"
+  />
   <!-- 一般设置 -->
   <groupbox>
     <label><html:h2 data-l10n-id="section-general" /></label>
@@ -31,11 +42,21 @@
     />
     <!-- lint.numConcurrent -->
     <hbox align="center">
-      <label data-l10n-id="lint-numConcurrent" />
-      <html:input type="number" preference="lint.numConcurrent" />
+      <label
+        id="__addonRef__-concurrency-label"
+        data-l10n-id="lint-numConcurrent"
+      />
+      <html:input
+        type="number"
+        min="1"
+        max="16"
+        step="1"
+        preference="lint.numConcurrent"
+        aria-labelledby="__addonRef__-concurrency-label"
+      />
       <description
         data-l10n-id="lint-numConcurrent-description"
-        class="linter-pref-description"
+        class="metaref-pref-description"
       />
     </hbox>
   </groupbox>
@@ -60,99 +81,99 @@
     />
     <description
       data-l10n-id="richtext-settings-description"
-      class="linter-pref-description"
+      class="metaref-pref-description"
     />
   </groupbox>
 
-  <groupbox class="linter-shortcuts-section">
+  <groupbox class="metaref-shortcuts-section">
     <label><html:h2 data-l10n-id="shortcuts-header" /></label>
     <description
       data-l10n-id="shortcut-description"
-      class="linter-pref-description"
+      class="metaref-pref-description"
     />
-    <html:div class="linter-shortcut-list">
-      <html:div class="linter-shortcut-row">
+    <html:div class="metaref-shortcut-list">
+      <html:div class="metaref-shortcut-row">
         <label
-          class="linter-shortcut-label"
+          class="metaref-shortcut-label"
           data-l10n-id="shortcut-subscript"
         />
         <html:input
-          class="linter-shortcut-input"
+          class="metaref-shortcut-input"
           type="text"
           size="20"
           preference="shortcut.subscript"
         />
-        <description class="linter-shortcut-preview" />
+        <description class="metaref-shortcut-preview" />
       </html:div>
-      <html:div class="linter-shortcut-row">
+      <html:div class="metaref-shortcut-row">
         <label
-          class="linter-shortcut-label"
+          class="metaref-shortcut-label"
           data-l10n-id="shortcut-supscript"
         />
         <html:input
-          class="linter-shortcut-input"
+          class="metaref-shortcut-input"
           type="text"
           size="20"
           preference="shortcut.supscript"
         />
-        <description class="linter-shortcut-preview" />
+        <description class="metaref-shortcut-preview" />
       </html:div>
-      <html:div class="linter-shortcut-row">
-        <label class="linter-shortcut-label" data-l10n-id="shortcut-bold" />
+      <html:div class="metaref-shortcut-row">
+        <label class="metaref-shortcut-label" data-l10n-id="shortcut-bold" />
         <html:input
-          class="linter-shortcut-input"
+          class="metaref-shortcut-input"
           type="text"
           size="20"
           preference="shortcut.bold"
         />
-        <description class="linter-shortcut-preview" />
+        <description class="metaref-shortcut-preview" />
       </html:div>
-      <html:div class="linter-shortcut-row">
-        <label class="linter-shortcut-label" data-l10n-id="shortcut-italic" />
+      <html:div class="metaref-shortcut-row">
+        <label class="metaref-shortcut-label" data-l10n-id="shortcut-italic" />
         <html:input
-          class="linter-shortcut-input"
+          class="metaref-shortcut-input"
           type="text"
           size="20"
           preference="shortcut.italic"
         />
-        <description class="linter-shortcut-preview" />
+        <description class="metaref-shortcut-preview" />
       </html:div>
-      <html:div class="linter-shortcut-row">
-        <label class="linter-shortcut-label" data-l10n-id="shortcut-nocase" />
+      <html:div class="metaref-shortcut-row">
+        <label class="metaref-shortcut-label" data-l10n-id="shortcut-nocase" />
         <html:input
-          class="linter-shortcut-input"
+          class="metaref-shortcut-input"
           type="text"
           size="20"
           preference="shortcut.nocase"
         />
-        <description class="linter-shortcut-preview" />
+        <description class="metaref-shortcut-preview" />
       </html:div>
-      <html:div class="linter-shortcut-row">
-        <label class="linter-shortcut-label" data-l10n-id="shortcut-lint" />
+      <html:div class="metaref-shortcut-row">
+        <label class="metaref-shortcut-label" data-l10n-id="shortcut-lint" />
         <html:input
-          class="linter-shortcut-input"
+          class="metaref-shortcut-input"
           type="text"
           size="20"
           preference="shortcut.lint"
         />
-        <description class="linter-shortcut-preview" />
+        <description class="metaref-shortcut-preview" />
       </html:div>
-      <html:div class="linter-shortcut-row">
+      <html:div class="metaref-shortcut-row">
         <label
-          class="linter-shortcut-label"
+          class="metaref-shortcut-label"
           data-l10n-id="shortcut-chemicalFormula"
         />
         <html:input
-          class="linter-shortcut-input"
+          class="metaref-shortcut-input"
           type="text"
           size="20"
           preference="shortcut.chemicalFormula"
         />
-        <description class="linter-shortcut-preview" />
+        <description class="metaref-shortcut-preview" />
       </html:div>
     </html:div>
     <description
-      class="linter-shortcut-status linter-pref-description"
+      class="metaref-shortcut-status metaref-pref-description"
       aria-live="polite"
     />
   </groupbox>
@@ -162,133 +183,10 @@
     <label><html:h2 data-l10n-id="section-menu" /></label>
     <description
       data-l10n-id="section-menu-description"
-      class="linter-pref-description"
+      class="metaref-pref-description"
     />
 
-    <!-- 主菜单：格式化与规范 -->
-    <groupbox>
-      <label><html:h3 data-l10n-id="section-menu-format" /></label>
-      <checkbox
-        data-l10n-id="menu-standard"
-        preference="menu.standard"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-correct-title-sentence-case-menu-item"
-        preference="menu.correct-title-sentence-case"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-correct-title-chemical-formula-menu-item"
-        preference="menu.correct-title-chemical-formula"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-correct-creators-case-menu-item"
-        preference="menu.correct-creators-case"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-correct-creators-pinyin-menu-item"
-        preference="menu.correct-creators-pinyin"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-correct-date-format-menu-item"
-        preference="menu.correct-date-format"
-        native="true"
-      />
-    </groupbox>
-
-    <!-- 主菜单：语言与出版物 -->
-    <groupbox>
-      <label><html:h3 data-l10n-id="section-menu-publication" /></label>
-      <checkbox
-        data-l10n-id="rule-require-language-menu-item"
-        preference="menu.require-language"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-tool-set-language-menu-item"
-        preference="menu.tool-set-language"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-correct-publication-title-alias-menu-item"
-        preference="menu.correct-publication-title-alias"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-correct-publication-title-case-menu-item"
-        preference="menu.correct-publication-title-case"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-require-journal-abbr-menu-item"
-        preference="menu.require-journal-abbr"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-require-series-esi-menu-item"
-        preference="menu.require-series-esi"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-correct-conference-abbr-menu-item"
-        preference="menu.correct-conference-abbr"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-require-university-place-menu-item"
-        preference="menu.require-university-place"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-tool-update-metadata-menu-item"
-        preference="menu.tool-update-metadata"
-        native="true"
-      />
-    </groupbox>
-
-    <!-- Linter 一级菜单：其他功能 -->
-    <groupbox>
-      <label><html:h3 data-l10n-id="section-menu-tools" /></label>
-      <checkbox
-        data-l10n-id="rule-tool-title-guillemet-menu-item"
-        preference="menu.tool-title-guillemet"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-no-doi-prefix-menu-item"
-        preference="menu.no-doi-prefix"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-tool-get-short-doi-menu-item"
-        preference="menu.tool-get-short-doi"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-tool-clean-extra-menu-item"
-        preference="menu.tool-clean-extra"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-tool-csl-helper-menu-item"
-        preference="menu.tool-csl-helper"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="rule-tool-creators-ext-menu-item"
-        preference="menu.tool-creators-ext"
-        native="true"
-      />
-      <checkbox
-        data-l10n-id="tool-mark-nature-index-menu-item"
-        preference="menu.tool-mark-nature-index"
-        native="true"
-      />
-    </groupbox>
+    <vbox id="__addonRef__-menu-settings" />
 
     <!-- 字段右键菜单 -->
     <groupbox>
@@ -310,10 +208,10 @@
   <groupbox>
     <description
       data-l10n-id="section-item-description"
-      class="linter-pref-description"
+      class="metaref-pref-description"
     />
     <!-- 条目 -->
-    <html:details class="linter-pref-collapsible" open="open">
+    <html:details class="metaref-pref-collapsible" open="open">
       <html:summary><html:h2 data-l10n-id="section-item" /></html:summary>
       <!-- 检测是否存在重复条目 -->
       <checkbox
@@ -348,7 +246,7 @@
     </html:details>
 
     <!-- General Field: Title -->
-    <html:details class="linter-pref-collapsible" open="open">
+    <html:details class="metaref-pref-collapsible" open="open">
       <html:summary><html:h2 data-l10n-id="section-title" /></html:summary>
 
       <!-- correct-title-chemical-formula -->
@@ -365,7 +263,7 @@
         />
         <description
           data-l10n-id="rule-correct-title-chemical-formula-description"
-          class="linter-pref-description"
+          class="metaref-pref-description"
         />
       </vbox>
 
@@ -397,7 +295,7 @@
         </hbox>
         <description
           data-l10n-id="rule-correct-title-sentence-option-custom-term-desc"
-          class="linter-pref-description"
+          class="metaref-pref-description"
         />
         <hbox align="center">
           <label
@@ -420,7 +318,7 @@
         </hbox>
         <description
           data-l10n-id="rule-correct-title-sentence-option-disabled-languages-desc"
-          class="linter-pref-description"
+          class="metaref-pref-description"
         />
       </vbox>
 
@@ -460,12 +358,12 @@
       />
       <description
         data-l10n-id="rule-correct-shortTitle-sentence-case-description"
-        class="indented-pref linter-pref-description"
+        class="indented-pref metaref-pref-description"
       />
     </html:details>
 
     <!-- General Field: Creators -->
-    <html:details class="linter-pref-collapsible">
+    <html:details class="metaref-pref-collapsible">
       <html:summary><html:h2 data-l10n-id="section-creators" /></html:summary>
       <!-- require-creators -->
       <checkbox
@@ -494,7 +392,7 @@
     </html:details>
 
     <!-- General Field: Language -->
-    <html:details class="linter-pref-collapsible">
+    <html:details class="metaref-pref-collapsible">
       <html:summary><html:h2 data-l10n-id="section-language" /></html:summary>
       <checkbox
         data-l10n-id="rule-require-language"
@@ -537,7 +435,7 @@
           </hbox>
           <description
             data-l10n-id="rule-require-language-option-only-other-desc"
-            class="linter-pref-description"
+            class="metaref-pref-description"
           />
         </vbox>
         <checkbox
@@ -549,7 +447,7 @@
     </html:details>
 
     <!-- Article Related Field -->
-    <html:details class="linter-pref-collapsible" open="open">
+    <html:details class="metaref-pref-collapsible" open="open">
       <html:summary><html:h2 data-l10n-id="section-article" /></html:summary>
       <!-- 修正期刊名别称 -->
       <checkbox
@@ -618,43 +516,43 @@
           </hbox>
           <description
             data-l10n-id="rule-require-journal-abbr-option-custom-data-desc"
-            class="linter-pref-description"
+            class="metaref-pref-description"
           />
         </vbox>
       </groupbox>
 
-      <!-- 字段：系列 (ESI 学科) -->
+      <!-- 期刊索引数据库 -->
       <groupbox>
         <label><html:h3 data-l10n-id="section-article-esi" /></label>
         <checkbox
-          data-l10n-id="rule-require-series-esi"
-          preference="rule.require-series-esi"
+          data-l10n-id="insights-show-pane"
+          preference="insights.showPane"
           native="true"
         />
+        <description
+          data-l10n-id="insights-description"
+          class="metaref-pref-description"
+        />
         <vbox class="indented-pref">
-          <checkbox
-            data-l10n-id="rule-require-series-esi-option-overwrite"
-            preference="rule.require-series-esi.overwrite"
-            native="true"
-          />
           <hbox align="center">
-            <label data-l10n-id="rule-require-series-esi-option-format" />
+            <label data-l10n-id="rule-tool-query-esi-option-format" />
             <html:input
               type="text"
               id="__addonRef__-esi-format"
               size="20"
-              preference="rule.require-series-esi.format"
+              preference="insights.esiFormat"
             />
           </hbox>
           <description
-            data-l10n-id="rule-require-series-esi-option-format-desc"
-            class="linter-pref-description"
+            data-l10n-id="rule-tool-query-esi-option-format-desc"
+            class="metaref-pref-description"
           />
-
+        </vbox>
+        <vbox class="indented-pref" data-journal-database="esi">
           <!-- 自定义 ESI 数据集 -->
           <hbox align="center">
             <label
-              data-l10n-id="rule-require-series-esi-option-custom-data-label"
+              data-l10n-id="rule-tool-query-esi-option-custom-data-label"
             />
             <html:input
               style="flex: 1"
@@ -662,18 +560,85 @@
               readonly="true"
               size="50"
               id="__addonRef__-esi-custom-path"
-              data-l10n-id="rule-require-series-esi-option-choose-custom-data-input"
-              preference="rule.require-series-esi.customDataPath"
+              data-l10n-id="rule-tool-query-esi-option-choose-custom-data-input"
+              preference="insights.esiCustomDataPath"
             />
             <button
-              data-l10n-id="rule-require-series-esi-option-choose-custom-data-button"
+              data-l10n-id="rule-tool-query-esi-option-choose-custom-data-button"
               id="__addonRef__-esi-choose-custom-data-button"
               native="true"
             />
           </hbox>
           <description
-            data-l10n-id="rule-require-series-esi-option-custom-data-desc"
-            class="linter-pref-description"
+            data-l10n-id="rule-tool-query-esi-option-custom-data-desc"
+            class="metaref-pref-description"
+          />
+          <hbox class="journal-database-actions">
+            <button
+              id="__addonRef__-esi-validate-custom-data-button"
+              data-l10n-id="journal-database-validate"
+              native="true"
+            />
+            <button
+              id="__addonRef__-esi-reload-custom-data-button"
+              data-l10n-id="journal-database-reload"
+              native="true"
+            />
+            <button
+              id="__addonRef__-esi-export-custom-data-button"
+              data-l10n-id="journal-database-export"
+              native="true"
+            />
+          </hbox>
+          <html:div
+            class="journal-database-status"
+            role="status"
+            aria-live="polite"
+          />
+        </vbox>
+        <vbox class="indented-pref" data-journal-database="nature">
+          <label data-l10n-id="journal-database-nature" />
+          <hbox align="center">
+            <html:input
+              style="flex: 1"
+              type="text"
+              readonly="true"
+              size="50"
+              id="__addonRef__-nature-custom-path"
+              preference="insights.natureCustomDataPath"
+              data-l10n-id="journal-database-nature-path"
+            />
+            <button
+              id="__addonRef__-nature-choose-custom-data-button"
+              data-l10n-id="rule-tool-query-esi-option-choose-custom-data-button"
+              native="true"
+            />
+          </hbox>
+          <description
+            data-l10n-id="journal-database-description"
+            class="metaref-pref-description"
+          />
+          <hbox class="journal-database-actions">
+            <button
+              id="__addonRef__-nature-validate-custom-data-button"
+              data-l10n-id="journal-database-validate"
+              native="true"
+            />
+            <button
+              id="__addonRef__-nature-reload-custom-data-button"
+              data-l10n-id="journal-database-reload"
+              native="true"
+            />
+            <button
+              id="__addonRef__-nature-export-custom-data-button"
+              data-l10n-id="journal-database-export"
+              native="true"
+            />
+          </hbox>
+          <html:div
+            class="journal-database-status"
+            role="status"
+            aria-live="polite"
           />
         </vbox>
       </groupbox>
@@ -713,7 +678,7 @@
     </html:details>
 
     <!-- 字段：会议论文相关 -->
-    <html:details class="linter-pref-collapsible">
+    <html:details class="metaref-pref-collapsible">
       <html:summary><html:h2 data-l10n-id="section-conference" /></html:summary>
       <!-- correct-proceedingsTitle-sentence-case -->
       <checkbox
@@ -730,12 +695,12 @@
       />
       <description
         data-l10n-id="rule-correct-conference-abbr-description"
-        class="indented-pref linter-pref-description"
+        class="indented-pref metaref-pref-description"
       />
     </html:details>
 
     <!-- 字段：学位论文相关 -->
-    <html:details class="linter-pref-collapsible">
+    <html:details class="metaref-pref-collapsible">
       <html:summary><html:h2 data-l10n-id="section-thesis" /></html:summary>
       <!-- 纠正学位论文类别 -->
       <checkbox
@@ -758,7 +723,7 @@
     </html:details>
 
     <!-- 字段：书籍相关 -->
-    <html:details class="linter-pref-collapsible">
+    <html:details class="metaref-pref-collapsible">
       <html:summary><html:h2 data-l10n-id="section-book" /></html:summary>
       <!-- correct-edition-numeral -->
       <checkbox
@@ -781,7 +746,7 @@
     </html:details>
 
     <!-- 字段：专利相关 -->
-    <html:details class="linter-pref-collapsible">
+    <html:details class="metaref-pref-collapsible">
       <html:summary><html:h2 data-l10n-id="section-patent" /></html:summary>
       <checkbox
         data-l10n-id="rule-correct-filing-date-format"
@@ -801,7 +766,7 @@
     </html:details>
 
     <!-- 标识符 -->
-    <html:details class="linter-pref-collapsible">
+    <html:details class="metaref-pref-collapsible">
       <html:summary><html:h2 data-l10n-id="section-identifier" /></html:summary>
       <!-- DOI: 需要 DOI -->
       <checkbox
@@ -824,7 +789,7 @@
     </html:details>
 
     <!-- General Field: Others -->
-    <html:details class="linter-pref-collapsible">
+    <html:details class="metaref-pref-collapsible">
       <html:summary><html:h2 data-l10n-id="section-others" /></html:summary>
       <!-- 更新日期格式 -->
       <checkbox
@@ -903,7 +868,7 @@
       </hbox>
       <description
         data-l10n-id="rule-tool-update-metadata-option-semanticScholarToken-desc"
-        class="linter-pref-description"
+        class="metaref-pref-description"
       />
     </groupbox>
   </groupbox>

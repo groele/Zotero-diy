@@ -44,10 +44,10 @@ describe("real reference files and PDF indexing", function () {
     }
   });
 
-  it("reads real CSV and BOM JSON files and applies the ESI overwrite option", async function () {
-    const csv = PathUtils.join(PathUtils.tempDir, `linter-abbr-${Date.now()}.CSV`);
-    const json = PathUtils.join(PathUtils.tempDir, `linter-abbr-${Date.now()}.JSON`);
-    const esi = PathUtils.join(PathUtils.tempDir, `linter-esi-${Date.now()}.csv`);
+  it("reads real CSV and BOM JSON files and displays ESI without writing reference fields", async function () {
+    const csv = PathUtils.join(PathUtils.tempDir, `metaref-abbr-${Date.now()}.CSV`);
+    const json = PathUtils.join(PathUtils.tempDir, `metaref-abbr-${Date.now()}.JSON`);
+    const esi = PathUtils.join(PathUtils.tempDir, `metaref-esi-${Date.now()}.csv`);
     temporaryFiles.push(csv, json, esi);
     await IOUtils.writeUTF8(csv, "\"Special, Journal\",\"Spec. J.\"\n");
     await IOUtils.writeUTF8(json, "\uFEFF{\"Special, Journal\":\"Custom. J.\"}");
@@ -58,26 +58,26 @@ describe("real reference files and PDF indexing", function () {
     await item.saveTx();
     pref("rule.require-journal-abbr.customDataPath", csv);
     pref("rule.require-journal-abbr.infer", false);
-    pref("rule.require-series-esi.customDataPath", esi);
-    pref("rule.require-series-esi.overwrite", false);
-    pref("rule.require-series-esi.format", "{subject}ESI");
-    await plugin().hooks.onLintInBatch(["require-journal-abbr", "require-series-esi"], [item]);
+    pref("insights.esiCustomDataPath", esi);
+    pref("insights.esiFormat", "{subject}ESI");
+    await plugin().hooks.onLintInBatch(["require-journal-abbr", "tool-query-esi"], [item]);
     assert.equal(item.getField("journalAbbreviation"), "Spec. J.");
     assert.equal(item.getField("series"), "Manual series");
-    assert.equal(item.getField("archive"), ["环境与生态学", "社会科学总论"].map(name => `${name}${"ESI"}`).join(" / "));
+    assert.equal(item.getField("archive"), "");
+    assert.equal((await plugin().api.getJournalInsights(item)).esi, ["环境与生态学", "社会科学总论"].map(name => `${name}${"ESI"}`).join(" / "));
     assert.equal(plugin().runner.lastResult.failed, 0);
     pref("rule.require-journal-abbr.customDataPath", json);
-    pref("rule.require-series-esi.overwrite", true);
-    await plugin().hooks.onLintInBatch(["require-journal-abbr", "require-series-esi"], [item]);
+    await plugin().hooks.onLintInBatch(["require-journal-abbr", "tool-query-esi"], [item]);
     assert.equal(item.getField("journalAbbreviation"), "Custom. J.");
-    assert.equal(item.getField("series"), ["环境与生态学", "社会科学总论"].map(name => `${name}${"ESI"}`).join(" / "));
-    assert.equal(item.getField("archive"), ["环境与生态学", "社会科学总论"].map(name => `${name}${"ESI"}`).join(" / "));
+    assert.equal(item.getField("series"), "Manual series");
+    assert.equal(item.getField("archive"), "");
+    assert.equal((await plugin().api.getJournalInsights(item)).esi, ["环境与生态学", "社会科学总论"].map(name => `${name}${"ESI"}`).join(" / "));
     assert.isFalse(item.hasChanged());
     assert.equal(plugin().runner.lastResult.failed, 0);
   });
 
   it("imports and indexes a three-page PDF before completing a numeric page range", async function () {
-    const fixtureRoot = Zotero.Prefs.get("linter.test.fixturePath", true) as string;
+    const fixtureRoot = Zotero.Prefs.get("metaref.test.fixturePath", true) as string;
     const item = await create();
     item.setField("pages", "12");
     await item.saveTx();

@@ -26,13 +26,13 @@ export function createZToolkit() {
 
 function initZToolkit(_ztoolkit: ReturnType<typeof createZToolkit>) {
   const env = __env__;
-  _ztoolkit.basicOptions.log.prefix = `[Linter]`;
+  _ztoolkit.basicOptions.log.prefix = `[MetaRef]`;
   _ztoolkit.basicOptions.log.disableConsole = env === "production";
   _ztoolkit.UI.basicOptions.ui.enableElementJSONLog = false;
   _ztoolkit.UI.basicOptions.ui.enableElementDOMLog = __env__ === "development";
   _ztoolkit.basicOptions.debug.disableDebugBridgePassword = __env__ === "development";
   _ztoolkit.basicOptions.api.pluginID = config.addonID;
-  _ztoolkit.ProgressWindow.setIconURI("default", `${rootURI}/content/icons/favicon.png`);
+  _ztoolkit.ProgressWindow.setIconURI("default", `${rootURI}/content/icons/metaref-96.png`);
 }
 
 class MyToolkit extends BasicTool {

@@ -42,7 +42,7 @@ This plugin provides a toolbar and shortcuts to insert tags for **superscript, s
 [^rich_text_bibliography]: <https://www.zotero.org/support/kb/rich_text_bibliography>
 
 - **Shortcuts**
-  - Superscript: `Ctrl` + `Shift` + `=` (legacy `+` bindings remain supported)
+  - Superscript: `Ctrl` + `Shift` + `=`
   - Subscript: `Ctrl` + `=`
   - Bold: `Ctrl` + `B`
   - Italic: `Ctrl` + `I`
@@ -114,14 +114,14 @@ Uses a built-in dataset (JabRef + Woodward Library) to look up journal abbreviat
 - If missing, infers abbreviation from the [ISSN LTWA list](https://www.issn.org/services/online-services/access-to-the-ltwa/).
 - If still missing, defaults to full journal title (can be disabled).
 
-### Require ESI Discipline in Series (`require-series-esi`)
+### Independent ESI Discipline Insights (`tool-query-esi`)
 
-Fills the item's `series` (系列) field with the journal's Essential Science Indicators (ESI) discipline category (e.g., `物理学ESI`) and mirrors the recognized category into `archive` (档案), preserving unrelated existing text.
+Displays the journal's Essential Science Indicators (ESI) discipline in a dedicated MetaRef item-pane section and list column. No item fields or tags are written.
 
 - **Matching**: Matches journal items by print ISSN, electronic eISSN, full publication title, and abbreviation.
 - **Customizable Format**: Supports formatting templates using `{subject}` (e.g., `物理学`), `{category}` (e.g., `PHYSICS`), and `{en}` (e.g., `Physics`). Default: `{subject}ESI`.
 - **Custom Dataset**: Built-in support for all 22 ESI disciplines in the Clarivate 2026 Release 6 dataset, with the option to load custom datasets (JSON or CSV).
-- **Preservation**: Existing non-ESI series information is preserved unless the overwrite option is enabled. Invalid custom data produces a warning and falls back to bundled data.
+- **Preservation**: All existing fields and tags remain unchanged. Invalid custom data produces a warning and falls back to bundled data. Nature Index membership is also shown independently and does not imply article-level inclusion.
 
 ### No Leading Zeros (`no-issue-extra-zeros`, `no-pages-extra-zeros`, `no-volume-extra-zeros`)
 
@@ -215,4 +215,4 @@ For preprints, updates item type to `journalArticle` when possible.
 
 Updates can fill blanks or replace fields; item type changes require the corresponding option. Empty or malformed service values do not erase existing fields. Service failures and transformation errors allow fallback to the next service. Semantic Scholar author names are not currently converted into Zotero creators.
 
-All tools use the shared batch save boundary. Cancelling a settings dialog cancels the combined operation, including any following formatter. See the [workflow guide](metadata-workflow-zh.md) and [integration audit](logic-audit-2026-09-29.md) for validation coverage and limits.
+All tools use the shared batch save boundary. Cancelling a settings dialog cancels the combined operation, including any following formatter. See the [workflow guide](metadata-workflow-zh.md) and [current review](current-review.md) for validation coverage and limits.

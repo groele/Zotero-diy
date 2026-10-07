@@ -8,10 +8,11 @@ export default defineConfig({
   source: ["src", "addon"],
   dist: ".scaffold/build",
   name: pkg.config.addonName,
+  xpiName: "metaref-for-zotero",
   id: pkg.config.addonID,
   namespace: pkg.config.addonRef,
   updateURL: "https://raw.githubusercontent.com/groele/Zotero-diy/main/Linter-for-Zotero/dist/update.json",
-  xpiDownloadLink: "https://raw.githubusercontent.com/groele/Zotero-diy/main/Linter-for-Zotero/dist/linter-for-zotero.xpi",
+  xpiDownloadLink: "https://raw.githubusercontent.com/groele/Zotero-diy/main/Linter-for-Zotero/dist/metaref-for-zotero.xpi",
   server: {
     startArgs: ["-no-remote"],
   },
@@ -95,12 +96,12 @@ export default defineConfig({
   test: {
     entries: ["test/tests"],
     prefs: {
-      "linter.test.fixturePath": resolve("test/data"),
-      ...env.LINTER_TEST_PACKAGE_PATH && { "linter.test.packagePath": env.LINTER_TEST_PACKAGE_PATH },
-      ...env.LINTER_TEST_LOCALE && { "intl.locale.requested": env.LINTER_TEST_LOCALE },
+      "metaref.test.fixturePath": resolve("test/data"),
+      ...env.METAREF_TEST_PACKAGE_PATH && { "metaref.test.packagePath": env.METAREF_TEST_PACKAGE_PATH },
+      ...env.METAREF_TEST_LOCALE && { "intl.locale.requested": env.METAREF_TEST_LOCALE },
     },
     watch: false,
-    waitForPlugin: "() => Boolean(Zotero.Linter?.data.alive)",
+    waitForPlugin: "() => Boolean(Zotero.MetaRef?.data.alive)",
   },
 
   // If you need to see a more detailed build log, uncomment the following line:

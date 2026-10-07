@@ -1,3 +1,4 @@
+import { cachedJournalInsights } from "../utils/journal-insights";
 import { getString } from "../utils/locale";
 
 const registeredColumns: string[] = [];
@@ -27,13 +28,23 @@ export function registerExtraColumns() {
   });
   if (abbreviationColumn)
     registeredColumns.push(abbreviationColumn);
+  const esiColumn = Zotero.ItemTreeManager.registerColumn({
+    dataKey: "esiDiscipline",
+    label: getString("field-esi"),
+    dataProvider: item => addon.data.alive && item.itemType === "journalArticle" ? cachedJournalInsights(item)?.esi || "" : "",
+    pluginID: addon.data.config.addonID,
+    zoteroPersist: ["width", "hidden", "sortDirection"],
+  });
+  if (esiColumn)
+    registeredColumns.push(esiColumn);
+
   const natureIndexColumn = Zotero.ItemTreeManager.registerColumn({
     dataKey: "natureIndex",
     label: getString("field-nature-index"),
     dataProvider: (item) => {
       if (!addon?.data?.alive || item.itemType !== "journalArticle")
         return "";
-      return item.hasTag("Nature Index") ? "✓" : "";
+      return cachedJournalInsights(item)?.natureIndex ? "✓" : "";
     },
     pluginID: addon.data.config.addonID,
     zoteroPersist: ["width", "hidden", "sortDirection"],

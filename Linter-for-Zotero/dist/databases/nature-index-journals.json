@@ -1,0 +1,1886 @@
+{
+  "snapshot": "2026-09-30",
+  "release": "2026-06",
+  "publicationCount": 178,
+  "journalCount": 177,
+  "conferenceCount": 1,
+  "source": "https://www.nature.com/nature-index/faq",
+  "sourceLicense": "The Nature Index states that its most recent 12 months of data are available under CC BY-NC-SA 4.0; refer to the publisher's terms for the applicable license.",
+  "venues": [
+    {
+      "title": "Academy of Management Journal",
+      "type": "journal",
+      "aliases": [
+        "Acad. Manage. J."
+      ],
+      "issn": [
+        "0001-4273",
+        "1948-0989"
+      ]
+    },
+    {
+      "title": "ACS Nano",
+      "type": "journal",
+      "aliases": [
+        "ACS Nano"
+      ],
+      "issn": [
+        "1936-0851",
+        "1936-086X"
+      ]
+    },
+    {
+      "title": "Acta Biomaterialia",
+      "type": "journal",
+      "aliases": [
+        "Acta Biomater."
+      ],
+      "issn": [
+        "1742-7061",
+        "1878-7568"
+      ]
+    },
+    {
+      "title": "Advanced Functional Materials",
+      "type": "journal",
+      "aliases": [
+        "Adv. Funct. Mater."
+      ],
+      "issn": [
+        "1616-301X",
+        "1616-3028"
+      ]
+    },
+    {
+      "title": "Advanced Materials",
+      "type": "journal",
+      "aliases": [
+        "Adv. Mater."
+      ],
+      "issn": [
+        "0935-9648",
+        "1521-4095"
+      ]
+    },
+    {
+      "title": "American Economic Review",
+      "type": "journal",
+      "aliases": [
+        "Am. Econ. Rev."
+      ],
+      "issn": [
+        "0002-8282",
+        "1944-7981"
+      ]
+    },
+    {
+      "title": "American Journal of Clinical Nutrition",
+      "type": "journal",
+      "aliases": [
+        "Am. J. Clin. Nutr."
+      ],
+      "issn": [
+        "0002-9165",
+        "1938-3207"
+      ]
+    },
+    {
+      "title": "American Journal of Epidemiology",
+      "type": "journal",
+      "aliases": [
+        "Am. J. Epidemiol."
+      ],
+      "issn": [
+        "0002-9262",
+        "1476-6256"
+      ]
+    },
+    {
+      "title": "American Journal of Human Genetics",
+      "type": "journal",
+      "aliases": [
+        "Am. J. Hum. Genet."
+      ],
+      "issn": [
+        "0002-9297",
+        "1537-6605"
+      ]
+    },
+    {
+      "title": "American Journal of Obstetrics and Gynecology",
+      "type": "journal",
+      "aliases": [
+        "Am. J. Obstet. Gynecol."
+      ],
+      "issn": [
+        "0002-9378",
+        "1097-6868"
+      ]
+    },
+    {
+      "title": "American Journal of Pathology",
+      "type": "journal",
+      "aliases": [
+        "Am. J. Pathol."
+      ],
+      "issn": [
+        "0002-9440",
+        "1525-2191"
+      ]
+    },
+    {
+      "title": "American Journal of Political Science",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "0092-5853",
+        "1540-5907"
+      ]
+    },
+    {
+      "title": "American Journal of Respiratory and Critical Care Medicine",
+      "type": "journal",
+      "aliases": [
+        "Am. J. Respir. Crit. Care Med."
+      ],
+      "issn": [
+        "1073-449X",
+        "1535-4970"
+      ]
+    },
+    {
+      "title": "American Journal of Sociology",
+      "type": "journal",
+      "aliases": [
+        "Am. J. Sociol."
+      ],
+      "issn": [
+        "0002-9602",
+        "1537-5390"
+      ]
+    },
+    {
+      "title": "American Political Science Review",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "0003-0554",
+        "1537-5943"
+      ]
+    },
+    {
+      "title": "American Sociological Review",
+      "type": "journal",
+      "aliases": [
+        "Am. Sociol. Rev."
+      ],
+      "issn": [
+        "0003-1224",
+        "1939-8271"
+      ]
+    },
+    {
+      "title": "Analytical Chemistry",
+      "type": "journal",
+      "aliases": [
+        "Anal. Chem."
+      ],
+      "issn": [
+        "0003-2700",
+        "1520-6882"
+      ]
+    },
+    {
+      "title": "Anesthesiology",
+      "type": "journal",
+      "aliases": [
+        "Anesthesiology"
+      ],
+      "issn": [
+        "0003-3022",
+        "1528-1175"
+      ]
+    },
+    {
+      "title": "Angewandte Chemie International Edition",
+      "type": "journal",
+      "aliases": [
+        "Angew. Chem. Int. Ed."
+      ],
+      "issn": [
+        "1433-7851",
+        "1521-3773"
+      ]
+    },
+    {
+      "title": "Annals of Emergency Medicine",
+      "type": "journal",
+      "aliases": [
+        "Ann. Emerg. Med."
+      ],
+      "issn": [
+        "0196-0644",
+        "1097-6760"
+      ]
+    },
+    {
+      "title": "Annals of Family Medicine",
+      "type": "journal",
+      "aliases": [
+        "Ann. Fam. Med."
+      ],
+      "issn": [
+        "1544-1709",
+        "1544-1717"
+      ]
+    },
+    {
+      "title": "Annals of Internal Medicine",
+      "type": "journal",
+      "aliases": [
+        "Ann. Intern. Med."
+      ],
+      "issn": [
+        "0003-4819",
+        "1539-3704"
+      ]
+    },
+    {
+      "title": "Annals of Mathematics",
+      "type": "journal",
+      "aliases": [
+        "Ann. Math."
+      ],
+      "issn": [
+        "0003-486X",
+        "1939-8980"
+      ]
+    },
+    {
+      "title": "Annals of Neurology",
+      "type": "journal",
+      "aliases": [
+        "Ann. Neurol."
+      ],
+      "issn": [
+        "0364-5134",
+        "1531-8249"
+      ]
+    },
+    {
+      "title": "Annals of Surgery",
+      "type": "journal",
+      "aliases": [
+        "Ann. Surg."
+      ],
+      "issn": [
+        "0003-4932",
+        "1528-1140"
+      ]
+    },
+    {
+      "title": "Annals of the Rheumatic Diseases",
+      "type": "journal",
+      "aliases": [
+        "Ann. Rheum. Dis."
+      ],
+      "issn": [
+        "0003-4967",
+        "1468-2060"
+      ]
+    },
+    {
+      "title": "Applied Energy",
+      "type": "journal",
+      "aliases": [
+        "Appl. Energy"
+      ],
+      "issn": [
+        "0306-2619",
+        "1872-9118"
+      ]
+    },
+    {
+      "title": "Applied Physics Letters",
+      "type": "journal",
+      "aliases": [
+        "Appl. Phys. Lett."
+      ],
+      "issn": [
+        "0003-6951",
+        "1077-3118"
+      ]
+    },
+    {
+      "title": "Archives of Physical Medicine and Rehabilitation",
+      "type": "journal",
+      "aliases": [
+        "Arch. Phys. Med. Rehabil."
+      ],
+      "issn": [
+        "0003-9993",
+        "1532-821X"
+      ]
+    },
+    {
+      "title": "Arthritis & Rheumatology",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "2326-5191",
+        "2326-5205"
+      ]
+    },
+    {
+      "title": "Astronomy & Astrophysics",
+      "type": "journal",
+      "aliases": [
+        "Astron. Astrophys."
+      ],
+      "issn": [
+        "0004-6361",
+        "1432-0746"
+      ]
+    },
+    {
+      "title": "Blood",
+      "type": "journal",
+      "aliases": [
+        "Blood"
+      ],
+      "issn": [
+        "0006-4971",
+        "1528-0020"
+      ]
+    },
+    {
+      "title": "Brain",
+      "type": "journal",
+      "aliases": [
+        "Brain"
+      ],
+      "issn": [
+        "0006-8950",
+        "1460-2156"
+      ]
+    },
+    {
+      "title": "British Journal of Surgery",
+      "type": "journal",
+      "aliases": [
+        "Br. J. Surg."
+      ],
+      "issn": []
+    },
+    {
+      "title": "Cancer Cell",
+      "type": "journal",
+      "aliases": [
+        "Cancer Cell"
+      ],
+      "issn": [
+        "1535-6108",
+        "1878-3686"
+      ]
+    },
+    {
+      "title": "Cancer Research",
+      "type": "journal",
+      "aliases": [
+        "Cancer Res."
+      ],
+      "issn": [
+        "0008-5472",
+        "1538-7445"
+      ]
+    },
+    {
+      "title": "Cell",
+      "type": "journal",
+      "aliases": [
+        "Cell"
+      ],
+      "issn": [
+        "0092-8674",
+        "1097-4172"
+      ]
+    },
+    {
+      "title": "Cell Host & Microbe",
+      "type": "journal",
+      "aliases": [
+        "Cell Host Microbe"
+      ],
+      "issn": [
+        "1931-3128",
+        "1934-6069"
+      ]
+    },
+    {
+      "title": "Cell Metabolism",
+      "type": "journal",
+      "aliases": [
+        "Cell Metab."
+      ],
+      "issn": [
+        "1550-4131",
+        "1932-7420"
+      ]
+    },
+    {
+      "title": "Cell Stem Cell",
+      "type": "journal",
+      "aliases": [
+        "Cell Stem Cell"
+      ],
+      "issn": [
+        "1875-9777",
+        "1934-5909"
+      ]
+    },
+    {
+      "title": "Chemical Communications",
+      "type": "journal",
+      "aliases": [
+        "Chem. Commun."
+      ],
+      "issn": [
+        "1359-7345",
+        "1364-548X"
+      ]
+    },
+    {
+      "title": "Chemical Science",
+      "type": "journal",
+      "aliases": [
+        "Chem. Sci."
+      ],
+      "issn": [
+        "2041-6520",
+        "2041-6539"
+      ]
+    },
+    {
+      "title": "Chest",
+      "type": "journal",
+      "aliases": [
+        "Chest"
+      ],
+      "issn": [
+        "0012-3692",
+        "1931-3543"
+      ]
+    },
+    {
+      "title": "Circulation",
+      "type": "journal",
+      "aliases": [
+        "Circulation"
+      ],
+      "issn": [
+        "0009-7322",
+        "1524-4539"
+      ]
+    },
+    {
+      "title": "Cities",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "0264-2751",
+        "1873-6084"
+      ]
+    },
+    {
+      "title": "Clinical Infectious Diseases",
+      "type": "journal",
+      "aliases": [
+        "Clin. Infect. Dis."
+      ],
+      "issn": [
+        "1058-4838",
+        "1537-6591"
+      ]
+    },
+    {
+      "title": "Computers & Education",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "0360-1315",
+        "1873-782X"
+      ]
+    },
+    {
+      "title": "Computers in Human Behavior",
+      "type": "journal",
+      "aliases": [
+        "Comput. Hum. Behav."
+      ],
+      "issn": [
+        "0747-5632",
+        "1873-7692"
+      ]
+    },
+    {
+      "title": "Critical Care Medicine",
+      "type": "journal",
+      "aliases": [
+        "Crit. Care Med."
+      ],
+      "issn": [
+        "0090-3493",
+        "1530-0293"
+      ]
+    },
+    {
+      "title": "Current Biology",
+      "type": "journal",
+      "aliases": [
+        "Curr. Biol."
+      ],
+      "issn": [
+        "0960-9822",
+        "1879-0445"
+      ]
+    },
+    {
+      "title": "Developmental Cell",
+      "type": "journal",
+      "aliases": [
+        "Dev. Cell"
+      ],
+      "issn": [
+        "1534-5807",
+        "1878-1551"
+      ]
+    },
+    {
+      "title": "Diabetes Care",
+      "type": "journal",
+      "aliases": [
+        "Diabetes Care"
+      ],
+      "issn": [
+        "0149-5992",
+        "1935-5548"
+      ]
+    },
+    {
+      "title": "Earth and Planetary Science Letters",
+      "type": "journal",
+      "aliases": [
+        "Earth Planet. Sci. Lett."
+      ],
+      "issn": [
+        "0012-821X",
+        "1385-013X"
+      ]
+    },
+    {
+      "title": "Ecology Letters",
+      "type": "journal",
+      "aliases": [
+        "Ecol. Lett."
+      ],
+      "issn": [
+        "1461-023X",
+        "1461-0248"
+      ]
+    },
+    {
+      "title": "Econometrica",
+      "type": "journal",
+      "aliases": [
+        "Econometrica"
+      ],
+      "issn": [
+        "0012-9682",
+        "1468-0262"
+      ]
+    },
+    {
+      "title": "Energy",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "0360-5442",
+        "1873-6785"
+      ]
+    },
+    {
+      "title": "Energy & Environmental Science",
+      "type": "journal",
+      "aliases": [
+        "Energy Environ. Sci."
+      ],
+      "issn": [
+        "1754-5692",
+        "1754-5706"
+      ]
+    },
+    {
+      "title": "Environmental Health Perspectives",
+      "type": "journal",
+      "aliases": [
+        "Environ. Health Perspect."
+      ],
+      "issn": [
+        "0091-6765",
+        "1552-9924"
+      ]
+    },
+    {
+      "title": "Environmental Pollution",
+      "type": "journal",
+      "aliases": [
+        "Environ. Pollut."
+      ],
+      "issn": [
+        "0269-7491",
+        "1873-6424"
+      ]
+    },
+    {
+      "title": "Environmental Research",
+      "type": "journal",
+      "aliases": [
+        "Environ. Res."
+      ],
+      "issn": [
+        "0013-9351",
+        "1096-0953"
+      ]
+    },
+    {
+      "title": "Environmental Science and Technology",
+      "type": "journal",
+      "aliases": [
+        "Environ. Sci. Technol."
+      ],
+      "issn": [
+        "0013-936X",
+        "1520-5851"
+      ]
+    },
+    {
+      "title": "European Heart Journal",
+      "type": "journal",
+      "aliases": [
+        "Eur. Heart J."
+      ],
+      "issn": [
+        "0195-668X",
+        "1522-9645"
+      ]
+    },
+    {
+      "title": "European Physical Journal C",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "1434-6044",
+        "1434-6052"
+      ]
+    },
+    {
+      "title": "European Urology",
+      "type": "journal",
+      "aliases": [
+        "Eur. Urol."
+      ],
+      "issn": [
+        "0302-2838",
+        "1873-7560"
+      ]
+    },
+    {
+      "title": "Gastroenterology",
+      "type": "journal",
+      "aliases": [
+        "Gastroenterology"
+      ],
+      "issn": [
+        "0016-5085",
+        "1528-0012"
+      ]
+    },
+    {
+      "title": "Genes & Development",
+      "type": "journal",
+      "aliases": [
+        "Genes Dev."
+      ],
+      "issn": [
+        "0890-9369",
+        "1549-5477"
+      ]
+    },
+    {
+      "title": "Genome Research",
+      "type": "journal",
+      "aliases": [
+        "Genome Res."
+      ],
+      "issn": [
+        "1088-9051",
+        "1549-5469"
+      ]
+    },
+    {
+      "title": "Geochimica et Cosmochimica Acta",
+      "type": "journal",
+      "aliases": [
+        "Geochim. Cosmochim. Acta"
+      ],
+      "issn": [
+        "0016-7037",
+        "1872-9533"
+      ]
+    },
+    {
+      "title": "Geology",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "0091-7613",
+        "1943-2682"
+      ]
+    },
+    {
+      "title": "Geophysical Research Letters",
+      "type": "journal",
+      "aliases": [
+        "Geophys. Res. Lett."
+      ],
+      "issn": [
+        "0094-8276",
+        "1944-8007"
+      ]
+    },
+    {
+      "title": "Gut",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "0017-5749",
+        "1468-3288"
+      ]
+    },
+    {
+      "title": "Hepatology",
+      "type": "journal",
+      "aliases": [
+        "Hepatology"
+      ],
+      "issn": [
+        "0270-9139",
+        "1527-3350"
+      ]
+    },
+    {
+      "title": "Higher Education",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "0018-1560",
+        "1573-174X"
+      ]
+    },
+    {
+      "title": "Human Reproduction",
+      "type": "journal",
+      "aliases": [
+        "Hum. Reprod."
+      ],
+      "issn": [
+        "0268-1161",
+        "1460-2350"
+      ]
+    },
+    {
+      "title": "IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)",
+      "type": "conference"
+    },
+    {
+      "title": "Immunity",
+      "type": "journal",
+      "aliases": [
+        "Immunity"
+      ],
+      "issn": [
+        "1074-7613",
+        "1097-4180"
+      ]
+    },
+    {
+      "title": "Inorganic Chemistry",
+      "type": "journal",
+      "aliases": [
+        "Inorg. Chem."
+      ],
+      "issn": [
+        "0020-1669",
+        "1520-510X"
+      ]
+    },
+    {
+      "title": "International Journal of Epidemiology",
+      "type": "journal",
+      "aliases": [
+        "Int. J. Epidemiol."
+      ],
+      "issn": [
+        "0300-5771",
+        "1464-3685"
+      ]
+    },
+    {
+      "title": "International Journal of Obesity",
+      "type": "journal",
+      "aliases": [
+        "Int. J. Obes."
+      ],
+      "issn": [
+        "0307-0565",
+        "1476-5497"
+      ]
+    },
+    {
+      "title": "Inventiones mathematicae",
+      "type": "journal",
+      "aliases": [
+        "Invent. Math."
+      ],
+      "issn": [
+        "0020-9910",
+        "1432-1297"
+      ]
+    },
+    {
+      "title": "JAMA Internal Medicine",
+      "type": "journal",
+      "aliases": [
+        "JAMA Intern. Med."
+      ],
+      "issn": [
+        "2168-6106",
+        "2168-6114"
+      ]
+    },
+    {
+      "title": "JAMA Pediatrics",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "2168-6203",
+        "2168-6211"
+      ]
+    },
+    {
+      "title": "JAMA Psychiatry",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "2168-622X",
+        "2168-6238"
+      ]
+    },
+    {
+      "title": "JAMA Surgery",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "2168-6254",
+        "2168-6262"
+      ]
+    },
+    {
+      "title": "JAMA: The Journal of the American Medical Association",
+      "type": "journal",
+      "aliases": [
+        "JAMA, J. Am. Med. Assoc."
+      ],
+      "issn": [
+        "0098-7484",
+        "1538-3598"
+      ]
+    },
+    {
+      "title": "Journal of Biological Chemistry",
+      "type": "journal",
+      "aliases": [
+        "J. Biol. Chem."
+      ],
+      "issn": [
+        "0021-9258",
+        "1083-351X"
+      ]
+    },
+    {
+      "title": "Journal of Bone and Joint Surgery-American Volume",
+      "type": "journal",
+      "aliases": [
+        "J. Bone Joint Surg. Am."
+      ],
+      "issn": [
+        "0021-9355",
+        "1535-1386"
+      ]
+    },
+    {
+      "title": "Journal of Cell Biology",
+      "type": "journal",
+      "aliases": [
+        "J. Cell Biol."
+      ],
+      "issn": [
+        "0021-9525",
+        "1540-8140"
+      ]
+    },
+    {
+      "title": "Journal of Cleaner Production",
+      "type": "journal",
+      "aliases": [
+        "J. Cleaner Prod."
+      ],
+      "issn": [
+        "0959-6526",
+        "1879-1786"
+      ]
+    },
+    {
+      "title": "Journal of Clinical Endocrinology & Metabolism",
+      "type": "journal",
+      "aliases": [
+        "J. Clin. Endocrinol. Metab."
+      ],
+      "issn": [
+        "0021-972X",
+        "1945-7197"
+      ]
+    },
+    {
+      "title": "Journal of Clinical Investigation",
+      "type": "journal",
+      "aliases": [
+        "J. Clin. Invest."
+      ],
+      "issn": [
+        "0021-9738",
+        "1558-8238"
+      ]
+    },
+    {
+      "title": "Journal of Clinical Oncology",
+      "type": "journal",
+      "aliases": [
+        "J. Clin. Oncol."
+      ],
+      "issn": [
+        "0732-183X",
+        "1527-7755"
+      ]
+    },
+    {
+      "title": "Journal of Experimental Medicine",
+      "type": "journal",
+      "aliases": [
+        "J. Exp. Med."
+      ],
+      "issn": [
+        "0022-1007",
+        "1540-9538"
+      ]
+    },
+    {
+      "title": "Journal of Financial Economics",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "0304-405X"
+      ]
+    },
+    {
+      "title": "Journal of Geophysical Research: Atmospheres",
+      "type": "journal",
+      "aliases": [
+        "J. Geophys. Res.: Atmos."
+      ],
+      "issn": [
+        "2169-897X",
+        "2169-8996"
+      ]
+    },
+    {
+      "title": "Journal of Geophysical Research: Solid Earth",
+      "type": "journal",
+      "aliases": [
+        "J. Geophys. Res.: Solid Earth"
+      ],
+      "issn": [
+        "2169-9313",
+        "2169-9356"
+      ]
+    },
+    {
+      "title": "Journal of Hepatology",
+      "type": "journal",
+      "aliases": [
+        "J. Hepatol."
+      ],
+      "issn": [
+        "0168-8278",
+        "1600-0641"
+      ]
+    },
+    {
+      "title": "Journal of High Energy Physics",
+      "type": "journal",
+      "aliases": [
+        "J. High Energy Phys."
+      ],
+      "issn": [
+        "1029-8479"
+      ]
+    },
+    {
+      "title": "Journal of Infectious Diseases",
+      "type": "journal",
+      "aliases": [
+        "J. Infect. Dis."
+      ],
+      "issn": [
+        "0022-1899",
+        "1537-6613"
+      ]
+    },
+    {
+      "title": "Journal of Neuroscience",
+      "type": "journal",
+      "aliases": [
+        "J. Neurosci."
+      ],
+      "issn": [
+        "0270-6474",
+        "1529-2401"
+      ]
+    },
+    {
+      "title": "Journal of Physiology",
+      "type": "journal",
+      "aliases": [
+        "J. Physiol."
+      ],
+      "issn": []
+    },
+    {
+      "title": "Journal of Political Economy",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "0022-3808",
+        "1537-534X"
+      ]
+    },
+    {
+      "title": "Journal of the American Academy of Child and Adolescent Psychiatry",
+      "type": "journal",
+      "aliases": [
+        "J. Am. Acad. Child Adolesc. Psychiatry"
+      ],
+      "issn": [
+        "0890-8567",
+        "1527-5418"
+      ]
+    },
+    {
+      "title": "Journal of the American Academy of Dermatology",
+      "type": "journal",
+      "aliases": [
+        "J. Am. Acad. Dermatol."
+      ],
+      "issn": [
+        "0190-9622",
+        "1097-6787"
+      ]
+    },
+    {
+      "title": "Journal of the American Chemical Society",
+      "type": "journal",
+      "aliases": [
+        "J. Am. Chem. Soc."
+      ],
+      "issn": [
+        "0002-7863",
+        "1520-5126"
+      ]
+    },
+    {
+      "title": "Journal of the American College of Cardiology",
+      "type": "journal",
+      "aliases": [
+        "J. Am. Coll. Cardiol."
+      ],
+      "issn": []
+    },
+    {
+      "title": "Journal of the American Geriatrics Society",
+      "type": "journal",
+      "aliases": [
+        "J. Am. Geriatr. Soc."
+      ],
+      "issn": [
+        "0002-8614",
+        "1532-5415"
+      ]
+    },
+    {
+      "title": "Journal of the American Society of Nephrology",
+      "type": "journal",
+      "aliases": [
+        "J. Am. Soc. Nephrol."
+      ],
+      "issn": [
+        "1046-6673",
+        "1533-3450"
+      ]
+    },
+    {
+      "title": "Journal of the National Cancer Institute",
+      "type": "journal",
+      "aliases": [
+        "J. Natl. Cancer Inst."
+      ],
+      "issn": []
+    },
+    {
+      "title": "Journal of the Royal Statistical Society Series B: Statistical Methodology",
+      "type": "journal",
+      "aliases": [
+        "J. R. Stat. Soc. B",
+        "J. R. Stat. Soc. Ser. B. Stat. Methodol."
+      ],
+      "issn": [
+        "1369-7412",
+        "1467-9868"
+      ]
+    },
+    {
+      "title": "Journal of Thoracic and Cardiovascular Surgery",
+      "type": "journal",
+      "aliases": [
+        "J. Thorac. Cardiovasc. Surg."
+      ],
+      "issn": [
+        "0022-5223",
+        "1097-685X"
+      ]
+    },
+    {
+      "title": "Kidney International",
+      "type": "journal",
+      "aliases": [
+        "Kidney Int."
+      ],
+      "issn": [
+        "0085-2538",
+        "1523-1755"
+      ]
+    },
+    {
+      "title": "Macromolecules",
+      "type": "journal",
+      "aliases": [
+        "Macromolecules"
+      ],
+      "issn": [
+        "0024-9297",
+        "1520-5835"
+      ]
+    },
+    {
+      "title": "Management Science",
+      "type": "journal",
+      "aliases": [
+        "Manage. Sci."
+      ],
+      "issn": [
+        "0025-1909",
+        "1526-5501"
+      ]
+    },
+    {
+      "title": "Molecular Cell",
+      "type": "journal",
+      "aliases": [
+        "Mol. Cell"
+      ],
+      "issn": [
+        "1097-2765",
+        "1097-4164"
+      ]
+    },
+    {
+      "title": "Molecular Psychiatry",
+      "type": "journal",
+      "aliases": [
+        "Mol. Psychiatry"
+      ],
+      "issn": [
+        "1359-4184",
+        "1476-5578"
+      ]
+    },
+    {
+      "title": "Monthly Notices of the Royal Astronomical Society",
+      "type": "journal",
+      "aliases": [
+        "Mon. Not. R. Astron. Soc."
+      ],
+      "issn": [
+        "0035-8711",
+        "1365-2966"
+      ]
+    },
+    {
+      "title": "Monthly Notices of the Royal Astronomical Society: Letters",
+      "type": "journal",
+      "aliases": [
+        "Mon. Not. R. Astron. Soc. Lett."
+      ],
+      "issn": []
+    },
+    {
+      "title": "Nano Letters",
+      "type": "journal",
+      "aliases": [
+        "Nano Lett."
+      ],
+      "issn": [
+        "1530-6984",
+        "1530-6992"
+      ]
+    },
+    {
+      "title": "Nature",
+      "type": "journal",
+      "aliases": [
+        "Nature"
+      ],
+      "issn": [
+        "0028-0836",
+        "1476-4687"
+      ]
+    },
+    {
+      "title": "Nature Biotechnology",
+      "type": "journal",
+      "aliases": [
+        "Nat. Biotechnol."
+      ],
+      "issn": [
+        "1087-0156",
+        "1546-1696"
+      ]
+    },
+    {
+      "title": "Nature Cell Biology",
+      "type": "journal",
+      "aliases": [
+        "Nat. Cell Biol."
+      ],
+      "issn": [
+        "1465-7392",
+        "1476-4679"
+      ]
+    },
+    {
+      "title": "Nature Chemical Biology",
+      "type": "journal",
+      "aliases": [
+        "Nat. Chem. Biol."
+      ],
+      "issn": [
+        "1552-4450",
+        "1552-4469"
+      ]
+    },
+    {
+      "title": "Nature Chemistry",
+      "type": "journal",
+      "aliases": [
+        "Nat. Chem."
+      ],
+      "issn": [
+        "1755-4330",
+        "1755-4349"
+      ]
+    },
+    {
+      "title": "Nature Climate Change",
+      "type": "journal",
+      "aliases": [
+        "Nat. Clim. Change"
+      ],
+      "issn": [
+        "1758-678X",
+        "1758-6798"
+      ]
+    },
+    {
+      "title": "Nature Communications",
+      "type": "journal",
+      "aliases": [
+        "Nat. Commun."
+      ],
+      "issn": [
+        "2041-1723"
+      ]
+    },
+    {
+      "title": "Nature Energy",
+      "type": "journal",
+      "aliases": [
+        "Nat. Energy"
+      ],
+      "issn": [
+        "2058-7546"
+      ]
+    },
+    {
+      "title": "Nature Genetics",
+      "type": "journal",
+      "aliases": [
+        "Nat. Genet."
+      ],
+      "issn": [
+        "1061-4036",
+        "1546-1718"
+      ]
+    },
+    {
+      "title": "Nature Geoscience",
+      "type": "journal",
+      "aliases": [
+        "Nat. Geosci."
+      ],
+      "issn": [
+        "1752-0894",
+        "1752-0908"
+      ]
+    },
+    {
+      "title": "Nature Human Behaviour",
+      "type": "journal",
+      "aliases": [
+        "Nat. Hum. Behav."
+      ],
+      "issn": [
+        "2397-3374"
+      ]
+    },
+    {
+      "title": "Nature Immunology",
+      "type": "journal",
+      "aliases": [
+        "Nat. Immunol."
+      ],
+      "issn": [
+        "1529-2908",
+        "1529-2916"
+      ]
+    },
+    {
+      "title": "Nature Materials",
+      "type": "journal",
+      "aliases": [
+        "Nat. Mater."
+      ],
+      "issn": [
+        "1476-1122",
+        "1476-4660"
+      ]
+    },
+    {
+      "title": "Nature Medicine",
+      "type": "journal",
+      "aliases": [
+        "Nat. Med."
+      ],
+      "issn": [
+        "1078-8956",
+        "1546-170X"
+      ]
+    },
+    {
+      "title": "Nature Methods",
+      "type": "journal",
+      "aliases": [
+        "Nat. Methods"
+      ],
+      "issn": [
+        "1548-7091",
+        "1548-7105"
+      ]
+    },
+    {
+      "title": "Nature Nanotechnology",
+      "type": "journal",
+      "aliases": [
+        "Nat. Nanotechnol."
+      ],
+      "issn": [
+        "1748-3387",
+        "1748-3395"
+      ]
+    },
+    {
+      "title": "Nature Neuroscience",
+      "type": "journal",
+      "aliases": [
+        "Nat. Neurosci."
+      ],
+      "issn": [
+        "1097-6256",
+        "1546-1726"
+      ]
+    },
+    {
+      "title": "Nature Photonics",
+      "type": "journal",
+      "aliases": [
+        "Nat. Photonics"
+      ],
+      "issn": [
+        "1749-4885",
+        "1749-4893"
+      ]
+    },
+    {
+      "title": "Nature Physics",
+      "type": "journal",
+      "aliases": [
+        "Nat. Phys."
+      ],
+      "issn": [
+        "1745-2473",
+        "1745-2481"
+      ]
+    },
+    {
+      "title": "Nature Structural & Molecular Biology",
+      "type": "journal",
+      "aliases": [
+        "Nat. Struct. Mol. Biol."
+      ],
+      "issn": [
+        "1545-9985",
+        "1545-9993"
+      ]
+    },
+    {
+      "title": "Nature Sustainability",
+      "type": "journal",
+      "aliases": [
+        "Nat. Sustainability"
+      ],
+      "issn": [
+        "2398-9629"
+      ]
+    },
+    {
+      "title": "Neuron",
+      "type": "journal",
+      "aliases": [
+        "Neuron"
+      ],
+      "issn": [
+        "0896-6273",
+        "1097-4199"
+      ]
+    },
+    {
+      "title": "Ophthalmology",
+      "type": "journal",
+      "aliases": [
+        "Ophthalmology"
+      ],
+      "issn": [
+        "0161-6420",
+        "1549-4713"
+      ]
+    },
+    {
+      "title": "Organic Letters",
+      "type": "journal",
+      "aliases": [
+        "Org. Lett."
+      ],
+      "issn": [
+        "1523-7052",
+        "1523-7060"
+      ]
+    },
+    {
+      "title": "Physical Review A",
+      "type": "journal",
+      "aliases": [
+        "Phys. Rev. A"
+      ],
+      "issn": [
+        "2469-9926",
+        "2469-9934"
+      ]
+    },
+    {
+      "title": "Physical Review B",
+      "type": "journal",
+      "aliases": [
+        "Phys. Rev. B"
+      ],
+      "issn": [
+        "2469-9950",
+        "2469-9969"
+      ]
+    },
+    {
+      "title": "Physical Review D",
+      "type": "journal",
+      "aliases": [
+        "Phys. Rev. D"
+      ],
+      "issn": [
+        "2470-0010",
+        "2470-0029"
+      ]
+    },
+    {
+      "title": "Physical Review Letters",
+      "type": "journal",
+      "aliases": [
+        "Phys. Rev. Lett."
+      ],
+      "issn": [
+        "0031-9007",
+        "1079-7114"
+      ]
+    },
+    {
+      "title": "Physical Review X",
+      "type": "journal",
+      "aliases": [
+        "Phys. Rev. X"
+      ],
+      "issn": [
+        "2160-3308"
+      ]
+    },
+    {
+      "title": "Plant Biotechnology Journal",
+      "type": "journal",
+      "aliases": [
+        "Plant Biotechnol. J."
+      ],
+      "issn": [
+        "1467-7644",
+        "1467-7652"
+      ]
+    },
+    {
+      "title": "PLOS Biology",
+      "type": "journal",
+      "aliases": [
+        "PLOS Biol."
+      ],
+      "issn": [
+        "1544-9173",
+        "1545-7885"
+      ]
+    },
+    {
+      "title": "PLOS Genetics",
+      "type": "journal",
+      "aliases": [
+        "PLOS Genet."
+      ],
+      "issn": [
+        "1553-7404"
+      ]
+    },
+    {
+      "title": "PLOS Medicine",
+      "type": "journal",
+      "aliases": [
+        "PLoS Med."
+      ],
+      "issn": [
+        "1549-1277",
+        "1549-1676"
+      ]
+    },
+    {
+      "title": "Proceedings of the National Academy of Sciences of the United States of America",
+      "type": "journal",
+      "aliases": [
+        "Proc. Natl. Acad. Sci. U. S. A."
+      ],
+      "issn": [
+        "0027-8424",
+        "1091-6490"
+      ]
+    },
+    {
+      "title": "Proceedings of the Royal Society B",
+      "type": "journal",
+      "aliases": [
+        "Proc. R. Soc. B"
+      ],
+      "issn": []
+    },
+    {
+      "title": "Radiology",
+      "type": "journal",
+      "aliases": [
+        "Radiology"
+      ],
+      "issn": [
+        "0033-8419",
+        "1527-1315"
+      ]
+    },
+    {
+      "title": "Science",
+      "type": "journal",
+      "aliases": [
+        "Science"
+      ],
+      "issn": [
+        "0036-8075",
+        "1095-9203"
+      ]
+    },
+    {
+      "title": "Science Advances",
+      "type": "journal",
+      "aliases": [
+        "Sci. Adv."
+      ],
+      "issn": [
+        "2375-2548"
+      ]
+    },
+    {
+      "title": "Science Translational Medicine",
+      "type": "journal",
+      "aliases": [
+        "Sci. Transl. Med."
+      ],
+      "issn": [
+        "1946-6234",
+        "1946-6242"
+      ]
+    },
+    {
+      "title": "Sustainable Cities and Society",
+      "type": "journal",
+      "aliases": [
+        "Sustainable Cities Soc."
+      ],
+      "issn": [
+        "2210-6707",
+        "2210-6715"
+      ]
+    },
+    {
+      "title": "The Astrophysical Journal Letters",
+      "type": "journal",
+      "aliases": [
+        "Astrophys. J. Lett."
+      ],
+      "issn": [
+        "2041-8205",
+        "2041-8213"
+      ]
+    },
+    {
+      "title": "The BMJ",
+      "type": "journal",
+      "aliases": [],
+      "issn": []
+    },
+    {
+      "title": "The EMBO Journal",
+      "type": "journal",
+      "aliases": [
+        "EMBO J."
+      ],
+      "issn": [
+        "0261-4189",
+        "1460-2075"
+      ]
+    },
+    {
+      "title": "The ISME Journal: Multidisciplinary Journal of Microbial Ecology",
+      "type": "journal",
+      "aliases": [],
+      "issn": []
+    },
+    {
+      "title": "The Journal of Allergy and Clinical Immunology",
+      "type": "journal",
+      "aliases": [
+        "J. Allergy Clin. Immunol."
+      ],
+      "issn": [
+        "0091-6749",
+        "1097-6825"
+      ]
+    },
+    {
+      "title": "The Journal of Physical Chemistry Letters",
+      "type": "journal",
+      "aliases": [
+        "J. Phys. Chem. Lett."
+      ],
+      "issn": [
+        "1948-7185"
+      ]
+    },
+    {
+      "title": "The Lancet",
+      "type": "journal",
+      "aliases": [
+        "Lancet"
+      ],
+      "issn": [
+        "0140-6736",
+        "1474-547X"
+      ]
+    },
+    {
+      "title": "The Lancet Diabetes & Endocrinology",
+      "type": "journal",
+      "aliases": [
+        "Lancet Diabetes Endocrinol."
+      ],
+      "issn": [
+        "2213-8587",
+        "2213-8595"
+      ]
+    },
+    {
+      "title": "The Lancet Global Health",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "2214-109X"
+      ]
+    },
+    {
+      "title": "The Lancet Neurology",
+      "type": "journal",
+      "aliases": [
+        "Lancet Neurol."
+      ],
+      "issn": [
+        "1474-4422",
+        "1474-4465"
+      ]
+    },
+    {
+      "title": "The Lancet Oncology",
+      "type": "journal",
+      "aliases": [
+        "Lancet Oncol."
+      ],
+      "issn": [
+        "1470-2045",
+        "1474-5488"
+      ]
+    },
+    {
+      "title": "The Lancet Psychiatry",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "2215-0366",
+        "2215-0374"
+      ]
+    },
+    {
+      "title": "The New England Journal of Medicine",
+      "type": "journal",
+      "aliases": [
+        "N. Engl. J. Med."
+      ],
+      "issn": [
+        "0028-4793",
+        "1533-4406"
+      ]
+    },
+    {
+      "title": "The Plant Cell",
+      "type": "journal",
+      "aliases": [
+        "Plant Cell"
+      ],
+      "issn": [
+        "1040-4651",
+        "1532-298X"
+      ]
+    },
+    {
+      "title": "The Quarterly Journal of Economics",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "0033-5533",
+        "1531-4650"
+      ]
+    },
+    {
+      "title": "The Review of Economic Studies",
+      "type": "journal",
+      "aliases": [
+        "Rev. Econom. Stud."
+      ],
+      "issn": [
+        "0034-6527",
+        "1467-937X"
+      ]
+    },
+    {
+      "title": "Thorax",
+      "type": "journal",
+      "aliases": [
+        "Thorax"
+      ],
+      "issn": [
+        "0040-6376",
+        "1468-3296"
+      ]
+    },
+    {
+      "title": "Water Research",
+      "type": "journal",
+      "aliases": [
+        "Water Res."
+      ],
+      "issn": [
+        "0043-1354",
+        "1879-2448"
+      ]
+    },
+    {
+      "title": "World Development",
+      "type": "journal",
+      "aliases": [],
+      "issn": [
+        "0305-750X",
+        "1873-5991"
+      ]
+    }
+  ]
+}

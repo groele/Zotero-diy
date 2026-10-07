@@ -27,14 +27,14 @@ import { CorrectConferenceAbbr, RequireJournalAbbr } from "./require-abbr";
 import { RequireCreators } from "./require-creators";
 import { RequireDOI } from "./require-doi";
 import { RequireLanguage } from "./require-language";
-import { RequireSeriesESI } from "./require-series-esi";
 import { RequireShortTitle } from "./require-short-title";
 import { RequireUniversityPlace } from "./require-university-place";
 import { ToolCleanExtra } from "./tool-clean-extra";
 import { ToolCreatorsExt } from "./tool-creators-ext";
 import { ToolCSLHelper } from "./tool-csl-extra-helper";
 import { ToolGetShortDOI } from "./tool-get-short-doi";
-import { ToolMarkNatureIndex } from "./tool-mark-nature-index";
+import { ToolQueryESI } from "./tool-query-esi";
+import { ToolQueryNatureIndex } from "./tool-query-nature-index";
 import { ToolSetLanguage } from "./tool-set-language";
 import { ToolTitleGuillemet } from "./tool-title-guillemet";
 import { ToolUpdateMetadata } from "./tool-update-metadata";
@@ -77,7 +77,6 @@ const register: Rule<any>[] = [
   CorrectPublicationTitleAlias,
   CorrectPublicationTitleCase,
   RequireJournalAbbr,
-  RequireSeriesESI,
   CorrectPagesConnector,
   CorrectPagesRange,
   NoIssueExtraZeros,
@@ -104,12 +103,13 @@ const register: Rule<any>[] = [
   CorrectPriorityDateFormat,
 
   // Tools
+  ToolQueryESI,
   ToolTitleGuillemet,
   ToolCreatorsExt,
   ToolSetLanguage,
   ToolUpdateMetadata,
   ToolGetShortDOI,
-  ToolMarkNatureIndex,
+  ToolQueryNatureIndex,
   ToolCSLHelper,
   ToolCleanExtra,
 ];
@@ -154,6 +154,4 @@ export class Rules {
   }
 }
 
-// The tool's settings option is compatibility,
-// which suppresses typing error.
 type StandardRuleID = Exclude<ID, `tool-${string}`>;

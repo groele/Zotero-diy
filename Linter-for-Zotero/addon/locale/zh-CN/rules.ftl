@@ -34,7 +34,7 @@ rule-require-language =
 rule-require-language-menu-item =
   .label = 自动识别条目语言
 rule-require-language-menu-field =
-  .label = 自动识别（Linter）
+  .label = 自动识别（MetaRef）
 
 rule-require-language-option-only =
   .label = 限制识别的语言以提高准确度：
@@ -61,7 +61,7 @@ rule-correct-title-sentence-case =
 rule-correct-title-sentence-case-menu-item =
   .label = 将标题改为句首大写
 rule-correct-title-sentence-case-menu-field =
-  .label = 句首大写（Linter）
+  .label = 句首大写（MetaRef）
 
 rule-correct-title-sentence-option-custom-term = 自定义术语：
   .label = 自定义术语
@@ -80,7 +80,7 @@ rule-correct-title-sentence-option-disabled-languages-desc = 如需添加其他�
 rule-correct-title-punctuation =
   .label = 标题中的符号应规范
 rule-correct-title-punctuation-menu-field =
-  .label = 规范符号（Linter）
+  .label = 规范符号（MetaRef）
 rule-correct-title-punctuation-quotes =
   .label = 直引号转换为弯引号
 
@@ -89,7 +89,7 @@ rule-correct-title-punctuation-quotes =
 rule-correct-creators-punctuation =
   .label = 作者名中的符号应规范
 rule-correct-creators-punctuation-menu-field =
-  .label = 规范符号（Linter）
+  .label = 规范符号（MetaRef）
 
 
 ## correct-shortTitle-sentence-case
@@ -109,7 +109,7 @@ rule-correct-title-chemical-formula =
 rule-correct-title-chemical-formula-menu-item =
   .label = 自动整理化学式上下标
 rule-correct-title-chemical-formula-menu-field =
-  .label = 自动整理化学式上下标（Linter）
+  .label = 自动整理化学式上下标（MetaRef）
 
 
 ## require-creators
@@ -137,7 +137,7 @@ rule-correct-date-format =
 rule-correct-date-format-menu-item =
   .label = 统一日期格式为 ISO 格式
 rule-correct-date-format-menu-field =
-  .label = 转为 ISO 格式（Linter）
+  .label = 转为 ISO 格式（MetaRef）
 
 
 rule-correct-filing-date-format =
@@ -155,7 +155,7 @@ rule-correct-extra-order =
 rule-correct-extra-order-menu-item =
   .label = 修正「额外」字段的顺序
 rule-correct-extra-order-menu-field =
-  .label = 修正顺序 (Linter)
+  .label = 修正顺序 (MetaRef)
 
 
 ## correct-publication-title-alias
@@ -164,7 +164,7 @@ rule-correct-publication-title-alias =
 rule-correct-publication-title-alias-menu-item =
   .label = 修正期刊标题别称
 rule-correct-publication-title-alias-menu-field =
-  .label = 修正别称 (Linter)
+  .label = 修正别称 (MetaRef)
 
 
 ## correct-publication-title-case
@@ -173,7 +173,7 @@ rule-correct-publication-title-case =
 rule-correct-publication-title-case-menu-item =
   .label = 修正期刊标题大小写
 rule-correct-publication-title-case-menu-field =
-  .label = 修正大小写 (Linter)
+  .label = 修正大小写 (MetaRef)
 
 
 ## require-journal-abbr
@@ -182,7 +182,7 @@ rule-require-journal-abbr =
 rule-require-journal-abbr-menu-item =
   .label = 自动填充期刊缩写
 rule-require-journal-abbr-menu-field =
-  .label = 查找缩写（Linter）
+  .label = 查找缩写（MetaRef）
 
 rule-require-journal-abbr-option-infer =
   .label = 本地数据集没有期刊缩写时自动根据 ISO 4 规则推断缩写
@@ -202,27 +202,25 @@ rule-require-journal-abbr-option-custom-data-desc =
   CSV 格式第一列填全称，第二列填简写，分隔符可以为逗号或分号，但须统一，不得为制表符。
 
 
-## require-series-esi
-rule-require-series-esi =
-  .label = 识别期刊 ESI 学科并写入系列和档案字段
-rule-require-series-esi-menu-item =
+## tool-query-esi
+rule-tool-query-esi =
+  .label = 校验期刊 ESI 学科识别（不写入字段）
+rule-tool-query-esi-menu-item =
   .label = 获取期刊 ESI 学科
-rule-require-series-esi-menu-field =
-  .label = 获取 ESI 学科（Linter）
-tool-mark-nature-index =
-  .label = 标记 Nature Index 期刊
-tool-mark-nature-index-menu-item =
-  .label = 识别并标记 Nature Index 期刊
-tool-mark-nature-index-description = 对期刊名称、缩写或 ISSN 与官方名单匹配的期刊添加 Zotero 标签「Nature Index」，并将标识写入「档案编号」字段。已有档案编号会保留。
+tool-query-nature-index =
+  .label = 识别 Nature Index 期刊
+tool-query-nature-index-menu-item =
+  .label = 识别 Nature Index 名单期刊
+tool-query-nature-index-description = 在独立侧栏和列表列显示期刊名单成员身份。不添加标签，不写入档案编号；期刊名单成员不代表该篇文章已被收录。
 
-rule-require-series-esi-option-format = 识别文本格式（同时写入系列和档案）：
-rule-require-series-esi-option-format-desc = 支持变量：{ "{" }subject{ "}" }（中文学科，如“物理学”）、{ "{" }category{ "}" }（英文学科大写，如“PHYSICS”）、{ "{" }en{ "}" }（英文学科，如“Physics”）。默认格式为：{ "{" }subject{ "}" }ESI（即“物理学 ESI”）。
-rule-require-series-esi-option-custom-data-label = 自定义数据文件：
-rule-require-series-esi-option-choose-custom-data-button =
+rule-tool-query-esi-option-format = 列表列显示格式：
+rule-tool-query-esi-option-format-desc = 支持变量：{ "{" }subject{ "}" }（中文学科，如“物理学”）、{ "{" }category{ "}" }（英文学科大写，如“PHYSICS”）、{ "{" }en{ "}" }（英文学科，如“Physics”）。默认格式为：{ "{" }subject{ "}" }ESI（即“物理学 ESI”）。
+rule-tool-query-esi-option-custom-data-label = 自定义数据文件：
+rule-tool-query-esi-option-choose-custom-data-button =
   .label = 选择
-rule-require-series-esi-option-choose-custom-data-input =
+rule-tool-query-esi-option-choose-custom-data-input =
   .placeholder = ESI 数据文件的路径
-rule-require-series-esi-option-custom-data-desc = 支持 JSON 和 CSV。内置 Clarivate 2026 年第 6 期主期刊表，含全部 22 个 ESI 学科和 12,245 个规范化刊名；自定义文件会替换内置名单。
+rule-tool-query-esi-option-custom-data-desc = 支持 JSON 和 CSV。内置 Clarivate 2026 年第 6 期主期刊表，含全部 22 个 ESI 学科和 12,245 个规范化刊名；自定义文件会替换内置名单。
 
 
 ## require-doi
@@ -231,7 +229,7 @@ rule-require-doi =
 rule-require-doi-menu-item =
   .label = 根据标题查找 DOI
 rule-require-doi-menu-field =
-  .label = 查找 DOI（Linter）
+  .label = 查找 DOI（MetaRef）
 
 
 ## no-doi-prefix
@@ -240,7 +238,7 @@ rule-no-doi-prefix =
 rule-no-doi-prefix-menu-item =
   .label = 去除 DOI 网址前缀
 rule-no-doi-prefix-menu-field =
-  .label = 去除网址前缀（Linter）
+  .label = 去除网址前缀（MetaRef）
 
 
 ## correct-doi-long
@@ -297,7 +295,7 @@ rule-require-university-place =
 rule-require-university-place-menu-item =
   .label = 填写高校所在地
 rule-require-university-place-menu-field =
-  .label = 查找（Linter）
+  .label = 查找（MetaRef）
 
 
 ## correct-edition-numeral
@@ -380,7 +378,7 @@ rule-tool-csl-helper =
 rule-tool-csl-helper-menu-item =
   .label = { rule-tool-csl-helper.label }
 rule-tool-csl-helper-menu-field =
-  .label = { rule-tool-csl-helper.label }（Linter）
+  .label = { rule-tool-csl-helper.label }（MetaRef）
 
 
 ## tool-clean-extra
@@ -400,9 +398,6 @@ rule-tool-update-metadata-no-identifiers = 未找到可用的标识符或网址�
 rule-tool-update-metadata-no-data = 未找到可用的元数据。{ $errors }
 rule-tool-update-metadata-service-warning = 已通过 { $service } 更新元数据，部分服务失败：{ $errors }
 rule-tool-update-metadata-invalid-date = 服务返回的访问日期无效，已保留原值。
-rule-require-series-esi-option-overwrite =
-  .label = 允许 ESI 分类覆盖已有的非 ESI 系列信息
-rule-require-series-esi-preserved = 系列字段已有非 ESI 内容，已保留。若需替换，请开启 ESI 覆盖选项。
 rule-tool-update-metadata-invalid-creators = 服务返回的作者类型无效，已保留原作者列表。
 rule-tool-update-metadata-type-change-loss = 更改条目类型会删除已有字段或改变作者角色。只补全空白字段模式已保留原类型，并补全兼容的空白字段。
-rule-require-series-esi-custom-data-error = 自定义 ESI 数据不可用，已回退至内置数据：{ $error }
+rule-tool-query-esi-custom-data-error = 自定义 ESI 数据不可用，已回退至内置数据：{ $error }

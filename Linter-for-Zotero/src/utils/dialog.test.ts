@@ -83,4 +83,33 @@ describe("dialog lifecycle", () => {
     await pending;
     expect(addon.data.dialogs.size).toBe(0);
   });
+  it("settles a native close even if the toolkit unload lock is never resolved", async () => {
+    const { dialog, loadLock, window } = createDialog();
+    window.close.mockImplementation(() => {
+      window.closed = true;
+      window.dispatchEvent(new Event("unload"));
+    });
+    const pending = useDialog(dialog as any).openAndWaitClose("Native close");
+    loadLock.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(addon.data.dialogs.size).toBe(1);
+    window.close();
+    await pending;
+    expect(addon.data.dialogs.size).toBe(0);
+  });
+  it("ignores the initial document unload while the dialog is loading", async () => {
+    const { dialog, loadLock, window } = createDialog();
+    const pending = useDialog(dialog as any).openAndWaitClose("Initial document");
+    window.dispatchEvent(new Event("unload"));
+    await Promise.resolve();
+    expect(window.focus).not.toHaveBeenCalled();
+    loadLock.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(addon.data.dialogs.size).toBe(1);
+    window.close();
+    await pending;
+    expect(addon.data.dialogs.size).toBe(0);
+  });
 });

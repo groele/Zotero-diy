@@ -2,11 +2,11 @@
 
 ## 使用入口
 
-在 Zotero 设置 → Linter for Zotero →「标题 Title」中，勾选「自动整理标题中的化学式上下标」。此项默认关闭；开启后加入标准 Lint，并在「添加条目时自动执行 Lint」开启时参与新条目整理。
+在 Zotero 设置 → MetaRef →「标题 Title」中，勾选「自动整理标题中的化学式上下标」。此项默认关闭；开启后加入标准 Lint，并在「添加条目时自动执行 Lint」开启时参与新条目整理。
 
 「修复化学式内部及异质结构分隔符两侧的多余空格」独立控制空格处理。仅需要角标转换时可以关闭它。「右键菜单设置」中的对应开关只控制入口是否显示，不控制自动规则是否运行。
 
-选中条目后，右键 → Linter →「自动整理化学式上下标」可单独处理选中条目。分类右键菜单可使用相同功能。标题字段右键也有独立入口。这些手动操作不要求开启自动规则。
+选中条目后，右键 → MetaRef →「自动整理化学式上下标」可单独处理选中条目。分类右键菜单可使用相同功能。标题字段右键也有独立入口。这些手动操作不要求开启自动规则。
 
 ## 快捷键
 
@@ -18,7 +18,7 @@
 | 标准 Lint | Ctrl + Alt + L | 条目列表中的选中条目 |
 | 自动整理化学式角标 | Ctrl + Alt + S | 条目列表中的选中条目 |
 
-macOS 使用 Cmd 代替 Ctrl、Option 代替 Alt。快捷键按物理键识别，避免 Shift 改变符号或 Option 改变字符造成匹配失败；旧的 `accel,shift,+` 设置仍可使用。
+macOS 使用 Cmd 代替 Ctrl、Option 代替 Alt。快捷键按物理键识别，避免 Shift 改变符号或 Option 改变字符造成匹配失败。
 
 在设置中点击输入框并按组合键即可录制，也可粘贴 `accel,alt,S` 等格式。Tab 切换输入框、Esc 退出录制、Backspace/Delete 禁用当前快捷键。每项都提供「禁用」和「重置」，重置可恢复默认快捷键。重复或无效组合不会保存，并显示提示；有效修改立即生效。功能、输入框、预览和操作按列对齐；窄面板将预览放到输入框下方，两个操作按钮始终成组显示。
 
@@ -72,28 +72,14 @@ flowchart LR
 
 期刊缩写仍使用已有的内置数据、自定义 JSON/CSV 和 ISO 4 推断流程。参考数据文件没有手工改写；更新仍使用项目的 `pnpm update-data`。
 
-自定义缩写或 ESI 数据文件解析失败时，会报告原因并回退至内置数据。没有找到替代缩写时保留已有人工缩写。ESI 默认保留已有的非 ESI 系列信息；识别文本同时写入「档案」字段，并以分号分隔保留原有档案文字。Nature Index 工具会把识别标记写入「档案编号」（Zotero `archiveLocation`）并添加标签，已有档案编号和其他标签都会保留。重复识别会更新现有标记，不会不断追加副本。内置 ESI 数据覆盖 Clarivate 2026 年第 6 期的 22 个学科和 12,245 条期刊记录。
+自定义缩写或 ESI 数据文件解析失败时，会报告原因并回退至内置数据。没有找到替代缩写时保留已有人工缩写。ESI 与 Nature Index 在独立侧栏和专用列表列中显示，不写入系列、档案、档案编号或标签。显示结果随当前条目元数据重新计算。内置 ESI 数据覆盖 Clarivate 2026 年第 6 期的 22 个学科和 12,245 条期刊记录。
 
 「更新元数据」默认配置可选择仅补空字段或覆盖字段。空响应、无效作者列表、非法日期及非字符串字段不会直接覆盖已有信息；转换器失败后尝试后续服务。Semantic Scholar 当前未将其作者姓名拆分为 Zotero 作者字段，缺失作者应通过 Zotero 转换器或人工补齐。
 
 页码补全仅用于 1–3 位正整数起始页，并且需要 PDF 的有效总页数。空页码、文章编号、小数和已存在的页码范围不会推断补全。作者缺失检查只报告问题，不会自动检索作者。
 
-## 验证命令与版本边界
+## 验证与范围
 
-2026-09-29 的最终验证明细见 [逻辑链路审查记录](logic-audit-2026-09-29.md) 和发布目录中的 `dist/verification.json`。测试包含批量落盘、事务回滚、取消、超时后写入隔离、撤销重做、分类菜单、元数据服务回退、全部设置工具的取消、真实标题编辑和中英文快捷键布局。键盘事件由测试程序在真实窗口分发；外部服务测试使用受控响应，没有将其等同于外部网站实时可用性，也没有将 Windows 测试当作 Zotero 8/9 或 macOS 的实机验证。
+当前实现与环境见 [本轮审查](current-review.md)，通过数量及生产包散列见 [`dist/verification.json`](../dist/verification.json)。开发与测试命令见 [项目 README](../README.md)。真实 E2E 在独立资料库验证菜单、设置、保存、事务回滚、取消、超时、撤销、PDF 及生产包安装。外部服务采用受控响应验证。
 
-```powershell
-pnpm test:unit
-pnpm lint:check
-pnpm build
-$env:ZOTERO_PLUGIN_ZOTERO_BIN_PATH = 'C:\Program Files\Zotero\zotero.exe'
-$env:ZOTERO_PLUGIN_KILL_COMMAND = 'pwsh -NoProfile -Command "exit 0"'
-$env:LINTER_TEST_LOCALE = 'zh-CN' # 改为 en-US 验证英文界面
-pnpm test:e2e
-```
-
-单元测试和 E2E 命令现在运行一次后退出；需要开发监听时使用 `pnpm exec vitest` 或 `pnpm exec zotero-plugin test`。E2E 使用 `.scaffold/test/profile` 和 `.scaffold/test/data`，不会使用个人文献资料库。E2E 包装脚本默认将框架的全局 Zotero 进程清理命令替换为无操作命令，并仅结束自身启动的测试实例。
-
-2026-10-07 的增量修复与最新验证见 [本轮逻辑审查](logic-audit-2026-10-07.md) 和 [`dist/verification.json`](../dist/verification.json)。批次结果新增 `preparationFailed` 和 `skipped`，规则准备失败与条目执行失败分别统计；静默批次保留报告记录而不打开报告窗口。
-
-当前 `addon/manifest.json` 限定 Zotero 10.0–10.999，AGENTS.md 已与现有安装范围对齐。本轮运行验证使用 Windows Zotero 10.0.5。未实机验证 Zotero 8/9，不能据此宣称支持它们。
+批次结果分别统计规则准备失败、条目执行失败和跳过条目。静默批次保留报告记录而不打开报告窗口。当前清单支持 Zotero 10.0–10.999，实际运行验证使用 Windows Zotero 10.0.5。

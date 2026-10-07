@@ -2,7 +2,7 @@ import type { FluentMessageId } from "../../typings/i10n";
 import { getString } from "../utils/locale";
 import { getPref } from "../utils/prefs";
 
-const TOOLBAR_CLASS = "linter-richtext-toolbar";
+const TOOLBAR_CLASS = "metaref-richtext-toolbar";
 const PREVIEW_ID = "zotero-textarea-preview";
 const BUTTON_ICON_SIZE = 16;
 
@@ -74,7 +74,7 @@ class ButtonManager {
     const document = this.window.document;
     const button = document.createElement("toolbarbutton");
 
-    button.id = `linter-richtext-${btn.hookName}-btn`;
+    button.id = `metaref-richtext-${btn.hookName}-btn`;
     button.className = "zotero-tb-button";
     Object.assign(button.style, {
       fill: "currentColor",

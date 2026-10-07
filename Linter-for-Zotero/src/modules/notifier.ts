@@ -19,8 +19,8 @@ export function registerNotifier() {
       },
     },
     ["item"],
-    "linter",
-    // We expect the Linter to run after all plugins so that we can
+    "metaref",
+    // We expect the MetaRef to run after all plugins so that we can
     // clear up any unexpected data performed by other plugins.
     666,
   );

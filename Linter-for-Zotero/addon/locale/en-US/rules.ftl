@@ -34,7 +34,7 @@ rule-require-language =
 rule-require-language-menu-item =
   .label = Auto detect item language
 rule-require-language-menu-field =
-  .label = Auto detect (Linter)
+  .label = Auto detect (MetaRef)
 
 rule-require-language-option-only =
   .label = Limit recognized languages to improve accuracy
@@ -61,7 +61,7 @@ rule-correct-title-sentence-case =
 rule-correct-title-sentence-case-menu-item =
   .label = Convert title to sentence case
 rule-correct-title-sentence-case-menu-field =
-  .label = Sentence case (Linter)
+  .label = Sentence case (MetaRef)
 
 rule-correct-title-sentence-option-custom-term = Custom term:
   .label = Custom terms
@@ -80,7 +80,7 @@ rule-correct-title-sentence-option-disabled-languages-desc = Enter a comma-separ
 rule-correct-title-punctuation =
   .label = Punctuation in title shoule be normalized
 rule-correct-title-punctuation-menu-field =
-  .label = Normalize punctuation (Linter)
+  .label = Normalize punctuation (MetaRef)
 rule-correct-title-punctuation-quotes =
   .label = Convert quotes to curly
 
@@ -89,7 +89,7 @@ rule-correct-title-punctuation-quotes =
 rule-correct-creators-punctuation =
   .label = Punctuation in creators shoule be normalized
 rule-correct-creators-punctuation-menu-field =
-  .label = Normalize punctuation hyphens (Linter)
+  .label = Normalize punctuation hyphens (MetaRef)
 
 
 ## correct-shortTitle-sentence-case
@@ -109,7 +109,7 @@ rule-correct-title-chemical-formula =
 rule-correct-title-chemical-formula-menu-item =
   .label = Format chemical formula subscripts and superscripts
 rule-correct-title-chemical-formula-menu-field =
-  .label = Chemical formula subscripts and superscripts (Linter)
+  .label = Chemical formula subscripts and superscripts (MetaRef)
 
 
 ## require-creators
@@ -137,7 +137,7 @@ rule-correct-date-format =
 rule-correct-date-format-menu-item =
   .label = Normalize date format to ISO
 rule-correct-date-format-menu-field =
-  .label = ISO format (Linter)
+  .label = ISO format (MetaRef)
 
 
 rule-correct-filing-date-format =
@@ -154,7 +154,7 @@ rule-correct-extra-order =
 rule-correct-extra-order-menu-item =
   .label = Fix order of extra fields
 rule-correct-extra-order-menu-field =
-  .label = Fix order (Linter)
+  .label = Fix order (MetaRef)
 
 
 ## correct-publication-title-alias
@@ -163,7 +163,7 @@ rule-correct-publication-title-alias =
 rule-correct-publication-title-alias-menu-item =
   .label = Fix alias of publicationTitle
 rule-correct-publication-title-alias-menu-field =
-  .label = Fix alias (Linter)
+  .label = Fix alias (MetaRef)
 
 
 ## correct-publication-title-case
@@ -172,7 +172,7 @@ rule-correct-publication-title-case =
 rule-correct-publication-title-case-menu-item =
   .label = Fix capitalization of publicationTitle
 rule-correct-publication-title-case-menu-field =
-  .label = Fix capitalization (Linter)
+  .label = Fix capitalization (MetaRef)
 
 
 ## require-journal-abbr
@@ -181,7 +181,7 @@ rule-require-journal-abbr =
 rule-require-journal-abbr-menu-item =
   .label = Look up journal abbreviations
 rule-require-journal-abbr-menu-field =
-  .label = Lookup (Linter)
+  .label = Lookup (MetaRef)
 
 rule-require-journal-abbr-option-infer =
   .label = Auto infer abbreviation via ISO 4 if missing
@@ -201,27 +201,25 @@ rule-require-journal-abbr-option-custom-data-desc =
   CSV: first col = full title, second col = abbreviation. Separator must be comma or semicolon (no tabs).
 
 
-## require-series-esi
-rule-require-series-esi =
-  .label = Identify journal ESI discipline and write it to Series and Archive
-rule-require-series-esi-menu-item =
+## tool-query-esi
+rule-tool-query-esi =
+  .label = Check ESI journal disciplines (no field writes)
+rule-tool-query-esi-menu-item =
   .label = Get Journal ESI Category
-rule-require-series-esi-menu-field =
-  .label = Get ESI Category (Linter)
-tool-mark-nature-index =
-  .label = Mark Nature Index journals
-tool-mark-nature-index-menu-item =
-  .label = Identify and mark Nature Index journals
-tool-mark-nature-index-description = Adds the Nature Index Zotero tag and writes the marker to Archive Location for selected journals matched by the official title, abbreviation, or ISSN list. Existing archive-location text and tags are preserved.
+tool-query-nature-index =
+    .label = Identify Nature Index journals
+tool-query-nature-index-menu-item =
+    .label = Identify Nature Index journals
+tool-query-nature-index-description = Show journal membership in the independent section and list column. No tags or Archive Location values are written; membership does not prove article inclusion.
 
-rule-require-series-esi-option-format = Recognition text format (written to Series and Archive):
-rule-require-series-esi-option-format-desc = Supported variables: { "{" }subject{ "}" } (Chinese name, e.g. "物理学"), { "{" }category{ "}" } (Uppercase English, e.g. "PHYSICS"), { "{" }en{ "}" } (English title case, e.g. "Physics"). Default: { "{" }subject{ "}" }ESI.
-rule-require-series-esi-option-custom-data-label = Custom dataset file:
-rule-require-series-esi-option-choose-custom-data-button =
+rule-tool-query-esi-option-format = List column display format:
+rule-tool-query-esi-option-format-desc = Supported variables: { "{" }subject{ "}" } (Chinese name, e.g. "物理学"), { "{" }category{ "}" } (Uppercase English, e.g. "PHYSICS"), { "{" }en{ "}" } (English title case, e.g. "Physics"). Default: { "{" }subject{ "}" }ESI.
+rule-tool-query-esi-option-custom-data-label = Custom dataset file:
+rule-tool-query-esi-option-choose-custom-data-button =
   .label = Browse
-rule-require-series-esi-option-choose-custom-data-input =
+rule-tool-query-esi-option-choose-custom-data-input =
   .placeholder = Path of custom ESI dataset
-rule-require-series-esi-option-custom-data-desc = Supports JSON and CSV. Built-in data uses Clarivate's 2026 Release 6 master list: 12,245 normalized journals across all 22 ESI fields. A custom file replaces the built-in list.
+rule-tool-query-esi-option-custom-data-desc = Supports JSON and CSV. Built-in data uses Clarivate's 2026 Release 6 master list: 12,245 normalized journals across all 22 ESI fields. A custom file replaces the built-in list.
 
 
 ## require-doi
@@ -230,7 +228,7 @@ rule-require-doi =
 rule-require-doi-menu-item =
   .label = Retrieve DOI by title
 rule-require-doi-menu-field =
-  .label = Retrieve DOI (Linter)
+  .label = Retrieve DOI (MetaRef)
 
 
 ## no-doi-prefix
@@ -239,7 +237,7 @@ rule-no-doi-prefix =
 rule-no-doi-prefix-menu-item =
   .label = Remove DOI prefix
 rule-no-doi-prefix-menu-field =
-  .label = Remove URL prefix (Linter)
+  .label = Remove URL prefix (MetaRef)
 
 
 ## correct-doi-long
@@ -296,7 +294,7 @@ rule-require-university-place =
 rule-require-university-place-menu-item =
   .label = Fill university place
 rule-require-university-place-menu-field =
-  .label = Lookup (Linter)
+  .label = Lookup (MetaRef)
 
 
 ## correct-edition-numeral
@@ -379,7 +377,7 @@ rule-tool-csl-helper =
 rule-tool-csl-helper-menu-item =
   .label = { rule-tool-csl-helper.label }
 rule-tool-csl-helper-menu-field =
-  .label = { rule-tool-csl-helper.label } (Linter)
+  .label = { rule-tool-csl-helper.label } (MetaRef)
 
 
 ## tool-clean-extra
@@ -399,9 +397,6 @@ rule-tool-update-metadata-no-identifiers = No usable identifier or URL was found
 rule-tool-update-metadata-no-data = No usable metadata was found. { $errors }
 rule-tool-update-metadata-service-warning = Metadata updated via { $service }; some services failed: { $errors }
 rule-tool-update-metadata-invalid-date = Invalid access date from the service; the original value was preserved.
-rule-require-series-esi-option-overwrite =
-  .label = Allow ESI categories to replace existing non-ESI series information
-rule-require-series-esi-preserved = Existing non-ESI series information was preserved. Enable ESI overwrite to replace it.
 rule-tool-update-metadata-invalid-creators = Invalid creator types from the service; the original creator list was preserved.
 rule-tool-update-metadata-type-change-loss = Changing the item type would remove existing fields or change creator roles. The original type was preserved in blank-only mode; compatible empty fields were updated.
-rule-require-series-esi-custom-data-error = Custom ESI data are unavailable; using built-in data: { $error }
+rule-tool-query-esi-custom-data-error = Custom ESI data are unavailable; using built-in data: { $error }

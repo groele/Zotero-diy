@@ -1,0 +1,38 @@
+{
+  "generated": "2026-10-07",
+  "sources": {
+    "esi-journals": {
+      "release": "2026 release 6",
+      "records": 12245,
+      "scope": "22 ESI categories",
+      "provenance": "esi-source.md"
+    },
+    "nature-index-journals": {
+      "release": "2026-06",
+      "snapshot": "2026-09-30",
+      "records": 178,
+      "journals": 177,
+      "conferences": 1,
+      "source": "https://www.nature.com/nature-index/faq",
+      "provenance": "nature-index-source.md"
+    }
+  },
+  "files": {
+    "esi-journals.json": {
+      "bytes": 2706656,
+      "sha256": "d1b7778b598dfa5002884fa01b4c7a793e0d7d6e1ddca6132a2e12492e304768"
+    },
+    "esi-journals.csv": {
+      "bytes": 1420986,
+      "sha256": "40d984b7dd3206e1ea1b98fb9a60525b86b138ec48a0e30c4aafaf7eb2dc84fc"
+    },
+    "nature-index-journals.json": {
+      "bytes": 36623,
+      "sha256": "99730d5627705815b337c8721ee574dbe604d8e25d0a78ed7711f41a2361de2d"
+    },
+    "nature-index-journals.csv": {
+      "bytes": 13480,
+      "sha256": "e25b29060800b452ff8b5dec2cce672a73f6d8e44d1966bf2ce3e1ada837b33f"
+    }
+  }
+}

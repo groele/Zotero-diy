@@ -73,7 +73,7 @@ export const NoFieldMisuse = defineRule({
             || /\d区$/.test(value)
             // 0.75 (SQ3)
             // 69.504
-            || /^\d+\.\d+/.test(value)
+            || /^\d+\.\d+(?:\s*\(SQ\d\))?$/.test(value.trim())
             // 北大核心 / 南大核心 / CSCD 核心库
             || /核心/.test(value)
           ) {

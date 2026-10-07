@@ -41,12 +41,12 @@ export function initLocale() {
 
   // Register addon.ftl with Zotero.ftl so UndoHistory can resolve undo action labels.
   // @ts-expect-error - Zotero.ftl not yet typed in zotero-types
-  Zotero.ftl.addResourceIds(["linter-addon.ftl"]);
+  Zotero.ftl.addResourceIds(["metaref-addon.ftl"]);
 }
 
 export function unloadLocale() {
   // @ts-expect-error - Zotero.ftl not yet typed in zotero-types
-  Zotero.ftl.removeResourceIds(["linter-addon.ftl"]);
+  Zotero.ftl.removeResourceIds(["metaref-addon.ftl"]);
 }
 
 interface GetStringOptions {

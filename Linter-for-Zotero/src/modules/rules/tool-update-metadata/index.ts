@@ -44,7 +44,19 @@ export const ToolUpdateMetadata = defineRule<UpdateMetadataOption>({
     let errorMessage: string = "";
 
     // 2. get available metadata services
-    const availableServices = services.filter(s => s.shouldApply(createServiceContext(s)));
+    const isAvailable = (service: typeof services[number]): boolean => {
+      try {
+        return service.shouldApply(createServiceContext(service));
+      }
+      catch (error) {
+        signal?.throwIfAborted();
+        const message = error instanceof Error ? error.message : String(error);
+        debug(`Failed to check ${service.name}: ${message}`);
+        errorMessage += `${service.name}: ${message}\n`;
+        return false;
+      }
+    };
+    const availableServices = services.filter(isAvailable);
     debug(`Available services: ${availableServices.map(s => s.id).join(", ")}`);
 
     // 3. update identidiers
@@ -75,7 +87,7 @@ export const ToolUpdateMetadata = defineRule<UpdateMetadataOption>({
     // 3. request metadata and clean data
     let data: TransformedData | null = null;
     let successService: string;
-    for (const service of availableServices) {
+    for (const service of services.filter(isAvailable)) {
       signal?.throwIfAborted();
       if (!service.fetch)
         continue;

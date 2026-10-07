@@ -1,5 +1,5 @@
 ## General
-prefs-title = Linter
+prefs-title = MetaRef
 
 ## Item tree
 field-abbr = Abbr

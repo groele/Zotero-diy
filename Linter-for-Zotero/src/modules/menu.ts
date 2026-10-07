@@ -1,7 +1,11 @@
 import type { RuleForRegularScopeField } from "./rules/rule-base";
-import { getLocaleID } from "../utils/locale";
+import { getJournalInsights } from "../utils/journal-insights";
+import { presentJournalInsights } from "../utils/journal-insights-presentation";
+import { getLocaleID, getString } from "../utils/locale";
 import { logger } from "../utils/logger";
 import { getPref } from "../utils/prefs";
+import { refreshJournalInsights } from "./journal-pane";
+import { createReporter } from "./reporter";
 import { Rules } from "./rules";
 
 type FieldMenu = _ZoteroTypes.MenuManager.MenuData<_ZoteroTypes.MenuManager.ItemPaneMenuContext>;
@@ -11,17 +15,18 @@ type LibraryContext = _ZoteroTypes.MenuManager.LibraryMenuContext & { collection
 async function menuItems(context: LibraryContext): Promise<Zotero.Item[]> {
   if (context.items)
     return context.items;
-  const rows: Zotero.CollectionTreeRow[] = context.collectionTreeRows ?? (context.collectionTreeRow ? [context.collectionTreeRow as unknown as Zotero.CollectionTreeRow] : []);
+  const rows = context.collectionTreeRows ?? [];
   const items = await Promise.all(rows.map(row => row.getItems()));
   return items.flat().filter((item): item is Zotero.Item => Boolean(item && typeof (item as Zotero.Item).isRegularItem === "function"));
 }
 
 function hasMenuItems(context: LibraryContext): boolean {
-  return Boolean(context.items?.some(item => item.isRegularItem() && !item.deleted && item.isEditable())
-    || context.collectionTreeRows?.length || context.collectionTreeRow);
+  if (context.items)
+    return context.items.some(item => item.isRegularItem() && !item.deleted && item.isEditable());
+  return Boolean(context.collectionTreeRows?.length);
 }
 
-const icon = typeof rootURI !== "undefined" ? `${rootURI}/content/icons/favicon.png` : "";
+const icon = typeof rootURI !== "undefined" ? `${rootURI}/content/icons/metaref-96.png` : "";
 const registeredMenus: string[] = [];
 
 function addMenu<T extends _ZoteroTypes.MenuManager.ValidTarget>(options: _ZoteroTypes.MenuManager.MenuOptions<T>) {
@@ -94,191 +99,76 @@ export function shouldShowSeparator(
 }
 
 export const MENU_SECTIONS = {
-  section0: ["standard"],
-  section1: [
-    "correct-title-sentence-case",
-    "correct-title-chemical-formula",
-    "correct-creators-case",
-    "correct-creators-pinyin",
-  ],
-  section2: [
-    "require-language",
-    "tool-set-language",
-  ],
-  section3: [
-    "correct-publication-title-alias",
-    "correct-publication-title-case",
-    "require-journal-abbr",
-    "require-series-esi",
-    "correct-conference-abbr",
-    "require-university-place",
-  ],
-  section4: ["tool-update-metadata"],
-  toolSec0: ["tool-title-guillemet"],
-  toolSec1: [
-    "no-doi-prefix",
-    "tool-get-short-doi",
-    "correct-date-format",
-    "tool-clean-extra",
-  ],
-  toolSec2: [
-    "tool-csl-helper",
-    "tool-creators-ext",
-  ],
-  toolSec3: ["tool-mark-nature-index"],
-};
+  primary: ["standard", "tool-update-metadata"],
+  title: ["correct-title-sentence-case", "correct-title-chemical-formula", "tool-title-guillemet"],
+  creators: ["correct-creators-case", "correct-creators-pinyin", "tool-creators-ext"],
+  publication: ["require-language", "tool-set-language", "correct-publication-title-alias", "correct-publication-title-case", "require-journal-abbr", "correct-conference-abbr", "require-university-place"],
+  indexing: ["tool-query-esi", "tool-query-nature-index"],
+  maintenance: ["correct-date-format", "no-doi-prefix", "tool-get-short-doi", "tool-csl-helper", "tool-clean-extra"],
+} satisfies Record<string, string[]>;
+
+export const MENU_GROUPS = Object.entries(MENU_SECTIONS).filter(([key]) => key !== "primary") as [Exclude<keyof typeof MENU_SECTIONS, "primary">, string[]][];
 
 function registerItemMenus() {
   const isMenuVisible = (key: string): boolean => getPref(`menu.${key}` as any, true) ?? true;
-
-  const { section0, section1, section2, section3, section4, toolSec0, toolSec1, toolSec2, toolSec3 } = MENU_SECTIONS;
-  const section5 = [...toolSec0, ...toolSec1, ...toolSec2, ...toolSec3];
-
-  const hasAnyVisible = (keys: string[]) => keys.some(isMenuVisible);
-
-  function makeSmartSeparator(currentSection: string[], followingSections: string[][]): ItemMenu {
-    return {
-      menuType: "separator",
-      onShowing(_event, context) {
-        context.setVisible(shouldShowSeparator(currentSection, followingSections, isMenuVisible));
-      },
-    };
-  }
-
-  function makeItemMenu(ruleID: ID): ItemMenu {
-    const rule = Rules.getByID(ruleID)!;
-    const menu = rule?.getItemMenu?.();
-    // @ts-expect-error some rules are not defined in the item menu
-    const l10nID = getLocaleID(menu?.l10nID || `rule-${ruleID}-menu-item`);
-
+  const makeItem = (key: string): ItemMenu => {
+    const indexing = MENU_SECTIONS.indexing.includes(key);
+    const rule = key === "standard" ? undefined : Rules.getByID(key as ID);
+    const custom = rule?.getItemMenu?.();
+    const l10nID = key === "standard" ? getLocaleID("menuitem-stdFormatFlow") : getLocaleID(custom?.l10nID || `rule-${key as ID}-menu-item` as Parameters<typeof getLocaleID>[0]);
     return {
       menuType: "menuitem",
       l10nID,
-      onShowing(event, context) {
-        const visible = isMenuVisible(ruleID);
-        context.setVisible(visible);
-        if (!visible)
+      onShowing(_event, context) {
+        context.setVisible(isMenuVisible(key));
+        const eligible = context.items?.filter(item => item.isRegularItem() && !item.deleted && (indexing || item.isEditable())
+          && (!(rule?.scope === "item" || rule?.scope === "field") || !rule.targetItemTypes || rule.targetItemTypes.includes(item.itemType)));
+        context.setEnabled((context.items ? !!eligible?.length : hasMenuItems(context))
+          && !(custom?.mutiltipleItems === false && (context.items?.length ?? 0) > 1));
+      },
+      onShown(_event, context) { checkL10nString(context.menuElem, key, l10nID); },
+      async onCommand(_event, context) {
+        const items = await menuItems(context);
+        if (indexing) {
+          await refreshJournalInsights();
+          const infos = await Promise.all(items.filter(item => item.isRegularItem() && !item.deleted && item.itemType === "journalArticle").map(async (item) => {
+            const result = await getJournalInsights(item);
+            const row = presentJournalInsights(result, Zotero.locale)[key === "tool-query-esi" ? 0 : 1];
+            return { itemID: item.id, title: item.getField("title") as string, ruleID: key, level: row.warning ? "warning" as const : "info" as const, label: row.label, message: [row.value, row.basis, row.source, row.warning, getString("journal-insights-boundary")].filter(Boolean).join("\n") };
+          }));
+          if (infos.length)
+            void createReporter(infos).catch(error => logger.error("Journal report failed:", error));
           return;
-
-        const enabled: boolean = hasMenuItems(context) && !(menu?.mutiltipleItems === false && (context.items?.length ?? 0) > 1);
-        context.setEnabled(enabled);
-      },
-      onShown(event, context) {
-        checkL10nString(context.menuElem, ruleID, l10nID);
-      },
-      async onCommand(event, context) {
-        await addon.hooks.onLintInBatch(ruleID, await menuItems(context));
+        }
+        const rules = key === "tool-update-metadata"
+          ? ["tool-update-metadata", "standard"] as const
+          : key === "correct-date-format"
+            ? ["correct-date-format", "correct-filing-date-format", "correct-issue-date-format", "correct-priority-date-format"] as const
+            : [key as ID | "standard"];
+        await addon.hooks.onLintInBatch([...rules], items);
       },
     };
-  }
-
-  const menus: ItemMenu[] = [
-    {
-      menuType: "submenu",
-      l10nID: getLocaleID("menuitem-label"),
-      icon,
-      onShowing(_event, context) {
-        const allSections = [section0, section1, section2, section3, section4, section5];
-        const anyVisible = allSections.some(hasAnyVisible);
-        context.setVisible(anyVisible);
-      },
-      menus: [
-        {
-          menuType: "menuitem",
-          l10nID: getLocaleID("menuitem-stdFormatFlow"),
-          onShowing(_event, context) {
-            context.setVisible(isMenuVisible("standard"));
-            context.setEnabled(hasMenuItems(context));
-          },
-          async onCommand(event, context) {
-            await addon.hooks.onLintInBatch("standard", await menuItems(context));
-          },
-        },
-        makeSmartSeparator(section0, [section1, section2, section3, section4, section5]),
-        makeItemMenu("correct-title-sentence-case"),
-        makeItemMenu("correct-title-chemical-formula"),
-        makeItemMenu("correct-creators-case"),
-        makeItemMenu("correct-creators-pinyin"),
-        makeSmartSeparator(section1, [section2, section3, section4, section5]),
-        makeItemMenu("require-language"),
-        makeItemMenu("tool-set-language"),
-        makeSmartSeparator(section2, [section3, section4, section5]),
-        makeItemMenu("correct-publication-title-alias"),
-        makeItemMenu("correct-publication-title-case"),
-        makeItemMenu("require-journal-abbr"),
-        makeItemMenu("require-series-esi"),
-        makeItemMenu("correct-conference-abbr"),
-        makeItemMenu("require-university-place"),
-        makeSmartSeparator(section3, [section4, section5]),
-        {
-          menuType: "menuitem",
-          l10nID: getLocaleID("rule-tool-update-metadata-menu-item"),
-          onShowing(_event, context) {
-            context.setVisible(isMenuVisible("tool-update-metadata"));
-            context.setEnabled(hasMenuItems(context));
-          },
-          async onCommand(event, context) {
-            await addon.hooks.onLintInBatch(["tool-update-metadata", "standard"], await menuItems(context));
-          },
-        },
-        makeSmartSeparator(section4, [section5]),
-        makeItemMenu("tool-title-guillemet"),
-        makeSmartSeparator(toolSec0, [toolSec1, toolSec2, toolSec3]),
-        makeItemMenu("no-doi-prefix"),
-        makeItemMenu("tool-get-short-doi"),
-        {
-          menuType: "menuitem",
-          l10nID: getLocaleID("rule-correct-date-format-menu-item"),
-          onShowing(_event, context) {
-            context.setVisible(isMenuVisible("correct-date-format"));
-            context.setEnabled(hasMenuItems(context));
-          },
-          async onCommand(event, context) {
-            await addon.hooks.onLintInBatch([
-              "correct-date-format",
-              "correct-filing-date-format",
-              "correct-issue-date-format",
-              "correct-priority-date-format",
-            ], await menuItems(context));
-          },
-        },
-        makeItemMenu("tool-clean-extra"),
-        makeSmartSeparator(toolSec1, [toolSec2, toolSec3]),
-        makeItemMenu("tool-csl-helper"),
-        makeItemMenu("tool-creators-ext"),
-        makeSmartSeparator(toolSec2, [toolSec3]),
-        makeItemMenu("tool-mark-nature-index"),
-      ],
+  };
+  const sections = Object.values(MENU_SECTIONS);
+  const menus: ItemMenu[] = [{
+    menuType: "submenu",
+    l10nID: getLocaleID("menuitem-label"),
+    icon,
+    onShowing(_event, context) {
+      context.setVisible(Object.values(MENU_SECTIONS).flat().some(isMenuVisible));
+      context.setEnabled(context.items ? context.items.some(item => item.isRegularItem() && !item.deleted) : hasMenuItems(context));
     },
-  ];
-
-  addMenu({
-    pluginID: addon.data.config.addonID,
-    menuID: "item-menu",
-    target: "main/library/item",
-    menus,
-  });
-
-  addMenu({
-    pluginID: addon.data.config.addonID,
-    menuID: "collection-menu",
-    target: "main/library/collection",
-    menus,
-  });
-
-  if (__env__ === "development") {
-    addMenu({
-      pluginID: addon.data.config.addonID,
-      menuID: "item-menu-test",
-      target: "main/library/item",
-      menus: [{
-        menuType: "menuitem",
-        l10nID: getLocaleID("menuitem-label"),
-        async onCommand(event, context) {
-          await addon.hooks.onLintInBatch("standard", await menuItems(context));
-        },
-      }],
-    });
+    menus: sections.flatMap((keys, index): ItemMenu[] => [
+      ...keys.map(makeItem),
+      ...(index < sections.length - 1
+        ? [{ menuType: "separator", onShowing(_event, context) {
+            context.setVisible(shouldShowSeparator(keys, sections.slice(index + 1), isMenuVisible));
+          } } as ItemMenu]
+        : []),
+    ]),
+  }];
+  for (const target of ["main/library/item", "main/library/collection"] as const) {
+    addMenu({ pluginID: addon.data.config.addonID, menuID: target.endsWith("item") ? "item-menu" : "collection-menu", target, menus });
   }
 }
 
