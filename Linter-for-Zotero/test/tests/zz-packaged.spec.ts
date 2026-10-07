@@ -5,7 +5,7 @@ describe("production XPI installation", function () {
   this.timeout(60_000);
 
   it("replaces the test directory with the production XPI and reads bundled reference data", async function () {
-    const packagePath = Zotero.Prefs.get("linter.test.packagePath", true) as string;
+    const packagePath = Zotero.Prefs.get("metaref.test.packagePath", true) as string;
     assert.isNotEmpty(packagePath, "use pnpm test:e2e to build and retain the production package");
     const autoKey = `${config.prefsPrefix}.lint.onAdded`;
     const previous = Zotero.Prefs.get(autoKey, true);
@@ -32,32 +32,39 @@ describe("production XPI installation", function () {
       const installed = await AddonManager.installTemporaryAddon(Zotero.File.pathToFile(packagePath));
       assert.equal(installed.id, config.addonID);
       assert.equal(installed.version, version);
+      assert.equal(installed.name, config.addonName);
+      assert.include(installed.iconURL, "metaref-", "the installed package uses the MetaRef icon");
       for (let attempt = 0; attempt < 100 && !(Zotero as any)[config.addonInstance]?.data.alive; attempt++)
         await Zotero.Promise.delay(50);
       const plugin = (Zotero as any)[config.addonInstance];
       assert.isTrue(plugin.data.alive);
-      await plugin.hooks.onLintInBatch(["correct-title-chemical-formula", "require-journal-abbr", "require-series-esi", "tool-mark-nature-index"], [item, crossDisciplinary, unmatched]);
+      await plugin.hooks.onLintInBatch(["correct-title-chemical-formula", "require-journal-abbr", "tool-query-esi", "tool-query-nature-index"], [item, crossDisciplinary, unmatched]);
       await item.reload(["itemData"], true);
       await crossDisciplinary.reload(["itemData"], true);
       await unmatched.reload(["itemData"], true);
       assert.equal(item.getField("title", false, true), "Packaged MoS<sub>2</sub>");
       assert.isNotEmpty(item.getField("journalAbbreviation"));
-      assert.include(item.getField("series"), "ESI");
-      assert.equal(item.getField("archive"), `Institutional archive; ${item.getField("series")}`);
-      assert.equal(item.getField("archiveLocation"), "Local record 42; Nature Index");
-      assert.isTrue(item.hasTag("Nature Index"));
+      assert.equal(item.getField("series"), "");
+      assert.equal(item.getField("archive"), "Institutional archive");
+      assert.equal(item.getField("archiveLocation"), "Local record 42");
+      assert.isFalse(item.hasTag("Nature Index"));
       assert.isTrue(item.hasTag("user-topic"));
-      assert.include(crossDisciplinary.getField("series"), "综合交叉学科" + "ESI");
-      assert.include(crossDisciplinary.getField("archive"), "综合交叉学科" + "ESI");
-      assert.isTrue(crossDisciplinary.hasTag("Nature Index"));
-      assert.include(crossDisciplinary.getField("archiveLocation"), "Nature Index");
-      assert.isFalse(unmatched.hasTag("Nature Index"), "partial title matches should not be tagged");
+      const firstInsights = await plugin.api.getJournalInsights(item);
+      assert.include(firstInsights.esi, "ESI");
+      assert.isTrue(firstInsights.natureIndex);
+      const interdisciplinaryInsights = await plugin.api.getJournalInsights(crossDisciplinary);
+      assert.include(interdisciplinaryInsights.esi, "综合交叉学科" + "ESI");
+      assert.isTrue(interdisciplinaryInsights.natureIndex);
+      assert.isFalse((await plugin.api.getJournalInsights(unmatched)).natureIndex);
+      assert.equal(crossDisciplinary.getField("series"), "");
+      assert.equal(crossDisciplinary.getField("archive"), "");
+      assert.equal(crossDisciplinary.getField("archiveLocation"), "");
       assert.equal(plugin.runner.lastResult.failed, 0);
       assert.isFalse(item.hasChanged());
-      await plugin.hooks.onLintInBatch(["tool-mark-nature-index"], [item]);
+      await plugin.hooks.onLintInBatch(["tool-query-nature-index"], [item]);
       await item.reload(["itemData"], true);
-      assert.equal(item.getTags().filter((tag: any) => tag.tag === "Nature Index").length, 1, "repeated marking should not duplicate the tag");
-      assert.equal(item.getField("archiveLocation"), "Local record 42; Nature Index", "repeated marking should not duplicate the field marker");
+      assert.equal(item.getTags().filter((tag: any) => tag.tag === "Nature Index").length, 0, "index insights must not add tags");
+      assert.equal(item.getField("archiveLocation"), "Local record 42", "index insights must preserve original archive information");
     }
     finally {
       await item.eraseTx();

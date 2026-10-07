@@ -16,10 +16,10 @@ function run(args, env = process.env) {
 run(["build"]);
 const qa = path.join(projectRoot, ".scaffold", "qa");
 mkdirSync(qa, { recursive: true });
-const packagePath = path.join(qa, "linter-for-zotero-production.xpi");
-copyFileSync(path.join(projectRoot, ".scaffold", "build", "linter-for-zotero.xpi"), packagePath);
+const packagePath = path.join(qa, "metaref-for-zotero-production.xpi");
+copyFileSync(path.join(projectRoot, ".scaffold", "build", "metaref-for-zotero.xpi"), packagePath);
 run(["exec", "zotero-plugin", "test", "--no-watch"], {
   ...process.env,
-  LINTER_TEST_PACKAGE_PATH: packagePath,
+  METAREF_TEST_PACKAGE_PATH: packagePath,
   ZOTERO_PLUGIN_KILL_COMMAND: process.env.ZOTERO_PLUGIN_KILL_COMMAND || (process.platform === "win32" ? "pwsh -NoProfile -Command \"exit 0\"" : "true"),
 });

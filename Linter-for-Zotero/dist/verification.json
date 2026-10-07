@@ -1,59 +1,110 @@
 {
   "date": "2026-10-07",
-  "version": "10.0.6",
+  "version": "11.0.0",
+  "name": "MetaRef for Zotero",
   "environment": {
-    "platform": "Windows",
-    "powershell": "7.6.6",
-    "node": "v22.14.0",
-    "pnpm": "12.3.4",
-    "zotero": "10.0.5"
+    "zotero": "10.0.5",
+    "platform": "Windows"
+  },
+  "identity": {
+    "addonID": "metaref@groele",
+    "addonRef": "metaref",
+    "addonInstance": "MetaRef",
+    "prefsPrefix": "extensions.zotero.metaref",
+    "legacyAliases": false,
+    "preferenceMigration": false
   },
   "unit": {
-    "passed": 197,
-    "files": 27,
-    "log": "../.scaffold/qa/deep-audit-unit-final.log"
+    "log": "../.scaffold/qa/native-style-unit.log",
+    "files": 32,
+    "passed": 210
   },
   "e2e": {
-    "data": "../.scaffold/test/data",
-    "productionXPIInstalled": true,
-    "profile": "../.scaffold/test/profile",
     "zh-CN": {
-      "passed": 36,
-      "log": "../.scaffold/qa/deep-audit-zh-CN.log"
+      "log": "../.scaffold/qa/native-style-zh-CN.log",
+      "passed": 43
     },
     "en-US": {
-      "passed": 36,
-      "log": "../.scaffold/qa/deep-audit-en-US.log"
-    }
+      "log": "../.scaffold/qa/native-style-en-US.log",
+      "passed": 43
+    },
+    "productionXPIInstalled": true,
+    "nativeMenuCommands": true,
+    "repeatedClickAndSave": true,
+    "indexReportOpenAndClose": true,
+    "customDatabaseSettings": true,
+    "paneAndColumns": true,
+    "noIndexMetadataWrites": true,
+    "filePickerBoundary": "Paths substituted in real Zotero; native Windows file dialog clicks were not automated."
   },
   "checks": {
-    "autocorrect": "passed",
     "eslint": "passed",
+    "autocorrect": "passed",
     "pluginTypeScript": "passed",
+    "testTypeScript": "passed",
     "productionBuild": "passed",
-    "testTypeScript": "passed"
+    "canonicalPackageIdentity": "passed",
+    "databaseAndZipSHA256": "passed"
   },
   "package": {
-    "path": "linter-for-zotero.xpi",
+    "path": "metaref-for-zotero.xpi",
+    "sha256": "39b7ba511ebaebd97ee7d6e194a2eca526c34fc019f2d6c1189c9b05a6d9f3d2",
+    "bytes": 1216746,
     "copiedFromTestedPackage": true,
-    "bytes": 1301207,
-    "compatibility": {
-      "id": "zotero-format-metadata@northword.cn",
-      "update_url": "https://raw.githubusercontent.com/groele/Zotero-diy/main/Linter-for-Zotero/dist/update.json",
-      "strict_min_version": "10.0",
-      "strict_max_version": "10.999"
-    },
-    "sha256": "916e9349856e59685b81b744a3fd617d622b80d12ddcc2a0fff8fea2c354e5ec"
+    "manifest": {
+      "manifest_version": 2,
+      "name": "MetaRef for Zotero",
+      "version": "11.0.0",
+      "description": "Validate, organize and enrich reference metadata in Zotero.",
+      "homepage_url": "https://github.com/groele/Zotero-diy/tree/main/Linter-for-Zotero",
+      "author": "northword",
+      "icons": {
+        "48": "content/icons/metaref-48.png",
+        "96": "content/icons/metaref-96.png",
+        "128": "content/icons/metaref-128.png"
+      },
+      "applications": {
+        "zotero": {
+          "id": "metaref@groele",
+          "update_url": "https://raw.githubusercontent.com/groele/Zotero-diy/main/Linter-for-Zotero/dist/update.json",
+          "strict_min_version": "10.0",
+          "strict_max_version": "10.999"
+        }
+      }
+    }
   },
+  "icons": {
+    "48": {
+      "transparentCorner": true,
+      "paintedRatio": 0.308
+    },
+    "96": {
+      "transparentCorner": true,
+      "paintedRatio": 0.238
+    },
+    "128": {
+      "transparentCorner": true,
+      "paintedRatio": 0.25
+    }
+  },
+  "screenshots": {
+    "zh-CN": "../docs/assets/journal-insights-zh-CN.png",
+    "en-US": "../docs/assets/journal-insights-en-US.png"
+  },
+  "databases": {
+    "manifest": "databases/manifest.json",
+    "archive": "metaref-journal-databases.zip",
+    "sha256": "f29eca41209ca6956a27200f9ce786c5072cfe9a745dc27980e219abdbc85f29",
+    "esiRecords": 12245,
+    "natureJournals": 177,
+    "natureConferences": 1
+  },
+  "report": "../docs/current-review.md",
+  "guide": "../docs/custom-journal-databases.md",
+  "published": false,
   "limitations": [
-    "External API responses were controlled; live website availability was not verified.",
-    "Runtime verification targets Windows Zotero 10.0.5.",
-    "No per-rule rollback was introduced; permanent save failures retain unsaved item changes."
-  ],
-  "audit": "../docs/logic-audit-2026-10-07.md",
-  "publicationTarget": {
-    "repository": "groele/Zotero-diy",
-    "branch": "main",
-    "tag": "v10.0.6"
-  }
+    "No live external provider availability or response quality was verified.",
+    "Database snapshots were not refreshed online.",
+    "macOS, Linux and all third-party plugin combinations were not verified."
+  ]
 }

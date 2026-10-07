@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" role="img" aria-labelledby="title">
+  <title id="title">MetaRef</title>
+  <style>.outline{stroke:#707780}.accent{stroke:#c43b3b}@media(prefers-color-scheme:dark){.outline{stroke:#b8bdc6}.accent{stroke:#ef8888}}</style>
+  <g stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+    <path class="outline" d="M14.5 21H5.5A1.5 1.5 0 0 1 4 19.5v-15A1.5 1.5 0 0 1 5.5 3H14l5 5v5"/>
+    <path class="outline" d="M14 3v5h5M7.5 10.5h7M7.5 14h6M7.5 17.5h3"/>
+    <path class="accent" d="m14.5 17.5 2.5 2.5 4-5"/>
+  </g>
+</svg>

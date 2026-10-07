@@ -1,10 +1,10 @@
 {
   "addons": {
-    "zotero-format-metadata@northword.cn": {
+    "metaref@groele": {
       "updates": [
         {
-          "version": "10.0.6",
-          "update_link": "https://raw.githubusercontent.com/groele/Zotero-diy/main/Linter-for-Zotero/dist/linter-for-zotero.xpi",
+          "version": "11.0.0",
+          "update_link": "https://raw.githubusercontent.com/groele/Zotero-diy/main/Linter-for-Zotero/dist/metaref-for-zotero.xpi",
           "applications": {
             "zotero": {
               "strict_min_version": "10.0",

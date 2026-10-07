@@ -53,6 +53,10 @@ export function useDialog<T extends DialogHelper | SettingsDialogHelper>(dialog:
     logger.debug(`opening dialog ${id}...`);
     dialog.open(title);
     const window = dialog.window;
+    const onUnload = () => {
+      dialog.dialogData.loadLock?.resolve();
+      dialog.dialogData.unloadLock?.resolve();
+    };
     // The toolkit's unloadLock remains pending if the window closes before loading.
     pendingDialogs.add(window);
     const loadResolver = dialog.dialogData.loadLock?.resolve;
@@ -62,6 +66,7 @@ export function useDialog<T extends DialogHelper | SettingsDialogHelper>(dialog:
       await dialog.dialogData.loadLock?.promise;
       if (!addon.data.alive || window.closed)
         return;
+      window.addEventListener("unload", onUnload, { once: true });
       pendingDialogs.delete(window);
       pendingLoadResolvers.delete(window);
       addon.data.dialogs.set(id, window);
@@ -71,6 +76,7 @@ export function useDialog<T extends DialogHelper | SettingsDialogHelper>(dialog:
       await dialog.dialogData.unloadLock?.promise;
     }
     finally {
+      window.removeEventListener("unload", onUnload);
       pendingDialogs.delete(window);
       pendingLoadResolvers.delete(window);
       addon.data.dialogs.delete(id);

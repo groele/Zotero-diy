@@ -269,6 +269,28 @@ describe("data processing resilience in Zotero", function () {
     assert.notInclude(result.records.map((row: { message: string }) => row.message), "late report must be ignored");
   });
 
+  it("uses the live item when a report action starts a new batch after its rule has finished", async function () {
+    const item = await create("publisher action", "webpage");
+    item.setField("url", "https://www.nature.com/articles/test");
+    await item.saveTx();
+    await plugin().hooks.onLintInBatch("no-article-webpage", [item]);
+    const action = plugin().runner.lastResult.records.find((record: { ruleID: string }) => record.ruleID === "no-article-webpage")?.action;
+    assert.isDefined(action);
+    const onLint = plugin().hooks.onLintInBatch;
+    plugin().hooks.onLintInBatch = async (_rules: unknown, items: Zotero.Item[]) => {
+      assert.strictEqual(items[0], item, "report action must retrieve the live item rather than retaining an expired proxy");
+      await plugin().runner.add({ items, rules: [changeTitle], silent: true });
+    };
+    try {
+      await action.callback();
+      assert.equal(item.getField("title"), "publisher action saved");
+      assert.equal(plugin().runner.lastResult.saved, 1);
+    }
+    finally {
+      plugin().hooks.onLintInBatch = onLint;
+    }
+  });
+
   it("runs all local standard rules across article, conference, thesis, book and patent fields", async function () {
     const rules: ID[] = [
       "no-item-duplication",
@@ -293,7 +315,7 @@ describe("data processing resilience in Zotero", function () {
       "correct-publication-title-alias",
       "correct-publication-title-case",
       "require-journal-abbr",
-      "require-series-esi",
+      "tool-query-esi",
       "correct-pages-connector",
       "correct-pages-range",
       "no-issue-extra-zeros",
@@ -313,7 +335,7 @@ describe("data processing resilience in Zotero", function () {
     ];
     const items: Zotero.Item[] = [];
     for (const type of ["journalArticle", "conferencePaper", "thesis", "book", "patent", "webpage", "preprint"] as const) {
-      const item = await create(`Linter QA ${type} H2O: Metadata formatting`, type);
+      const item = await create(`MetaRef QA ${type} H2O: Metadata formatting`, type);
       item.setCreators([{ creatorType: type === "patent" ? "inventor" : "author", firstName: "Jane", lastName: "Doe" }]);
       for (const [field, value] of Object.entries({ language: "en", publicationTitle: "Physical Review Letters", conferenceName: "International Conference on Machine Learning", university: "清华大学", date: "2024/03/07", pages: "001-009", issue: "003", volume: "004", edition: "2nd", filingDate: "2024/03/07", issueDate: "2024/03/08", priorityDate: "2024/03/06", extra: "Z-field: value\nCitation Key: QAtest" })) {
         if (Zotero.ItemFields.isValidForType(Zotero.ItemFields.getID(field), item.itemTypeID))
@@ -331,7 +353,7 @@ describe("data processing resilience in Zotero", function () {
       assert.include(item.getField("title", false, true), "H<sub>2</sub>O");
     }
     assert.isNotEmpty(items[0].getField("journalAbbreviation"));
-    assert.include(items[0].getField("series"), "ESI");
+    assert.include((await plugin().api.getJournalInsights(items[0])).esi, "ESI");
     assert.isNotEmpty(items[2].getField("place"));
   });
 
@@ -345,7 +367,7 @@ describe("data processing resilience in Zotero", function () {
     assert.equal(item.getField("journalAbbreviation"), "Manual QA Abbr.");
     item.setField("publicationTitle", "Physical Review Letters");
     await item.saveTx();
-    await plugin().hooks.onLintInBatch("require-series-esi", [item]);
+    await plugin().hooks.onLintInBatch("tool-query-esi", [item]);
     assert.equal(item.getField("series"), "Original series");
   });
 
@@ -519,13 +541,14 @@ describe("data processing resilience in Zotero", function () {
     const entries = (Zotero.MenuManager as any)._menuManager.getCustomMenuOptions("main/library/item").filter((entry: any) => entry.pluginID === config.addonID);
     assert.equal(entries.length, 1, "the main menu is registered only once");
     const columns = (Zotero.ItemTreeManager as any).getCustomColumns(undefined, { pluginID: config.addonID });
-    assert.equal(columns.length, 2);
-    const countESI = (menus: any[]): number => menus.reduce((count, menu) => count + (menu.l10nID === "linter-rule-require-series-esi-menu-item" ? 1 : 0) + countESI(menu.menus || []), 0);
+    assert.equal(columns.length, 3);
+    const countESI = (menus: any[]): number => menus.reduce((count, menu) => count + (menu.l10nID === "metaref-rule-tool-query-esi-menu-item" ? 1 : 0) + countESI(menu.menus || []), 0);
     assert.equal(countESI(entries.flatMap((entry: any) => entry.menus)), 1);
-    const linterMenu = entries.flatMap((entry: any) => entry.menus).find((menu: any) => menu.l10nID === "linter-menuitem-label");
-    assert.isDefined(linterMenu, "the Linter root item is registered");
-    assert.equal(linterMenu.menus.filter((menu: any) => menu.menuType === "submenu").length, 0, "all Linter functions are directly under the root item");
-    assert.equal(linterMenu.menus.filter((menu: any) => menu.l10nID === "linter-tool-mark-nature-index-menu-item").length, 1, "Nature Index marking has a localized first-level item-menu entry");
+    const metarefMenu = entries.flatMap((entry: any) => entry.menus).find((menu: any) => menu.l10nID === "metaref-menuitem-label");
+    assert.isDefined(metarefMenu, "the MetaRef root item is registered");
+    assert.equal(metarefMenu.menus.filter((menu: any) => menu.menuType === "submenu").length, 0, "all commands are directly accessible without nested submenus");
+    assert.equal(metarefMenu.menus.filter((menu: any) => menu.menuType === "menuitem").length, 22);
+    assert.equal(metarefMenu.menus.filter((menu: any) => menu.l10nID === "metaref-tool-query-nature-index-menu-item").length, 1);
     const item = await create("rich text preview");
     pref("richtext.preview", true);
     await win.ZoteroPane.selectItem(item.id);
@@ -686,7 +709,7 @@ describe("data processing resilience in Zotero", function () {
     const tree = win.ZoteroPane.collectionsView;
     if (!tree)
       throw new Error("Collection tree unavailable");
-    collection.name = "Linter QA collection";
+    collection.name = "MetaRef QA collection";
     await collection.saveTx();
     try {
       item.setCollections([collection.id]);
@@ -698,7 +721,7 @@ describe("data processing resilience in Zotero", function () {
       const row = tree.getRow(rowIndex);
       assert.isTrue(row.isCollection());
       const entries = (Zotero.MenuManager as any)._menuManager.getCustomMenuOptions("main/library/collection").filter((entry: any) => entry.pluginID === config.addonID);
-      const find = (menus: any[]): any => menus.find(menu => menu.l10nID === "linter-rule-correct-title-chemical-formula-menu-item") || menus.map(menu => find(menu.menus || [])).find(Boolean);
+      const find = (menus: any[]): any => menus.find(menu => menu.l10nID === "metaref-rule-correct-title-chemical-formula-menu-item") || menus.map(menu => find(menu.menus || [])).find(Boolean);
       const command = find(entries.flatMap((entry: any) => entry.menus));
       assert.isDefined(command);
       await command.onCommand(null, { collectionTreeRows: [row] });
@@ -728,23 +751,23 @@ describe("data processing resilience in Zotero", function () {
   });
 
   it("falls back to bundled reference data when custom abbreviation and ESI files are invalid", async function () {
-    const path = PathUtils.join(PathUtils.tempDir, `linter-invalid-custom-${Date.now()}.json`);
+    const path = PathUtils.join(PathUtils.tempDir, `metaref-invalid-custom-${Date.now()}.json`);
     await IOUtils.writeUTF8(path, "{\"Physical Review Letters\":42}");
     const item = await create("custom data fallback");
     item.setField("publicationTitle", "Physical Review Letters");
     await item.saveTx();
     pref("rule.require-journal-abbr.customDataPath", path);
-    pref("rule.require-series-esi.customDataPath", path);
+    pref("insights.esiCustomDataPath", path);
     try {
-      await plugin().hooks.onLintInBatch(["require-journal-abbr", "require-series-esi"], [item]);
+      await plugin().hooks.onLintInBatch(["require-journal-abbr", "tool-query-esi"], [item]);
       assert.isNotEmpty(item.getField("journalAbbreviation"));
-      assert.include(item.getField("series"), "ESI");
+      assert.include((await plugin().api.getJournalInsights(item)).esi, "ESI");
       assert.equal(plugin().runner.lastResult.failed, 0);
       assert.equal(plugin().runner.lastResult.records.filter((row: { level: string }) => row.level === "warning").length, 2);
     }
     finally {
       pref("rule.require-journal-abbr.customDataPath", "");
-      pref("rule.require-series-esi.customDataPath", "");
+      pref("insights.esiCustomDataPath", "");
       await IOUtils.remove(path);
     }
   });

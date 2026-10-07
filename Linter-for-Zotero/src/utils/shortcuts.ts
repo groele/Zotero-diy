@@ -60,10 +60,9 @@ export function normalizeShortcut(raw: string, isMac = false): string | null {
     return null;
   if (mods.delete("accel"))
     mods.add(isMac ? "meta" : "control");
-  // Preserve legacy Ctrl+Shift+'+' bindings on the '=' physical key.
   if (key === "+")
-    mods.add("shift");
-  const normalizedKey = key === "+" ? "=" : key.toUpperCase();
+    return null;
+  const normalizedKey = key.toUpperCase();
   if (!["control", "meta", "alt"].some(mod => mods.has(mod)) && !/^F(?:[1-9]|1\d|2[0-4])$/.test(normalizedKey))
     return null;
   if (key.length > 1 && !/^(?:F(?:[1-9]|1\d|2[0-4])|Numpad(?:\d|Add|Subtract|Multiply|Divide|Decimal|Enter)|Space|Comma|Arrow(?:Up|Down|Left|Right)|Home|End|PageUp|PageDown|Insert|Delete|Backspace|Enter)$/i.test(key))

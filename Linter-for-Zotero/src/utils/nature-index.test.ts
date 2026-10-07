@@ -12,6 +12,12 @@ const entries: NatureIndexEntry[] = [
 const maps = buildNatureIndexLookupMaps(entries);
 
 describe("nature Index recognition", () => {
+  it("ignores exact duplicate records without making their titles ambiguous", () => {
+    const duplicateMaps = buildNatureIndexLookupMaps([entries[0], entries[0], { ...entries[0], aliases: ["Nature Commun"] }]);
+    expect(isNatureIndexJournal({ publicationTitle: "Nature Communications", maps: duplicateMaps })).toBe(true);
+    expect(duplicateMaps.ambiguousTitles.size).toBe(0);
+    expect(isNatureIndexJournal({ journalAbbreviation: "Nature Commun", maps: duplicateMaps })).toBe(true);
+  });
   it("matches canonical titles, curated aliases, and print or electronic ISSNs", () => {
     expect(isNatureIndexJournal({ publicationTitle: "Nature Communications", maps })).toBe(true);
     expect(isNatureIndexJournal({ journalAbbreviation: "Nat Commun", maps })).toBe(true);

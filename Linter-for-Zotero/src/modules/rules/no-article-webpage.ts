@@ -1,5 +1,4 @@
 import { getString } from "../../utils/locale";
-import { isStringMatchStringInArray } from "../../utils/str";
 import { defineRule } from "./rule-base";
 
 // 当条目为 webpage，且 url 为各期刊出版社时，警告
@@ -99,17 +98,35 @@ export const NoArticleWebPage = defineRule({
     if (url === "")
       return;
 
-    if (isStringMatchStringInArray(url, publisherUrlKeyWords)) {
+    if (isPublisherURL(url)) {
       report({
         level: "error",
         message: getString("rule-no-article-webpage-report-message"),
         action: {
           label: getString("rule-no-article-webpage-report-action"),
           callback: () => {
-            addon.hooks.onLintInBatch(["tool-update-metadata", "standard"], [item]);
+            const currentItem = Zotero.Items.get(item.id);
+            if (currentItem && !currentItem.deleted)
+              return addon.hooks.onLintInBatch(["tool-update-metadata", "standard"], [currentItem]);
           },
         },
       });
     }
   },
 });
+
+export function isPublisherURL(value: string): boolean {
+  let url: URL;
+  try {
+    url = new URL(value);
+  }
+  catch {
+    return false;
+  }
+  if (url.protocol !== "https:" && url.protocol !== "http:")
+    return false;
+  const host = url.hostname.toLowerCase().replace(/\.$/, "");
+  return publisherUrlKeyWords.some(domain => domain === "sci-hub"
+    ? /(?:^|\.)sci-hub\.[a-z.]+$/.test(host)
+    : host === domain || host.endsWith(`.${domain}`));
+}

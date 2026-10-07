@@ -8,7 +8,7 @@ async function request(paperID: string, fields: (keyof Result)[]): Promise<Reque
     timeout: 15_000,
     headers: {
       ...getPref("semanticScholarToken") && { "x-api-key": getPref("semanticScholarToken") },
-      "User-Agent": "Linter for Zotero",
+      "User-Agent": "MetaRef for Zotero",
     },
   });
 

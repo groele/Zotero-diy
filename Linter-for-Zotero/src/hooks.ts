@@ -1,6 +1,6 @@
 import type { Arrayable } from "./utils/types";
-import { checkCompat } from "./modules/compat";
 import { registerExtraColumns, unregisterExtraColumns } from "./modules/item-tree";
+import { registerJournalPane, unregisterJournalPane } from "./modules/journal-pane";
 import { registerMenu, unregisterMenu } from "./modules/menu";
 import { registerNotifier, unregisterNotifier } from "./modules/notifier";
 import { registerPrefs, registerPrefsScripts } from "./modules/preference";
@@ -9,6 +9,7 @@ import { Rules } from "./modules/rules";
 import { registerShortcuts } from "./modules/shortcuts";
 import { closeAllDialogs } from "./utils/dialog";
 import { toArray } from "./utils/general";
+import { loadJournalInsights } from "./utils/journal-insights";
 import { initLocale, registerMainWindowLocale, unloadLocale, unregisterMainWindowLocale } from "./utils/locale";
 import { logger } from "./utils/logger";
 import { getPref } from "./utils/prefs";
@@ -19,11 +20,12 @@ const toolbars = new Map<Window, RichTextToolBar>();
 async function onStartup() {
   await Promise.all([Zotero.initializationPromise, Zotero.unlockPromise, Zotero.uiReadyPromise]);
   initLocale();
-  await checkCompat();
   registerPrefs();
   registerNotifier();
   registerMenu();
+  await loadJournalInsights();
   registerExtraColumns();
+  registerJournalPane();
   await Promise.all(Zotero.getMainWindows().map(onMainWindowLoad));
 }
 
@@ -53,6 +55,7 @@ async function onShutdown() {
   closeAllDialogs();
   unregisterMenu();
   unregisterExtraColumns();
+  unregisterJournalPane();
   ztoolkit.unregisterAll();
   await Promise.all(Zotero.getMainWindows().map(onMainWindowUnload));
   unloadLocale();
@@ -209,11 +212,6 @@ async function onLintInBatch(
   await addon.runner.add(tasks);
 }
 
-/**
- * @deprecated use onLintInBatch instead.
- */
-const onUpdateInBatch = onLintInBatch;
-
 export default {
   onStartup,
   onMainWindowLoad,
@@ -223,5 +221,4 @@ export default {
   onPrefsEvent,
   onShortcuts,
   onLintInBatch,
-  onUpdateInBatch,
 };

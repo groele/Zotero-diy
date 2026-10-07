@@ -7,7 +7,6 @@
 declare namespace _ZoteroTypes {
   interface Prefs {
     PluginPrefsMap: {
-      "version": string;
       "lint.onAdded": boolean;
       "lint.onGroup": boolean;
       "lint.notify": boolean;
@@ -45,10 +44,10 @@ declare namespace _ZoteroTypes {
       "rule.require-journal-abbr.usefull": boolean;
       "rule.require-journal-abbr.usefullZh": boolean;
       "rule.require-journal-abbr.customDataPath": string;
-      "rule.require-series-esi": boolean;
-      "rule.require-series-esi.format": string;
-      "rule.require-series-esi.customDataPath": string;
-      "rule.require-series-esi.overwrite": boolean;
+      "insights.esiFormat": string;
+      "insights.esiCustomDataPath": string;
+      "insights.showPane": boolean;
+      "insights.natureCustomDataPath": string;
       "rule.require-university-place": boolean;
       "rule.require-doi": boolean;
       "rule.require-creators": boolean;
@@ -94,7 +93,7 @@ declare namespace _ZoteroTypes {
       "menu.correct-publication-title-alias": boolean;
       "menu.correct-publication-title-case": boolean;
       "menu.require-journal-abbr": boolean;
-      "menu.require-series-esi": boolean;
+      "menu.tool-query-esi": boolean;
       "menu.correct-conference-abbr": boolean;
       "menu.require-university-place": boolean;
       "menu.tool-update-metadata": boolean;
@@ -105,7 +104,7 @@ declare namespace _ZoteroTypes {
       "menu.tool-clean-extra": boolean;
       "menu.tool-csl-helper": boolean;
       "menu.tool-creators-ext": boolean;
-      "menu.tool-mark-nature-index": boolean;
+      "menu.tool-query-nature-index": boolean;
       "menu.correct-title-punctuation": boolean;
       "menu.correct-extra-order": boolean;
       "rule.tool-set-language": boolean;
@@ -114,7 +113,7 @@ declare namespace _ZoteroTypes {
       "rule.tool-csl-helper": boolean;
       "rule.tool-creators-ext": boolean;
       "rule.tool-get-short-doi": boolean;
-      "rule.tool-mark-nature-index": boolean;
+      "rule.tool-query-nature-index": boolean;
       "cleanExtra": boolean;
     };
   }

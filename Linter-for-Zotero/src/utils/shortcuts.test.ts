@@ -14,10 +14,10 @@ function event(overrides = {}) {
 }
 
 describe("shortcut matching and recording", () => {
-  it("records shifted '=' consistently and accepts the legacy '+' binding", () => {
+  it("records shifted '=' consistently using the physical key", () => {
     const shifted = event({ key: "+", shiftKey: true });
     expect(recordShortcut(shifted)).toBe("accel,shift,=");
-    expect(matchesShortcut(shifted, "accel,shift,+")).toBe(true);
+    expect(matchesShortcut(shifted, "accel,shift,+")).toBe(false);
     expect(matchesShortcut(shifted, SHORTCUT_DEFAULTS.supscript)).toBe(true);
     expect(matchesShortcut(shifted, SHORTCUT_DEFAULTS.subscript)).toBe(false);
   });
@@ -46,7 +46,7 @@ describe("shortcut matching and recording", () => {
   it("canonicalizes conflicts and distinguishes disabled or malformed bindings", () => {
     expect(normalizeShortcut("CTRL,B")).toBeNull();
     expect(normalizeShortcut("control,b")).toBe(normalizeShortcut("accel,B"));
-    expect(normalizeShortcut("accel,shift,+")).toBe(normalizeShortcut("control,shift,="));
+    expect(normalizeShortcut("accel,shift,+")).toBeNull();
     for (const invalid of ["B", "shift,B", "accel,", "accel,shift", "accel,b,c", "<script>"])
       expect(normalizeShortcut(invalid)).toBeNull();
     expect(normalizeShortcut("")).toBe("");

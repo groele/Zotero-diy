@@ -58,7 +58,7 @@ interface RuleBase<Option = object> {
   /**
    * The documentation link of the rule.
    *
-   * Prefix is `https://github.com/northword/zotero-format-metadata/blob/main/docs/rules/`,
+   * Prefix is `https://github.com/groele/Zotero-diy/blob/main/Linter-for-Zotero/docs/rules/`,
    * prefix are not required.
    *
    * @default "id.md"

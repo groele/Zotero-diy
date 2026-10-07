@@ -1,17 +1,19 @@
 import { homepage } from "../../package.json";
 import { getString } from "../utils/locale";
-import { createLogger } from "../utils/logger";
 import { getPref, setPref } from "../utils/prefs";
 import { normalizeShortcut, recordShortcut, SHORTCUT_DEFAULTS, shortcutPreview } from "../utils/shortcuts";
+import { setupJournalDatabases } from "./journal-database-settings";
+import { MENU_GROUPS, MENU_SECTIONS } from "./menu";
+import { Rules } from "./rules";
 
-const logger = createLogger("prefrence");
+const initializedPanes = new WeakSet<Element>();
 
 export function registerPrefs() {
   Zotero.PreferencePanes.register({
     pluginID: addon.data.config.addonID,
     src: `${rootURI}content/preferences.xhtml`,
     label: getString("prefs-title"),
-    image: `${rootURI}/content/icons/favicon.png`,
+    image: `${rootURI}/content/icons/metaref-96.png`,
     stylesheets: [`${rootURI}/content/preferences.css`],
     helpURL: homepage,
   });
@@ -29,17 +31,62 @@ export function registerPrefsScripts(_window: Window) {
     addon.data.prefs.window = _window;
   }
 
+  const pane = _window.document.getElementById(addon.data.config.addonRef);
+  if (!pane || initializedPanes.has(pane))
+    return;
+  initializedPanes.add(pane);
+  setupMenuSettings(pane);
   updatePrefsUI();
-  bindPrefEvents();
+  setupCustomDataReset(pane);
+  setupJournalDatabases(pane);
+  setupDependencies(pane);
+  setupSettingsSearch(pane);
   setupShortcutInputs();
 }
 
-async function updatePrefsUI() {
+function setupMenuSettings(pane: Element) {
+  const container = pane.querySelector("#metaref-menu-settings");
+  if (!container)
+    return;
+  const doc = pane.ownerDocument!;
+  for (const [key, keys] of [["primary", MENU_SECTIONS.primary], ...MENU_GROUPS]) {
+    const group = doc.createXULElement("groupbox");
+    const label = doc.createXULElement("label");
+    doc.l10n!.setAttributes(label, `metaref-menu-group-${key}`);
+    group.appendChild(label);
+    for (const id of keys) {
+      const control = doc.createXULElement("checkbox") as XULElement & { checked: boolean };
+      const rule = id === "standard" ? undefined : Rules.getByID(id as ID);
+      const l10nID = id === "standard" ? "menuitem-stdFormatFlow" : rule?.getItemMenu?.()?.l10nID || `rule-${id}-menu-item`;
+      doc.l10n!.setAttributes(control, `metaref-${l10nID}`);
+      control.setAttribute("native", "true");
+      control.setAttribute("preference", `${addon.data.config.prefsPrefix}.menu.${id}`);
+      control.checked = getPref(`menu.${id}` as any, true) as boolean;
+      control.addEventListener("command", () => setPref(`menu.${id}` as any, control.checked));
+      group.appendChild(control);
+    }
+    container.appendChild(group);
+  }
+}
+
+function setupCustomDataReset(pane: Element) {
+  for (const input of pane.querySelectorAll<HTMLInputElement>("input[readonly][preference]")) {
+    const button = input.ownerDocument.createXULElement("button");
+    input.ownerDocument.l10n!.setAttributes(button, "metaref-settings-custom-data-reset");
+    button.setAttribute("native", "true");
+    button.addEventListener("command", () => {
+      const key = input.getAttribute("preference")!.replace(`${addon.data.config.prefsPrefix}.`, "");
+      setPref(key as any, "");
+      input.value = "";
+    });
+    input.parentElement!.appendChild(button);
+  }
+}
+
+function updatePrefsUI() {
   // You can initialize some UI elements on prefs window
   // with addon.data.prefs.window.document
   // Or bind some events to the elements
-  disablePrefsTitleLang();
-  disablePrefsLang();
 
   addon.data.prefs?.window.document
     .querySelector(`#${addon.data.config.addonRef}-abbr-choose-custom-data-button`)
@@ -52,28 +99,10 @@ async function updatePrefsUI() {
           ["JSON File (*.json)", "*.json"],
           ["Any", "*.*"],
         ],
-        "zotero-format-metadata-custom-abbr-data.csv",
+        "metaref-custom-abbr-data.csv",
       ).open();
       if (filename) {
         setPref("rule.require-journal-abbr.customDataPath", filename);
-      }
-    });
-
-  addon.data.prefs?.window.document
-    .querySelector(`#${addon.data.config.addonRef}-esi-choose-custom-data-button`)
-    ?.addEventListener("command", async () => {
-      const filename = await new ztoolkit.FilePicker(
-        "Select File",
-        "open",
-        [
-          ["JSON File (*.json)", "*.json"],
-          ["CSV File (*.csv)", "*.csv"],
-          ["Any", "*.*"],
-        ],
-        "zotero-format-metadata-custom-esi-data.json",
-      ).open();
-      if (filename) {
-        setPref("rule.require-series-esi.customDataPath", filename);
       }
     });
 
@@ -87,7 +116,7 @@ async function updatePrefsUI() {
           ["CSV File (*.csv)", "*.csv"],
           ["Any", "*.*"],
         ],
-        "zotero-format-metadata-custom-abbr-data.json",
+        "metaref-custom-title-terms.csv",
       ).open();
       if (filename) {
         setPref("rule.correct-title-sentence-case.custom-term-path", filename);
@@ -95,43 +124,71 @@ async function updatePrefsUI() {
     });
 }
 
-function bindPrefEvents() {
-  addon.data.prefs?.window.document
-    .querySelector(`#${addon.data.config.addonRef}-title-case`)
-    ?.addEventListener("command", (e: Event) => {
-      logger.debug(e);
-      disablePrefsTitleLang();
-    });
-  addon.data.prefs?.window.document
-    .querySelector(`#${addon.data.config.addonRef}-lang-only`)
-    ?.addEventListener("command", (e: Event) => {
-      logger.debug(e);
-      disablePrefsLang();
-    });
+function setupDependencies(pane: Element) {
+  const prefix = `${addon.data.config.prefsPrefix}.`;
+  const controls = [...pane.querySelectorAll<HTMLInputElement>("[preference]")];
+  const key = (control: Element) => control.getAttribute("preference")!.replace(prefix, "");
+  const update = () => {
+    for (const control of controls) {
+      const pref = key(control);
+      const parents = controls.filter(parent => parent !== control && parent.localName === "checkbox"
+        && pref.startsWith(`${key(parent)}.`));
+      control.disabled = parents.some(parent => !parent.checked);
+    }
+    const auto = controls.find(control => key(control) === "lint.onAdded");
+    const group = controls.find(control => key(control) === "lint.onGroup");
+    if (auto && group)
+      group.disabled = !auto.checked;
+    for (const button of pane.querySelectorAll<HTMLButtonElement>("hbox button")) {
+      if (button.closest("[data-journal-database][data-busy='true']")) {
+        button.disabled = true;
+        continue;
+      }
+      const input = button.parentElement?.querySelector("input[preference]") as HTMLInputElement | null;
+      if (input)
+        button.disabled = input.disabled;
+    }
+  };
+  pane.addEventListener("command", update);
+  pane.addEventListener("syncfrompreference", () => setTimeout(update, 0));
+  update();
 }
 
-function disablePrefsTitleLang() {
-  const titleCaseState = getPref("rule.correct-title-sentence-case");
-  const languageElement = addon.data.prefs?.window.document
-    .getElementById(`${addon.data.config.addonRef}-title-case-disabled-languages`) as HTMLInputElement;
-  if (languageElement)
-    languageElement.disabled = !titleCaseState;
-}
-
-function disablePrefsLang() {
-  const state = getPref("rule.require-language.only");
-  const cmnElement = addon.data.prefs?.window.document
-    .getElementById(`${addon.data.config.addonRef}-lang-only-cmn`) as HTMLInputElement;
-  const engElement = addon.data.prefs?.window.document
-    .getElementById(`${addon.data.config.addonRef}-lang-only-eng`) as HTMLInputElement;
-  const otherElement = addon.data.prefs?.window.document
-    .getElementById(`${addon.data.config.addonRef}-lang-only-other`) as HTMLInputElement;
-  if (cmnElement)
-    cmnElement.disabled = !state;
-  if (engElement)
-    engElement.disabled = !state;
-  if (otherElement)
-    otherElement.disabled = !state;
+function setupSettingsSearch(pane: Element) {
+  const search = pane.querySelector<HTMLInputElement>(".metaref-settings-search");
+  if (!search)
+    return;
+  const groups = [...pane.querySelectorAll<HTMLElement>(":scope > groupbox")];
+  const details = [...pane.querySelectorAll<HTMLDetailsElement>("details")];
+  let openStates: Map<HTMLDetailsElement, boolean> | undefined;
+  const text = (element: Element) => `${element.textContent} ${[...element.querySelectorAll("[label]")].map(node => node.getAttribute("label")).join(" ")}`.toLocaleLowerCase();
+  const update = () => {
+    const query = search.value.trim().toLocaleLowerCase();
+    if (query && !openStates)
+      openStates = new Map(details.map(detail => [detail, detail.open]));
+    for (const group of groups)
+      group.hidden = !!query && !text(group).includes(query);
+    for (const detail of details) {
+      detail.hidden = !!query && !text(detail).includes(query);
+      if (query)
+        detail.open = !detail.hidden;
+      else if (openStates)
+        detail.open = openStates.get(detail)!;
+    }
+    if (!query)
+      openStates = undefined;
+    const empty = pane.querySelector<HTMLElement>(".metaref-settings-empty");
+    if (empty)
+      empty.hidden = groups.some(group => !group.hidden);
+  };
+  search.addEventListener("input", update);
+  search.addEventListener("keydown", (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      search.value = "";
+      update();
+    }
+  });
 }
 
 // ---------- Shortcut input recording & preview ----------
@@ -141,13 +198,13 @@ function setupShortcutInputs() {
   if (!win)
     return;
   const doc = win.document;
-  const status = doc.querySelector<HTMLElement>(".linter-shortcut-status");
-  const inputs = [...doc.querySelectorAll<HTMLInputElement>(".linter-shortcut-input")];
+  const status = doc.querySelector<HTMLElement>(".metaref-shortcut-status");
+  const inputs = [...doc.querySelectorAll<HTMLInputElement>(".metaref-shortcut-input")];
   const prefKey = (input: HTMLInputElement) => input.getAttribute("preference")!
     .replace(`${addon.data.config.prefsPrefix}.`, "");
 
   const updatePreview = (input: HTMLInputElement) => {
-    const preview = input.parentElement?.querySelector<HTMLElement>(".linter-shortcut-preview");
+    const preview = input.parentElement?.querySelector<HTMLElement>(".metaref-shortcut-preview");
     if (preview) {
       preview.textContent = shortcutPreview(input.value, Zotero.isMac);
       preview.title = preview.textContent;
@@ -155,7 +212,7 @@ function setupShortcutInputs() {
   };
   const showStatus = (id: string, args?: Record<string, unknown>) => {
     if (status)
-      doc.l10n!.setAttributes(status, `linter-${id}`, args);
+      doc.l10n!.setAttributes(status, `metaref-${id}`, args);
   };
   const save = (input: HTMLInputElement, raw: string): boolean => {
     const normalized = normalizeShortcut(raw, Zotero.isMac);
@@ -184,22 +241,22 @@ function setupShortcutInputs() {
     const row = input.parentElement!;
     const pref = prefKey(input);
     const action = pref.slice("shortcut.".length) as keyof typeof SHORTCUT_DEFAULTS;
-    input.id = `linter-shortcut-${action}`;
+    input.id = `metaref-shortcut-${action}`;
     const label = row.querySelector("label")!;
     label.id = `${input.id}-label`;
     label.setAttribute("control", input.id);
     input.setAttribute("aria-labelledby", label.id);
-    doc.l10n!.setAttributes(input, "linter-shortcut-input-hint");
+    doc.l10n!.setAttributes(input, "metaref-shortcut-input-hint");
     const actions = doc.createElementNS("http://www.w3.org/1999/xhtml", "div");
-    actions.className = "linter-shortcut-actions";
+    actions.className = "metaref-shortcut-actions";
     actions.setAttribute("role", "group");
     actions.setAttribute("aria-labelledby", label.id);
     row.appendChild(actions);
     const makeButton = (l10nID: string, onCommand: () => void) => {
       const button = doc.createXULElement("button");
-      doc.l10n!.setAttributes(button, `linter-${l10nID}`);
+      doc.l10n!.setAttributes(button, `metaref-${l10nID}`);
       button.setAttribute("native", "true");
-      button.classList.add("linter-shortcut-action");
+      button.classList.add("metaref-shortcut-action");
       button.addEventListener("command", onCommand);
       actions.appendChild(button);
     };

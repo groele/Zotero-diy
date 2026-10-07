@@ -8,7 +8,7 @@ export function registerShortcuts(win: Window): () => void {
       return;
     const target = event.composedPath()[0] as HTMLElement | undefined;
     // Recording shortcuts must never dispatch library commands.
-    if (target?.closest?.("#linter, .linter-shortcut-input"))
+    if (target?.closest?.("#metaref, .metaref-shortcut-input"))
       return;
 
     const matching = Object.entries(SHORTCUT_DEFAULTS).filter(([action, fallback]) =>

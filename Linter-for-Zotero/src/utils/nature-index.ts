@@ -1,7 +1,5 @@
 import { extractISSNs, normalizeTitleKey } from "./esi";
 
-export const NATURE_INDEX_TAG = "Nature Index";
-
 export interface NatureIndexEntry {
   title: string;
   type: "journal" | "conference";
@@ -25,17 +23,25 @@ export interface MatchNatureIndexOptions {
 export function buildNatureIndexLookupMaps(entries: NatureIndexEntry[]): NatureIndexLookupMaps {
   const issnSet = new Set<string>();
   const titleCounts = new Map<string, number>();
+  const journalTitles = new Map<string, Set<string>>();
 
   for (const entry of entries) {
     if (entry.type !== "journal")
       continue;
+
+    const identity = JSON.stringify([normalizeTitleKey(entry.title), [...new Set((entry.issn ?? []).flatMap(extractISSNs))].sort()]);
 
     for (const issn of entry.issn ?? []) {
       for (const code of extractISSNs(issn))
         issnSet.add(code);
     }
 
-    const entryTitles = new Set([entry.title, ...(entry.aliases ?? [])].map(normalizeTitleKey).filter(Boolean));
+    const entryTitles = journalTitles.get(identity) ?? new Set<string>();
+    for (const title of [entry.title, ...(entry.aliases ?? [])].map(normalizeTitleKey).filter(Boolean))
+      entryTitles.add(title);
+    journalTitles.set(identity, entryTitles);
+  }
+  for (const entryTitles of journalTitles.values()) {
     for (const key of entryTitles) {
       titleCounts.set(key, (titleCounts.get(key) ?? 0) + 1);
     }

@@ -3,9 +3,14 @@ import { describe, expect, it } from "vitest";
 import esiJournals from "../../data/esi/esi-journals.json";
 import natureIndex from "../../data/nature-index/nature-index-journals.json";
 import { ESI_CATEGORIES, normalizeTitleKey } from "./esi";
+import { parseESIDataset, parseNatureDataset } from "./journal-datasets";
 import { buildNatureIndexLookupMaps } from "./nature-index";
 
 describe("bundled research-index datasets", () => {
+  it("validates every built-in record with the same schema used for custom imports", () => {
+    expect(parseESIDataset(esiJournals)).toHaveLength(12245);
+    expect(parseNatureDataset(natureIndex)).toHaveLength(178);
+  });
   it("covers every official ESI field with ISSN-backed master-list journals", () => {
     const categories = new Set<string>();
     for (const entry of esiJournals) {

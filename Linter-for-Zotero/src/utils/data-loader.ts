@@ -2,6 +2,7 @@ import type { ESIJournalEntry, ESILookupMaps } from "./esi";
 import type { NatureIndexLookupMaps } from "./nature-index";
 import csv from "csvtojson";
 import { buildESILookupMaps } from "./esi";
+import { parseESIDataset, parseNatureDataset } from "./journal-datasets";
 import { createLogger } from "./logger";
 import { buildNatureIndexLookupMaps } from "./nature-index";
 import { normalizeKey } from "./str";
@@ -66,28 +67,22 @@ export class DataLoader {
       const entries = customDataPath
         ? await this.load(/\.csv$/i.test(customDataPath) ? "csv" : "json", customDataPath, { noheader: false })
         : await this.load("esiJournals");
-      if (!entries || typeof entries !== "object")
-        throw new TypeError("Expected an ESI dataset containing journal records");
-      const records = Array.isArray(entries) ? entries : Object.values(entries);
-      const maps = buildESILookupMaps(records);
-      if (records.length && !maps.titleMap.size && !maps.issnMap.size)
-        throw new TypeError("ESI records must include a category and a journal title or ISSN");
-      return maps;
+      return buildESILookupMaps(parseESIDataset(entries));
     });
   }
 
-  static getNatureIndexJournalMaps(): Promise<NatureIndexLookupMaps> {
-    return this.derived("nature-index", async () => {
-      const data = await this.load("natureIndexJournals");
-      if (!data.venues?.length)
-        throw new TypeError("Expected the Nature Index dataset to contain publication venues");
-      return buildNatureIndexLookupMaps(data.venues);
+  static getNatureIndexJournalMaps(customDataPath?: string): Promise<NatureIndexLookupMaps> {
+    return this.derived(`nature-index:${customDataPath || "builtin"}`, async () => {
+      const data = customDataPath
+        ? await this.load(/\.csv$/i.test(customDataPath) ? "csv" : "json", customDataPath, { noheader: false })
+        : await this.load("natureIndexJournals");
+      return buildNatureIndexLookupMaps(parseNatureDataset(data));
     });
   }
   static async load(key: "esiJournals"): Promise<ESIJournalEntry[]>;
   static async load(key: "natureIndexJournals"): Promise<{ venues: { title: string; type: "journal" | "conference"; aliases?: string[]; issn?: string[] }[] }>;
 
-  static async load(key: "journalAbbr" | "conferencesAbbr" | "universityPlace" | "iso6393To6391"): Promise<Data>;
+  static async load(key: "journalAbbr" | "conferencesAbbr" | "universityPlace"): Promise<Data>;
   static async load(key: "json", path: string): Promise<Data>;
   static async load(key: "csv", path: string, loaderOptions?: Parameters<typeof csv>[0]): Promise<any[]>;
   static async load(key: "txt", path: string): Promise<string>;
@@ -168,7 +163,7 @@ export class DataLoader {
       trim: true,
       noheader: true,
       ...options,
-    }).fromString(data);
+    }).fromString(data.replace(/^\uFEFF/, ""));
   }
 
   private static parseJSON(data: string): any {

@@ -2,15 +2,17 @@ import type { ProgressWindowHelper, TagElementProps } from "zotero-plugin-toolki
 import { groupBy } from "es-toolkit";
 import { useDialog } from "../utils/dialog";
 import { getString } from "../utils/locale";
+import { createLogger } from "../utils/logger";
 import { getPref } from "../utils/prefs";
 import { waitUtilAsync } from "../utils/wait";
 
 export interface ReportInfo {
-  level?: "warning" | "error";
+  level?: "info" | "warning" | "error";
+  label?: string;
   message: string;
   action?: {
     label: string;
-    callback: () => void;
+    callback: () => void | Promise<void>;
   };
   itemID: number;
   title: string;
@@ -82,21 +84,23 @@ export function createReporter(infos: ReportInfo[]) {
         borderRadius: "6px",
         minHeight: "2rem",
         backgroundColor:
-          info.level === "error"
-            ? "rgba(255, 0, 0, 0.08)"
-            : "rgba(255, 165, 0, 0.08)",
+          info.level === "info"
+            ? "transparent"
+            : info.level === "error"
+              ? "rgba(255, 0, 0, 0.08)"
+              : "rgba(255, 165, 0, 0.08)",
         marginBottom: "6px",
       },
       children: [
         {
           tag: "a",
           properties: {
-            textContent: info.ruleID,
-          // href: `https://github.com/northword/zotero-format-metadata/blob/main/docs/rules/${info.ruleID}.md`,
+            textContent: info.label ?? info.ruleID,
+          // href: `https://github.com/groele/Zotero-diy/blob/main/Linter-for-Zotero/docs/rules/${info.ruleID}.md`,
           },
           styles: {
             fontWeight: "bold",
-            color: info.level === "error" ? "var(--accent-red)" : "var(--accent-orange)",
+            color: info.level === "info" ? "var(--fill-primary)" : info.level === "error" ? "var(--accent-red)" : "var(--accent-orange)",
             minWidth: "80px",
             textDecoration: "none",
           },
@@ -125,8 +129,14 @@ export function createReporter(infos: ReportInfo[]) {
           },
           properties: {
             textContent: info.action?.label,
-            onclick: () => {
-              info.action?.callback();
+            onclick: async () => {
+              try {
+                await info.action?.callback();
+              }
+              catch (error) {
+                createLogger("reporter").error("Report action failed:", error);
+                return;
+              }
 
               // If only one rule reports an issue for an item,
               // close the dialog when clicking the button
@@ -140,7 +150,7 @@ export function createReporter(infos: ReportInfo[]) {
     };
   }
 
-  return openAndWaitClose("Linter for Zotero");
+  return openAndWaitClose(addon.data.config.addonName);
 }
 
 const PROGRESS_WINDOW_CLOSE_DELAY = 5000;
