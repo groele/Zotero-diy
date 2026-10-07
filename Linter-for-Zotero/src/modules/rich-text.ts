@@ -62,10 +62,20 @@ class ButtonManager {
     const toolbarDiv = (document.createElementNS?.("http://www.w3.org/1999/xhtml", "div")
       || document.createElement("div")) as HTMLDivElement;
     toolbarDiv.className = TOOLBAR_CLASS;
-    toolbarDiv.style.display = "flex";
-    toolbarDiv.style.gap = "4px";
-    toolbarDiv.style.padding = "2px 0 4px 0";
-    toolbarDiv.style.alignItems = "center";
+    Object.assign(toolbarDiv.style, {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      gap: "4px",
+      padding: "2px 4px",
+      margin: "2px 0 4px 0",
+      backgroundColor: "var(--material-sidepanel-background, #f5f5f5)",
+      border: "1px solid var(--material-border, #dcdcdc)",
+      borderRadius: "4px",
+      width: "fit-content",
+      boxSizing: "border-box",
+      zIndex: "10",
+    });
 
     BUTTONS.forEach((btn) => {
       const button = this.createToolbarButton(btn);
@@ -77,36 +87,45 @@ class ButtonManager {
 
   private createToolbarButton(btn: ButtonConfig): HTMLElement {
     const document = this.window.document;
-    const button = (document.createXULElement?.("toolbarbutton")
-      || document.createElement("toolbarbutton")) as HTMLElement;
+    const button = (document.createElementNS?.("http://www.w3.org/1999/xhtml", "button")
+      || document.createElement("button")) as HTMLButtonElement;
 
+    button.type = "button";
     button.id = `metaref-richtext-${btn.hookName}-btn`;
-    button.className = "zotero-tb-button";
+    button.className = "zotero-tb-button metaref-tb-btn";
     Object.assign(button.style, {
-      fill: "currentColor",
-      stroke: "currentColor",
-      display: "flex",
+      display: "inline-flex",
       alignItems: "center",
       justifyContent: "center",
       cursor: "pointer",
-      padding: "2px 4px",
-      minWidth: "24px",
+      padding: "2px",
+      width: "24px",
       height: "24px",
+      border: "1px solid transparent",
+      borderRadius: "3px",
+      background: "transparent",
+      color: "var(--fill-secondary, currentColor)",
+      boxSizing: "border-box",
+      outline: "none",
     });
-    const titleText = getString(btn.i18nName);
+    const titleText = getString(btn.i18nName) || btn.name;
     button.setAttribute("title", titleText);
     button.setAttribute("tooltiptext", titleText);
 
-    const image = (document.createXULElement?.("image")
-      || document.createElement("image")) as HTMLElement;
-    image.className = "toolbarbutton-icon";
-    image.innerHTML = btn.icon;
+    button.innerHTML = btn.icon;
+    const svg = button.querySelector("svg");
+    if (svg) {
+      svg.setAttribute("style", `width: ${BUTTON_ICON_SIZE}px; height: ${BUTTON_ICON_SIZE}px; fill: currentColor; pointer-events: none;`);
+    }
 
-    const label = (document.createXULElement?.("label")
-      || document.createElement("label")) as HTMLElement;
-    label.className = "toolbarbutton-text";
-
-    button.append(image, label);
+    button.addEventListener("mouseenter", () => {
+      button.style.backgroundColor = "var(--toolbarbutton-hover-background, rgba(0, 0, 0, 0.08))";
+      button.style.borderColor = "var(--toolbarbutton-hover-bordercolor, rgba(0, 0, 0, 0.15))";
+    });
+    button.addEventListener("mouseleave", () => {
+      button.style.backgroundColor = "transparent";
+      button.style.borderColor = "transparent";
+    });
 
     button.addEventListener("mousedown", (e) => {
       e.preventDefault();
@@ -122,9 +141,22 @@ class ButtonManager {
       return;
 
     const bar = this.createToolbar();
-    const container = textarea.closest("editable-text[fieldname='title']") || textarea.parentElement;
-    if (container) {
-      container.insertBefore(bar, container.firstChild);
+    const parent = textarea.parentElement;
+    if (!parent)
+      return;
+
+    const editableText = textarea.closest("editable-text[fieldname='title']");
+    if (editableText && editableText.contains(parent) && editableText !== parent) {
+      editableText.insertBefore(bar, parent);
+    }
+    else if (editableText) {
+      editableText.insertBefore(bar, editableText.firstChild);
+    }
+    else if (parent.parentElement) {
+      parent.parentElement.insertBefore(bar, parent);
+    }
+    else {
+      parent.insertBefore(bar, textarea);
     }
   }
 
@@ -161,13 +193,16 @@ class PreviewManager {
         || this.window.document.createElement("div")) as HTMLDivElement;
       preview.id = PREVIEW_ID;
       Object.assign(preview.style, {
-        border: "1px solid #ccc",
+        border: "1px solid var(--material-border, #ccc)",
         padding: "6px",
         marginTop: "6px",
         whiteSpace: "pre-wrap",
         fontWeight: "normal",
         borderRadius: "5px",
         color: "inherit",
+        backgroundColor: "var(--material-background, #fff)",
+        fontSize: "12px",
+        lineHeight: "1.4",
       });
       editableText.appendChild(preview);
     }
@@ -272,11 +307,11 @@ export class RichTextToolBar {
             const target = record.target as HTMLElement;
             if (target?.localName === "editable-text" && target.getAttribute?.("fieldname") === "title") {
               if (target.classList.contains("focused")) {
-                const textarea = target.querySelector("textarea");
+                const textarea = target.querySelector("textarea") || getTitleEditor(this.window);
                 if (textarea)
                   this.openFor(textarea);
               }
-              else {
+              else if (target.className === "") {
                 this.close();
               }
             }
@@ -285,10 +320,12 @@ export class RichTextToolBar {
             for (const node of record.addedNodes) {
               const el = node as HTMLElement;
               if (el?.localName === "textarea" && el.closest?.("editable-text[fieldname='title']")) {
-                const editable = el.closest("editable-text[fieldname='title']");
-                if (editable?.classList.contains("focused") || this.window.document.activeElement === el) {
-                  this.openFor(el as HTMLTextAreaElement);
-                }
+                this.openFor(el as HTMLTextAreaElement);
+              }
+              else if (el?.querySelector) {
+                const nested = el.querySelector("editable-text[fieldname='title'] textarea") as HTMLTextAreaElement | null;
+                if (nested)
+                  this.openFor(nested);
               }
             }
           }
@@ -315,7 +352,7 @@ export class RichTextToolBar {
       this.openFor(target as HTMLTextAreaElement);
     }
     else if (target.localName === "editable-text" && target.getAttribute?.("fieldname") === "title") {
-      const textarea = target.querySelector("textarea");
+      const textarea = target.querySelector("textarea") || getTitleEditor(this.window);
       if (textarea)
         this.openFor(textarea);
     }
@@ -333,15 +370,18 @@ export class RichTextToolBar {
         const active = this.window.document.activeElement as HTMLElement | null;
         if (active?.closest?.("editable-text[fieldname='title']") || active?.closest?.(`.${TOOLBAR_CLASS}`))
           return;
+        const editor = getTitleEditor(this.window);
+        if (editor && (editor === active || editor.closest("editable-text")?.classList.contains("focused")))
+          return;
         this.close();
-      }, 100);
+      }, 150);
     }
   };
 
   private onInput = (event: Event): void => {
     const target = event.target as HTMLElement | null;
     if (target?.localName === "textarea" && target.closest?.("editable-text[fieldname='title']")) {
-      if (getPref("richtext.preview"))
+      if (getPref("richtext.preview", true))
         this.previewManager.updatePreview(target as HTMLTextAreaElement);
     }
   };
@@ -351,7 +391,7 @@ export class RichTextToolBar {
     const editable = target?.closest?.("editable-text[fieldname='title']");
     if (editable) {
       this.window.setTimeout(() => {
-        const textarea = editable.querySelector("textarea");
+        const textarea = editable.querySelector("textarea") || getTitleEditor(this.window);
         if (textarea)
           this.openFor(textarea);
       }, 50);
@@ -360,9 +400,9 @@ export class RichTextToolBar {
 
   openFor(textarea: HTMLTextAreaElement): void {
     this.window.clearTimeout(this.closeTimer);
-    if (getPref("richtext.toolBar"))
+    if (getPref("richtext.toolBar", true))
       this.buttonManager.attachToolbar(textarea);
-    if (getPref("richtext.preview"))
+    if (getPref("richtext.preview", true))
       this.previewManager.attachPreview(textarea);
   }
 

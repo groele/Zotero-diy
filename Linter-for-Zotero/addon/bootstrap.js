@@ -7,6 +7,32 @@
 
 function install(data, reason) {}
 
+function setDefaultPrefs(rootURI) {
+  try {
+    const branch = Services.prefs.getDefaultBranch("");
+    Services.scriptloader.loadSubScript(`${rootURI}prefs.js`, {
+      pref(pref, value) {
+        switch (typeof value) {
+          case "boolean":
+            branch.setBoolPref(pref, value);
+            break;
+          case "string":
+            branch.setStringPref(pref, value);
+            break;
+          case "number":
+            branch.setIntPref(pref, value);
+            break;
+          default:
+            break;
+        }
+      },
+    });
+  }
+  catch (e) {
+    dump(`[MetaRef] Error loading default prefs: ${e}\n`);
+  }
+}
+
 async function startup({ id, version, resourceURI, rootURI }, reason) {
   /**
    * Global variables for plugin code.
@@ -18,6 +44,7 @@ async function startup({ id, version, resourceURI, rootURI }, reason) {
     rootURI,
   };
   ctx._globalThis = ctx;
+  setDefaultPrefs(rootURI);
 
   Services.scriptloader.loadSubScript(`${rootURI}/content/scripts/__addonRef__.js`, ctx);
   await Zotero.__addonInstance__.hooks.onStartup();
