@@ -6,12 +6,20 @@ import { createLogger } from "./logger";
 const logger = createLogger("useDialog");
 
 const OK_BUTTON_ID = "btn-ok";
+const pendingDialogs = new Set<Window>();
+const pendingLoadResolvers = new Map<Window, () => void>();
 
 export function closeAllDialogs() {
   for (const [id, window] of addon.data.dialogs) {
     window.close();
     addon.data.dialogs.delete(id);
   }
+  for (const window of pendingDialogs) {
+    window.close();
+    pendingLoadResolvers.get(window)?.();
+  }
+  pendingDialogs.clear();
+  pendingLoadResolvers.clear();
 }
 
 export function useDialog<T extends DialogHelper | SettingsDialogHelper>(dialog: T): {
@@ -44,21 +52,32 @@ export function useDialog<T extends DialogHelper | SettingsDialogHelper>(dialog:
 
     logger.debug(`opening dialog ${id}...`);
     dialog.open(title);
-
-    await dialog.dialogData.loadLock?.promise;
-    if (!addon.data.alive) {
-      dialog.window.close();
-      return;
+    const window = dialog.window;
+    // The toolkit's unloadLock remains pending if the window closes before loading.
+    pendingDialogs.add(window);
+    const loadResolver = dialog.dialogData.loadLock?.resolve;
+    if (loadResolver)
+      pendingLoadResolvers.set(window, loadResolver);
+    try {
+      await dialog.dialogData.loadLock?.promise;
+      if (!addon.data.alive || window.closed)
+        return;
+      pendingDialogs.delete(window);
+      pendingLoadResolvers.delete(window);
+      addon.data.dialogs.set(id, window);
+      logger.debug("dialog opened, awaiting operation...");
+      window.focus();
+      (window.document.getElementById(OK_BUTTON_ID) as HTMLButtonElement | null)?.focus();
+      await dialog.dialogData.unloadLock?.promise;
     }
-    addon.data.dialogs.set(id, dialog.window);
-    logger.debug("dialog opened, awaiting operation...");
-
-    dialog.window.focus();
-    (dialog.window.document.getElementById(OK_BUTTON_ID) as HTMLButtonElement | null)?.focus();
-
-    await dialog.dialogData.unloadLock?.promise;
-    addon.data.dialogs.delete(id);
-    logger.debug("dialog closed");
+    finally {
+      pendingDialogs.delete(window);
+      pendingLoadResolvers.delete(window);
+      addon.data.dialogs.delete(id);
+      if (!window.closed)
+        window.close();
+      logger.debug("dialog closed");
+    }
   };
 
   function close() {

@@ -1,6 +1,6 @@
 {
   "date": "2026-10-07",
-  "version": "10.0.5",
+  "version": "10.0.6",
   "environment": {
     "platform": "Windows",
     "powershell": "7.6.6",
@@ -9,21 +9,21 @@
     "zotero": "10.0.5"
   },
   "unit": {
-    "passed": 193,
-    "files": 26,
-    "log": "../.scaffold/qa/release-10.0.5-unit.log"
+    "passed": 197,
+    "files": 27,
+    "log": "../.scaffold/qa/deep-audit-unit-final.log"
   },
   "e2e": {
     "data": "../.scaffold/test/data",
     "productionXPIInstalled": true,
     "profile": "../.scaffold/test/profile",
     "zh-CN": {
-      "passed": 35,
-      "log": "../.scaffold/qa/release-10.0.5-zh-CN.log"
+      "passed": 36,
+      "log": "../.scaffold/qa/deep-audit-zh-CN.log"
     },
     "en-US": {
-      "passed": 35,
-      "log": "../.scaffold/qa/release-10.0.5-en-US.log"
+      "passed": 36,
+      "log": "../.scaffold/qa/deep-audit-en-US.log"
     }
   },
   "checks": {
@@ -36,14 +36,14 @@
   "package": {
     "path": "linter-for-zotero.xpi",
     "copiedFromTestedPackage": true,
-    "bytes": 1300890,
+    "bytes": 1301207,
     "compatibility": {
       "id": "zotero-format-metadata@northword.cn",
       "update_url": "https://raw.githubusercontent.com/groele/Zotero-diy/main/Linter-for-Zotero/dist/update.json",
       "strict_min_version": "10.0",
       "strict_max_version": "10.999"
     },
-    "sha256": "bd49935c180c6b1051e8b9b6122b515d11ec94cae8141dd3c7b038a90959685f"
+    "sha256": "916e9349856e59685b81b744a3fd617d622b80d12ddcc2a0fff8fea2c354e5ec"
   },
   "limitations": [
     "External API responses were controlled; live website availability was not verified.",
@@ -54,6 +54,6 @@
   "publicationTarget": {
     "repository": "groele/Zotero-diy",
     "branch": "main",
-    "tag": "v10.0.5"
+    "tag": "v10.0.6"
   }
 }

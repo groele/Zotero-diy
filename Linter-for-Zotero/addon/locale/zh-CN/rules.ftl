@@ -404,4 +404,5 @@ rule-require-series-esi-option-overwrite =
   .label = 允许 ESI 分类覆盖已有的非 ESI 系列信息
 rule-require-series-esi-preserved = 系列字段已有非 ESI 内容，已保留。若需替换，请开启 ESI 覆盖选项。
 rule-tool-update-metadata-invalid-creators = 服务返回的作者类型无效，已保留原作者列表。
+rule-tool-update-metadata-type-change-loss = 更改条目类型会删除已有字段或改变作者角色。只补全空白字段模式已保留原类型，并补全兼容的空白字段。
 rule-require-series-esi-custom-data-error = 自定义 ESI 数据不可用，已回退至内置数据：{ $error }

@@ -1,12 +1,12 @@
 # Linter for Zotero — Zotero DIY 维护版
 
-用于校验、整理和补全文献元数据的 Zotero 插件。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 维护，当前版本 **10.0.5（V10）**。安装清单声明兼容 Zotero **10.0–10.999**；最近一次真实运行验证使用 Windows Zotero **10.0.5**。
+用于校验、整理和补全文献元数据的 Zotero 插件。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 维护，当前版本 **10.0.6（V10）**。安装清单声明兼容 Zotero **10.0–10.999**；最近一次真实运行验证使用 Windows Zotero **10.0.5**。
 
 本目录包含完整源码、参考数据、测试、审查记录和可安装的 XPI。上游版权和 AGPL-3.0 许可证保留；上游项目介绍见 [原始 README](docs/UPSTREAM-README.md)。
 
 ## 安装
 
-下载 [Linter for Zotero 10.0.5 安装包](dist/linter-for-zotero.xpi)，在 Zotero 的插件管理器中选择「从文件安装插件」，再选择该 XPI。安装包的更新地址指向本项目的 `dist/update.json`。
+下载 [Linter for Zotero 10.0.6 安装包](dist/linter-for-zotero.xpi)，在 Zotero 的插件管理器中选择「从文件安装插件」，再选择该 XPI。安装包的更新地址指向本项目的 `dist/update.json`。
 
 本维护版保留上游插件 ID，因此安装会替换同 ID 的上游 Linter。建议先在测试资料库检查自己的规则设置，再对正式资料库执行批量整理。
 

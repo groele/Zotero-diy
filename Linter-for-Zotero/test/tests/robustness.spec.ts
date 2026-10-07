@@ -407,6 +407,49 @@ describe("data processing resilience in Zotero", function () {
     }
   });
 
+  it("preserves incompatible fields and creator roles during blank-only metadata updates", async function () {
+    const article = await create("retained article title");
+    article.setField("DOI", "10.1234/type-qa");
+    article.setField("volume", "42");
+    await article.saveTx();
+    const page = await create("retained webpage title", "webpage");
+    page.setField("url", "https://doi.org/10.1234/type-qa");
+    page.setCreators([{ creatorType: "translator", lastName: "Original translator" }]);
+    await page.saveTx();
+    const OriginalSearch = Zotero.Translate.Search;
+    (Zotero.Translate as any).Search = class {
+      setSearch() {}
+      setIdentifier() {}
+      setTranslator() {}
+      async getTranslators() { return [{}]; }
+      async translate() {
+        return [{ itemType: "preprint", title: "service title", abstractNote: "new abstract", creators: [{ creatorType: "author", lastName: "New author" }] }];
+      }
+    };
+    pref("rule.tool-update-metadata.option.slient", true);
+    pref("rule.tool-update-metadata.option.mode", "blank");
+    pref("rule.tool-update-metadata.option.allow-type-changed", true);
+    try {
+      for (const item of [article, page]) {
+        const before = item.toJSON();
+        const beforeType = item.itemType;
+        await plugin().hooks.onLintInBatch("tool-update-metadata", [item]);
+        assert.equal(item.itemType, beforeType);
+        assert.equal(item.getField("title"), before.title);
+        assert.equal(item.getField("abstractNote"), "new abstract");
+        assert.isTrue(plugin().runner.lastResult.records.some((row: { level: string }) => row.level === "warning"));
+        assert.equal(plugin().runner.lastResult.failed, 0);
+        await item.reload(["primaryData", "itemData", "creators"], true);
+      }
+      assert.equal(article.getField("volume"), "42");
+      assert.equal(page.getCreators()[0].creatorTypeID, Zotero.CreatorTypes.getID("translator"));
+      assert.equal(page.getCreators()[0].lastName, "Original translator");
+    }
+    finally {
+      (Zotero.Translate as any).Search = OriginalSearch;
+    }
+  });
+
   it("updates preprints and resolves PMID and URL service fallbacks", async function () {
     const preprint = await create("original preprint", "preprint");
     preprint.setField("url", "https://arxiv.org/abs/2401.12345v2");

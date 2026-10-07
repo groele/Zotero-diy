@@ -12,7 +12,7 @@ export async function executeRule<T extends object>(
       if (typeof value !== "function")
         return value;
       return (...args: unknown[]) => {
-        if (/^(?:set|add|remove|erase|save|fromJSON)/.test(String(key)))
+        if (/^(?:set|add|remove|erase|save|fromJSON|reload)/.test(String(key)))
           controller.signal.throwIfAborted();
         return value.apply(target, args);
       };

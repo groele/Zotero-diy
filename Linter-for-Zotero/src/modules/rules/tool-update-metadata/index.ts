@@ -143,6 +143,14 @@ export const ToolUpdateMetadata = defineRule<UpdateMetadataOption>({
         return;
       }
 
+      // Blank mode must not perform a destructive type migration. Zotero's
+      // setType() clears fields that are unavailable on the target type and
+      // may remap creator roles, which violates the promise to only fill gaps.
+      if (options.mode === "blank") {
+        report({ level: "warning", message: getString("rule-tool-update-metadata-type-change-loss") });
+        return;
+      }
+
       debug(`Update ItemType from ${item.itemType} to ${data.itemType}`);
       item.setType(newItemTypeID);
     }

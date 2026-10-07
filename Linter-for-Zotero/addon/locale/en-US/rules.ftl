@@ -403,4 +403,5 @@ rule-require-series-esi-option-overwrite =
   .label = Allow ESI categories to replace existing non-ESI series information
 rule-require-series-esi-preserved = Existing non-ESI series information was preserved. Enable ESI overwrite to replace it.
 rule-tool-update-metadata-invalid-creators = Invalid creator types from the service; the original creator list was preserved.
+rule-tool-update-metadata-type-change-loss = Changing the item type would remove existing fields or change creator roles. The original type was preserved in blank-only mode; compatible empty fields were updated.
 rule-require-series-esi-custom-data-error = Custom ESI data are unavailable; using built-in data: { $error }

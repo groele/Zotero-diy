@@ -46,6 +46,22 @@ describe("rule deadlines", () => {
     expect(item.value).toBe("completed");
   });
 
+  it("rejects a stale reload that would discard a later rule's fields", async () => {
+    const item = {
+      value: "stored",
+      reload() {
+        this.value = "stored";
+      },
+    };
+    let escaped!: typeof item;
+    await executeRule(item, async (guarded) => {
+      escaped = guarded;
+    });
+    item.value = "next rule";
+    expect(() => escaped.reload()).toThrow("finished");
+    expect(item.value).toBe("next rule");
+  });
+
   it("revokes property deletion and redefinition after a deadline", async () => {
     const item = { value: "original" };
     let escaped!: typeof item;

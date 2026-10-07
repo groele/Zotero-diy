@@ -1,5 +1,12 @@
 # Linter for Zotero V10 — 10.0.5
 
+## 10.0.6 — 2026-10-07
+
+- 修复设置对话框在加载或关闭期间可能使批处理挂起的问题。
+- 修复空白字段模式下元数据更新可能迁移条目类型并丢失字段或改变作者角色的问题。
+- 阻止超时规则的异步任务在后续规则完成后调用 `reload()` 覆盖修改。
+- 通过 Windows Zotero 10.0.5 的中英文真实 E2E 回归测试。
+
 ## 10.0.5 — 2026-10-07
 
 - Isolated rule applicability failures so subsequent rules still run and their changes are saved. Added separate preparation-failure and skipped-item counts.
