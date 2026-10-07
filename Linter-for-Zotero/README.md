@@ -1,12 +1,12 @@
 # Linter for Zotero — Zotero DIY 维护版
 
-用于校验、整理和补全文献元数据的 Zotero 插件。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 维护，当前版本 **10.0.4（V10）**。安装清单声明兼容 Zotero **10.0–10.999**；已在 Windows 的 Zotero **10.0.3** 中完成真实运行测试。
+用于校验、整理和补全文献元数据的 Zotero 插件。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 维护，当前版本 **10.0.5（V10）**。安装清单声明兼容 Zotero **10.0–10.999**；最近一次真实运行验证使用 Windows Zotero **10.0.5**。
 
 本目录包含完整源码、参考数据、测试、审查记录和可安装的 XPI。上游版权和 AGPL-3.0 许可证保留；上游项目介绍见 [原始 README](docs/UPSTREAM-README.md)。
 
 ## 安装
 
-下载 [Linter for Zotero 10.0.4 安装包](dist/linter-for-zotero.xpi)，在 Zotero 的插件管理器中选择「从文件安装插件」，再选择该 XPI。安装包的更新地址指向本项目的 `dist/update.json`。
+下载 [Linter for Zotero 10.0.5 安装包](dist/linter-for-zotero.xpi)，在 Zotero 的插件管理器中选择「从文件安装插件」，再选择该 XPI。安装包的更新地址指向本项目的 `dist/update.json`。
 
 本维护版保留上游插件 ID，因此安装会替换同 ID 的上游 Linter。建议先在测试资料库检查自己的规则设置，再对正式资料库执行批量整理。
 
@@ -54,7 +54,7 @@ ESI 和 Nature Index 数据的来源、范围、更新时间及授权边界见 [
 
 ## 验证范围
 
-已通过 179 项单元测试、中文与英文各 29 项真实 Zotero E2E、全量 ESLint／AutoCorrect、生产构建及两套 TypeScript 检查。真实 E2E 覆盖数据库事务失败与重试、撤销／重做、菜单和快捷键、窗口生命周期、自定义 CSV／JSON、PDF 索引页数及生产 XPI 安装。成品散列与环境见 [验证记录](dist/verification.json)。
+2026-10-07 的当前源码已通过 193 项单元测试（26 个文件）、中文与英文各 35 项真实 Zotero E2E、全量 ESLint／AutoCorrect、生产构建及两套 TypeScript 检查。单元测试只收集当前源码，避免将发布缓存中的旧副本重复计入。真实 E2E 覆盖数据库事务失败与重试、规则准备与适用性异常、进度窗口异常、查重失败、撤销／重做、菜单和快捷键、通知器与窗口生命周期、自定义 CSV／JSON、PDF 索引页数及生产 XPI 安装。修复细节见 [本轮逻辑审查](docs/logic-audit-2026-10-07.md)，成品散列与环境见 [验证记录](dist/verification.json)。
 
 外部 API 和网页转换器使用受控响应验证；实时网站连通性、限流和数据质量尚未验收。Semantic Scholar 作者姓名尚未映射到 Zotero 作者字段。未实机验收 macOS、Linux 或其他插件的全部组合，也未覆盖所有复杂／加密 PDF；其他边界见审查记录。
 

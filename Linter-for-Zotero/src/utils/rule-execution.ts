@@ -21,6 +21,14 @@ export async function executeRule<T extends object>(
       controller.signal.throwIfAborted();
       return Reflect.set(target, key, value, target);
     },
+    deleteProperty(target, key) {
+      controller.signal.throwIfAborted();
+      return Reflect.deleteProperty(target, key);
+    },
+    defineProperty(target, key, descriptor) {
+      controller.signal.throwIfAborted();
+      return Reflect.defineProperty(target, key, descriptor);
+    },
   });
   let timer: ReturnType<typeof setTimeout> | undefined;
   const deadline = new Promise<never>((_, reject) => {

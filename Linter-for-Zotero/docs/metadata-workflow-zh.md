@@ -94,4 +94,6 @@ pnpm test:e2e
 
 单元测试和 E2E 命令现在运行一次后退出；需要开发监听时使用 `pnpm exec vitest` 或 `pnpm exec zotero-plugin test`。E2E 使用 `.scaffold/test/profile` 和 `.scaffold/test/data`，不会使用个人文献资料库。E2E 包装脚本默认将框架的全局 Zotero 进程清理命令替换为无操作命令，并仅结束自身启动的测试实例。
 
-当前 `addon/manifest.json` 限定 Zotero 10.0–10.999，AGENTS.md 已与现有安装范围对齐。本机运行验证使用 Zotero 10.0.3。未实机验证 Zotero 8/9，不能据此宣称支持它们。
+2026-10-07 的增量修复与最新验证见 [本轮逻辑审查](logic-audit-2026-10-07.md) 和 [`dist/verification.json`](../dist/verification.json)。批次结果新增 `preparationFailed` 和 `skipped`，规则准备失败与条目执行失败分别统计；静默批次保留报告记录而不打开报告窗口。
+
+当前 `addon/manifest.json` 限定 Zotero 10.0–10.999，AGENTS.md 已与现有安装范围对齐。本轮运行验证使用 Windows Zotero 10.0.5。未实机验证 Zotero 8/9，不能据此宣称支持它们。

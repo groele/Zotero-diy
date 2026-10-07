@@ -3,6 +3,7 @@ rule-no-item-duplication =
   .label = No duplicate items added
 rule-no-item-duplication-report-message = This item is a duplicate of an existing one.
 rule-no-item-duplication-report-action = Go to merge
+rule-no-item-duplication-search-failed = Unable to check duplicates in this library: { $error }
 
 
 ## no-article-webpage

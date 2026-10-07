@@ -46,6 +46,18 @@ describe("rule deadlines", () => {
     expect(item.value).toBe("completed");
   });
 
+  it("revokes property deletion and redefinition after a deadline", async () => {
+    const item = { value: "original" };
+    let escaped!: typeof item;
+    await expect(executeRule(item, async (guarded) => {
+      escaped = guarded;
+      await new Promise<void>(() => {});
+    }, 10)).rejects.toThrow("timed out");
+    expect(() => Reflect.deleteProperty(escaped, "value")).toThrow("timed out");
+    expect(() => Object.defineProperty(escaped, "value", { value: "late" })).toThrow("timed out");
+    expect(item.value).toBe("original");
+  });
+
   it.each([[0, 1], [-2, 1], [2.5, 2], [200, 16], [Number.NaN, 1], ["4", 1]])("bounds concurrency %s to %s", (value, expected) => {
     expect(normalizedConcurrency(value)).toBe(expected);
   });

@@ -103,6 +103,7 @@ export type FluentMessageId =
   | 'rule-no-item-duplication'
   | 'rule-no-item-duplication-report-action'
   | 'rule-no-item-duplication-report-message'
+  | 'rule-no-item-duplication-search-failed'
   | 'rule-no-journal-preprint'
   | 'rule-no-journal-preprint-report-message'
   | 'rule-no-pages-extra-zeros'

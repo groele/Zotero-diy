@@ -155,6 +155,10 @@ class PreviewManager {
   }
 
   updatePreview(textarea: HTMLTextAreaElement): void {
+    if (!this.window.document.hasFocus() || getTitleEditor(this.window) !== textarea) {
+      this.close();
+      return;
+    }
     const preview = this.ensurePreview(textarea);
     const value = textarea.value;
 
@@ -263,6 +267,8 @@ export class RichTextToolBar {
   private onFocus = (event?: Event): void => {
     if (event) {
       this.window.clearTimeout(this.refreshTimer);
+      // Focus events can arrive before the deferred refresh in background windows.
+      this.close();
       this.refreshTimer = this.window.setTimeout(() => {
         this.refreshTimer = undefined;
         this.onFocus();
@@ -271,7 +277,7 @@ export class RichTextToolBar {
     }
     const textarea = getTitleEditor(this.window);
     this.close();
-    if (!textarea)
+    if (!textarea || !this.window.document.hasFocus())
       return;
     if (getPref("richtext.toolBar"))
       this.buttonManager.attachToolbar(textarea);

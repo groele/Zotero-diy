@@ -3,6 +3,7 @@ rule-no-item-duplication =
   .label = 不应添加重复条目
 rule-no-item-duplication-report-message = 该条目与已有条目重复
 rule-no-item-duplication-report-action = 前往合并条目窗格
+rule-no-item-duplication-search-failed = 无法检查此文献库中的重复条目：{ $error }
 
 
 ## no-article-webpage

@@ -1,50 +1,59 @@
 {
-  "version": "10.0.4",
-  "date": "2026-09-30",
-  "upstreamCommit": "2b747409e8c3df866fca327a8ad859d770694a5b",
-  "artifact": "linter-for-zotero.xpi",
-  "sha256": "57774f4fde32bae2b7b89cb96e9bdaa7f3aaafa78051a4afe606fb6550cb0f5c",
-  "productionXpiInstalledInIsolatedZotero": true,
+  "date": "2026-10-07",
+  "version": "10.0.5",
   "environment": {
-    "os": "Windows",
-    "shell": "PowerShell 7",
-    "node": "22.14.0",
+    "platform": "Windows",
+    "powershell": "7.6.6",
+    "node": "v22.14.0",
     "pnpm": "12.3.4",
-    "zotero": "10.0.3"
+    "zotero": "10.0.5"
+  },
+  "unit": {
+    "passed": 193,
+    "files": 26,
+    "log": "../.scaffold/qa/release-10.0.5-unit.log"
+  },
+  "e2e": {
+    "data": "../.scaffold/test/data",
+    "productionXPIInstalled": true,
+    "profile": "../.scaffold/test/profile",
+    "zh-CN": {
+      "passed": 35,
+      "log": "../.scaffold/qa/release-10.0.5-zh-CN.log"
+    },
+    "en-US": {
+      "passed": 35,
+      "log": "../.scaffold/qa/release-10.0.5-en-US.log"
+    }
   },
   "checks": {
-    "unit": {
-      "passed": 376,
-      "files": 48
-    },
-    "e2e": {
-      "passed": 29,
-      "environment": "Windows Zotero 10.0.3"
-    },
-    "eslintAndAutoCorrect": "passed",
-    "productionBuildAndTypecheck": "passed",
-    "e2eTypecheck": "passed"
+    "autocorrect": "passed",
+    "eslint": "passed",
+    "pluginTypeScript": "passed",
+    "productionBuild": "passed",
+    "testTypeScript": "passed"
   },
-  "coverage": [
-    "49 registered rules and tools",
-    "all Linter item actions are first-level menu entries",
-    "localized Nature Index item-menu entry",
-    "ESI classification stored in Archive while preserving existing text",
-    "Nature Index marker stored in Archive Location with duplicate prevention",
-    "settings panel localization, unique preference controls and IDs, grouped metadata options",
-    "keyboard-accessible collapsible rule groups and retained preference controls",
-    "Semantic Scholar API key masked in settings",
-    "22 ESI fields and all-field journal matching",
-    "database transaction retry and undo/redo",
-    "menus, shortcuts and window lifecycle",
-    "custom CSV and BOM JSON files",
-    "real three-page PDF import and indexing",
-    "installed production XPI and bundled data"
+  "package": {
+    "path": "linter-for-zotero.xpi",
+    "copiedFromTestedPackage": true,
+    "bytes": 1300890,
+    "compatibility": {
+      "id": "zotero-format-metadata@northword.cn",
+      "update_url": "https://raw.githubusercontent.com/groele/Zotero-diy/main/Linter-for-Zotero/dist/update.json",
+      "strict_min_version": "10.0",
+      "strict_max_version": "10.999"
+    },
+    "sha256": "bd49935c180c6b1051e8b9b6122b515d11ec94cae8141dd3c7b038a90959685f"
+  },
+  "limitations": [
+    "External API responses were controlled; live website availability was not verified.",
+    "Runtime verification targets Windows Zotero 10.0.5.",
+    "No per-rule rollback was introduced; permanent save failures retain unsaved item changes."
   ],
-  "limits": [
-    "External services and translators use controlled responses; live availability not verified.",
-    "macOS and Linux not tested.",
-    "Complex or encrypted PDFs and all third-party plugin combinations not exhausted.",
-    "Semantic Scholar author names are not mapped into Zotero creators."
-  ]
+  "audit": "../docs/logic-audit-2026-10-07.md",
+  "publicationTarget": {
+    "repository": "groele/Zotero-diy",
+    "branch": "main",
+    "tag": "v10.0.5"
+  }
 }

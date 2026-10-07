@@ -29,6 +29,8 @@ export interface BatchResult {
   failed: number;
   saved: number;
   cancelled: boolean;
+  skipped: number;
+  preparationFailed: number;
   records: ReportInfo[];
 }
 
@@ -94,6 +96,7 @@ export class LintRunner {
   private cancelled = false;
   private saved = 0;
   private failedItems = new Set<number | Zotero.Item>();
+  private preparationFailed = 0;
   public lastResult?: BatchResult;
   private readonly ui = new ProgressUI({
     onCancel: () => this.cancel(),
@@ -105,8 +108,15 @@ export class LintRunner {
 
   public async stop(): Promise<void> {
     this.cancel();
-    await this.runningQueue;
-    this.ui.close();
+    try {
+      await this.runningQueue;
+    }
+    catch (error) {
+      logger.error("Batch failed before shutdown:", error);
+    }
+    finally {
+      this.ui.close();
+    }
   }
 
   public async add(params: {
@@ -129,13 +139,19 @@ export class LintRunner {
 
     this.initStats();
     try {
-      await this.ui.init(silent);
+      try {
+        await this.ui.init(silent);
+      }
+      catch (error) {
+        logger.error("Failed to initialize batch progress:", error);
+        this.ui.close();
+      }
 
       const items = [...new Map(toArray(_items).filter(item => item?.isRegularItem() && !item.deleted && item.isEditable()).map(item => [item.id || item, item])).values()];
       const rules = [...new Map(toArray(_rules).map(rule => [rule.id, rule])).values()];
 
       this.stats.phase = "idle";
-      this.ui.updateProgress(0, items.length, this.stats.phase);
+      this.updateProgress(0, items.length);
 
       if (!items.length || !rules.length)
         return;
@@ -148,7 +164,7 @@ export class LintRunner {
       }
 
       this.stats.phase = "linting";
-      this.ui.updateProgress(this.stats.current, this.stats.total, this.stats.phase);
+      this.updateProgress(this.stats.current, this.stats.total);
 
       let next = 0;
       const worker = async () => {
@@ -168,7 +184,7 @@ export class LintRunner {
       await this.batchSave();
     }
     finally {
-      this.finish();
+      this.finish(silent);
     }
   }
 
@@ -195,6 +211,7 @@ export class LintRunner {
         }
       }
       catch (err) {
+        this.preparationFailed++;
         this.stats.records.push({
           message: err instanceof Error ? err.message : String(err),
           level: "error",
@@ -231,42 +248,43 @@ export class LintRunner {
     for (const rule of rules) {
       if (this.cancelled)
         break;
-      if (!shouldApplyRule(rule, item))
+      if (!optionsMap.has(rule.id))
         continue;
-
-      const options = optionsMap.get(rule.id) ?? {};
+      const options = optionsMap.get(rule.id);
       if (options === false) {
         logger.debug(`Skip ${rule.id}: options is false`);
         continue;
       }
 
-      await this.applyRule(item, rule, options)
-        // We expect one rule's error does not affect next rule apply,
-        // so we eat any error here and throw them after all rules applied.
-        .catch((error) => {
-          let message: string = "";
-          // Zotero.HTTP.request error, the message is too long, here we just show the status
-          if (error && typeof error === "object" && "xmlhttp" in error && "message" in error)
-            message += `HTTP request error: status ${error.status}, ${String(error.message).slice(0, 250)}`;
+      // We expect one rule's error does not affect next rule apply,
+      // so we eat any error here and throw them after all rules applied.
+      await Promise.resolve().then(() => {
+        if (shouldApplyRule(rule, item))
+          return this.applyRule(item, rule, options);
+      }).catch((error) => {
+        let message: string = "";
+        // Zotero.HTTP.request error, the message is too long, here we just show the status
+        if (error && typeof error === "object" && "xmlhttp" in error && "message" in error)
+          message += `HTTP request error: status ${error.status}, ${String(error.message).slice(0, 250)}`;
           // For regular error, we just show the message in the reporter window
-          else if (error instanceof Error || (error && typeof error === "object" && "message" in error))
-            message += `${error.name || "Error"}: ${error.message}`;
+        else if (error instanceof Error || (error && typeof error === "object" && "message" in error))
+          message += `${error.name || "Error"}: ${error.message}`;
           // If error not have message, we show the error string
-          else
-            message += String(error);
+        else
+          message += String(error);
 
-          this.stats.records.push({
-            message,
-            level: "error",
-            itemID: item.id,
-            title: item.getDisplayTitle(),
-            ruleID: rule.id,
-          });
-
-          logger.error(`[${rule.id}]`, error);
-
-          errors.push(error);
+        this.stats.records.push({
+          message,
+          level: "error",
+          itemID: item.id,
+          title: item.getDisplayTitle(),
+          ruleID: rule.id,
         });
+
+        logger.error(`[${rule.id}]`, error);
+
+        errors.push(error);
+      });
     }
 
     if (item.hasChanged()) {
@@ -285,7 +303,7 @@ export class LintRunner {
     const items = [...this.modifiedItems];
     const snapshots = new Map(items.map(item => [item, item.toJSON()]));
     this.stats.phase = "saving";
-    this.ui.updateProgress(0, items.length, this.stats.phase);
+    this.updateProgress(0, items.length);
 
     try {
       let savedCount = 0;
@@ -295,7 +313,7 @@ export class LintRunner {
             continue;
           await item.save({ skipSelect: true });
           savedCount++;
-          this.ui.updateProgress(savedCount, items.length, this.stats.phase);
+          this.updateProgress(savedCount, items.length);
         }
         if (savedCount > 0) {
           // @ts-expect-error - Zotero.UndoHistory not yet typed in zotero-types
@@ -379,19 +397,29 @@ export class LintRunner {
   private updateStats(type: "pass" | "error") {
     this.stats[type]++;
     this.stats.current++;
-    this.ui.updateProgress(this.stats.current, this.stats.total, this.stats.phase);
+    this.updateProgress(this.stats.current, this.stats.total);
+  }
+
+  private updateProgress(current: number, total: number) {
+    try {
+      this.ui.updateProgress(current, total, this.stats.phase);
+    }
+    catch (error) {
+      logger.error("Failed to update batch progress:", error);
+    }
   }
 
   private initStats() {
     this.cancelled = false;
     this.saved = 0;
+    this.preparationFailed = 0;
     this.failedItems.clear();
     if (!this.stats.startTime)
       this.stats.startTime = Date.now();
     logger.debug(`Add tasks at ${new Date().toLocaleTimeString()}`);
   }
 
-  private finish() {
+  private finish(silent: boolean) {
     if (this.stats.startTime === this.emptyStats().startTime)
       return;
 
@@ -403,18 +431,25 @@ export class LintRunner {
       failed: this.failedItems.size,
       saved: this.saved,
       cancelled: this.cancelled,
+      skipped: this.stats.total - this.stats.current,
+      preparationFailed: this.preparationFailed,
       records: [...this.stats.records],
     };
-    if (addon.data.alive) {
-      this.ui.showFinished(this.lastResult.passed, this.lastResult.failed, duration, this.cancelled, this.stats.total - this.stats.current);
-      if (this.stats.records.length)
-        createReporter(this.stats.records);
-    }
-
+    // Release batch state before opening UI, which may fail when a window closes.
     this.modifiedItems.clear();
     DataLoader.clearCache();
     this.stats = this.emptyStats();
     logger.debug(`Batch tasks completed in ${duration}s`);
+    if (addon.data.alive) {
+      try {
+        this.ui.showFinished(this.lastResult.passed, this.lastResult.failed, duration, this.cancelled, this.lastResult.skipped, this.preparationFailed);
+        if (!silent && this.lastResult.records.length)
+          createReporter(this.lastResult.records).catch(error => logger.error("Failed to display batch report:", error));
+      }
+      catch (error) {
+        logger.error("Failed to display batch results:", error);
+      }
+    }
   }
 
   private emptyStats(): RunnerStats {

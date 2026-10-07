@@ -96,6 +96,128 @@ describe("data processing resilience in Zotero", function () {
     }
   });
 
+  it("isolates applicability failures and still saves sibling rule changes", async function () {
+    const item = await create("applicability");
+    const getID = Zotero.ItemFields.getID;
+    Zotero.ItemFields.getID = function (field: Parameters<typeof getID>[0]) {
+      if (String(field) === "qa-invalid-field")
+        throw new Error("injected applicability failure");
+      return getID.call(this, field);
+    };
+    try {
+      await plugin().runner.add({ items: [item], silent: true, rules: [
+        { id: "test-invalid-field", scope: "field", targetItemField: "qa-invalid-field", apply() { throw new Error("must not apply"); } },
+        changeTitle,
+      ] });
+      const result = plugin().runner.lastResult;
+      assert.equal(result.processed, 1);
+      assert.equal(result.failed, 1);
+      assert.equal(result.saved, 1);
+      assert.equal(item.getField("title"), "applicability saved");
+      assert.isFalse(item.hasChanged());
+      assert.include(result.records[0].message, "injected applicability failure");
+      await Zotero.Promise.delay(100);
+      assert.equal(plugin().data.dialogs.size, 0, "silent batches retain errors without opening reports");
+    }
+    finally {
+      Zotero.ItemFields.getID = getID;
+    }
+  });
+
+  it("records preparation failures separately and keeps unaffected rules available", async function () {
+    const item = await create("prepare failure");
+    let applied = false;
+    const bad = {
+      id: "test-prepare-failure",
+      scope: "item",
+      prepare() { throw new Error("injected prepare failure"); },
+      apply() { applied = true; },
+    };
+    await plugin().runner.add({ items: [item], rules: [bad], silent: true });
+    let result = plugin().runner.lastResult;
+    assert.equal(result.preparationFailed, 1);
+    assert.equal(result.processed, 0);
+    assert.equal(result.skipped, 1);
+    assert.equal(result.passed, 0);
+    assert.equal(result.saved, 0);
+    assert.isFalse(applied);
+    await plugin().runner.add({ items: [item], rules: [bad, changeTitle], silent: true });
+    result = plugin().runner.lastResult;
+    assert.equal(result.preparationFailed, 1);
+    assert.equal(result.processed, 1);
+    assert.equal(result.skipped, 0);
+    assert.equal(result.saved, 1);
+    assert.equal(item.getField("title"), "prepare failure saved");
+    assert.isFalse(applied);
+  });
+
+  it("starts a fresh batch after a results window fails", async function () {
+    const item = await create("results failure");
+    const runner = plugin().runner;
+    const showFinished = runner.ui.showFinished;
+    runner.ui.showFinished = () => {
+      throw new Error("injected window failure");
+    };
+    try {
+      await runner.add({ items: [item], rules: [changeTitle], silent: true });
+      assert.equal(runner.lastResult.saved, 1);
+    }
+    finally {
+      runner.ui.showFinished = showFinished;
+    }
+    await runner.add({ items: [item], rules: [changeTitle], silent: true });
+    assert.equal(runner.lastResult.total, 1);
+    assert.equal(runner.lastResult.processed, 1);
+    assert.equal(runner.lastResult.passed, 1);
+    assert.equal(runner.lastResult.preparationFailed, 0);
+    assert.equal(item.getField("title"), "results failure saved saved");
+    assert.isFalse(item.hasChanged());
+  });
+
+  it("finishes concurrent items and commits once even when progress updates fail", async function () {
+    const items = [await create("progress first"), await create("progress second")];
+    const runner = plugin().runner;
+    const updateProgress = runner.ui.updateProgress;
+    pref("lint.numConcurrent", 2);
+    runner.ui.updateProgress = () => {
+      throw new Error("injected progress window failure");
+    };
+    try {
+      await runner.add({ items, rules: [changeTitle], silent: true });
+      assert.equal(runner.lastResult.processed, 2);
+      assert.equal(runner.lastResult.passed, 2);
+      assert.equal(runner.lastResult.saved, 2);
+      for (const item of items) {
+        assert.include(item.getField("title"), " saved");
+        assert.isFalse(item.hasChanged());
+      }
+    }
+    finally {
+      runner.ui.updateProgress = updateProgress;
+      pref("lint.numConcurrent", 1);
+    }
+  });
+
+  it("reports a failed duplicate search without blocking the following formatter", async function () {
+    const item = await create("duplicate search MoS2");
+    const Duplicates = (Zotero as any).Duplicates;
+    (Zotero as any).Duplicates = class {
+      async getSearchObject() { throw new Error("injected duplicate search failure"); }
+    };
+    try {
+      await plugin().hooks.onLintInBatch(["no-item-duplication", "correct-title-chemical-formula"], [item]);
+      const result = plugin().runner.lastResult;
+      assert.equal(result.failed, 1);
+      assert.equal(result.saved, 1);
+      assert.include(result.records[0].message, "injected duplicate search failure");
+      assert.equal(item.getField("title", false, true), "duplicate search MoS<sub>2</sub>");
+      assert.isFalse(item.hasChanged());
+    }
+    finally {
+      (Zotero as any).Duplicates = Duplicates;
+    }
+  });
+
   it("stops before the next rule and item, saves completed work, then accepts another batch", async function () {
     const first = await create("cancel first");
     const second = await create("cancel second");
@@ -366,6 +488,10 @@ describe("data processing resilience in Zotero", function () {
     await win.ZoteroPane.selectItem(item.id);
     const editor = win.document.querySelector("#zotero-item-pane editable-text[fieldname='title'] textarea") as HTMLTextAreaElement;
     assert.isNotNull(editor);
+    win.focus();
+    for (let attempt = 0; attempt < 100 && !win.document.hasFocus(); attempt++)
+      await Zotero.Promise.delay(25);
+    assert.isTrue(win.document.hasFocus(), "focus the library window before testing title editor events");
     editor.focus();
     await Zotero.Promise.delay(50);
     editor.value = "A & B: H<sub>2</sub>O <span onclick='bad()'>safe</span><img src='https://invalid.example/qa'>";
@@ -380,11 +506,35 @@ describe("data processing resilience in Zotero", function () {
     editor.dispatchEvent(new win.Event("input", { bubbles: true }));
     const otherInput = win.document.createElementNS("http://www.w3.org/1999/xhtml", "input") as HTMLInputElement;
     win.document.documentElement!.appendChild(otherInput);
+    win.focus();
+    for (let attempt = 0; attempt < 100 && !win.document.hasFocus(); attempt++)
+      await Zotero.Promise.delay(25);
+    assert.isTrue(win.document.hasFocus(), "focus changes must occur in the active library window");
     otherInput.focus();
     for (let attempt = 0; attempt < 20 && win.document.getElementById("zotero-textarea-preview"); attempt++)
       await Zotero.Promise.delay(25);
-    assert.isNull(win.document.getElementById("zotero-textarea-preview"), `preview closes after blur: active=${win.document.activeElement?.localName}`);
+    assert.isNull(win.document.getElementById("zotero-textarea-preview"), `preview closes after blur: active=${win.document.activeElement?.localName}, focused=${win.document.hasFocus()}`);
     otherInput.remove();
+  });
+
+  it("delivers each item notification once after repeated plugin initialization", async function () {
+    const item = await create("single observer");
+    const instance = plugin();
+    const onNotify = instance.hooks.onNotify;
+    let calls = 0;
+    instance.hooks.onNotify = async (event: string, type: string, ids: number[]) => {
+      if (event === "add" && type === "item" && ids.includes(item.id))
+        calls++;
+    };
+    try {
+      await instance.hooks.onStartup();
+      await instance.hooks.onStartup();
+      await Zotero.Notifier.trigger("add", "item", [item.id], {}, true);
+      assert.equal(calls, 1);
+    }
+    finally {
+      instance.hooks.onNotify = onNotify;
+    }
   });
 
   it("cancels the entire combined workflow when a tool dialog is cancelled", async function () {

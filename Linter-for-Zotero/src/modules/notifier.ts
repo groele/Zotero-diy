@@ -1,6 +1,7 @@
-let notifierID: string;
+let notifierID: string | undefined;
 
 export function registerNotifier() {
+  unregisterNotifier();
   // Register the callback in Zotero as an item observer
   notifierID = Zotero.Notifier.registerObserver(
     {
@@ -26,5 +27,8 @@ export function registerNotifier() {
 }
 
 export function unregisterNotifier() {
+  if (!notifierID)
+    return;
   Zotero.Notifier.unregisterObserver(notifierID);
+  notifierID = undefined;
 }

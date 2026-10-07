@@ -1,6 +1,4 @@
 import pThrottle from "p-throttle";
-import { getPref } from "./prefs";
-import { normalizedConcurrency } from "./rule-execution";
 
 /**
  * Apply throttle to a function if cooldown is specified and greater than 0.
@@ -26,11 +24,10 @@ export function withThrottle<T extends (...args: any[]) => any>(
     return fn;
   }
 
-  const numConcurrent = normalizedConcurrency(getPref("lint.numConcurrent"));
-
   const throttled = pThrottle({
-    limit: Math.max(1, Math.min(Math.floor(10000 / cooldown), numConcurrent)),
+    limit: 1,
     interval: cooldown,
+    strict: true,
   });
 
   return throttled(fn);

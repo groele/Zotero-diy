@@ -53,10 +53,11 @@ export interface MetadataService<T extends MetadataResponse> {
 }
 
 export function defineService<T extends MetadataResponse>(service: MetadataService<T>) {
-  const guard = <Result>(fn?: (ctx: MetadataContext) => Promise<Result>) => fn && withThrottle((ctx: MetadataContext) => {
+  const run = withThrottle(<Result>(fn: (ctx: MetadataContext) => Promise<Result>, ctx: MetadataContext) => {
     ctx.signal?.throwIfAborted();
     return fn(ctx);
   }, service.cooldown);
+  const guard = <Result>(fn?: (ctx: MetadataContext) => Promise<Result>) => fn && ((ctx: MetadataContext) => run(fn, ctx));
   service.fetch = guard(service.fetch);
   service.updateIdentifiers = guard(service.updateIdentifiers);
   return service;

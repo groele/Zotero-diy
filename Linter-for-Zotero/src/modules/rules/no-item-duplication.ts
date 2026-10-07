@@ -3,6 +3,7 @@ import { defineRule } from "./rule-base";
 
 interface NoItemDuplicationOptions {
   duplicateItemIdsByLibrary: Map<number, Set<number>>;
+  failedLibraries: Map<number, string>;
 }
 
 export const NoItemDuplication = defineRule<NoItemDuplicationOptions>({
@@ -18,6 +19,7 @@ export const NoItemDuplication = defineRule<NoItemDuplicationOptions>({
     }
 
     const duplicateItemIdsByLibrary = new Map<number, Set<number>>();
+    const failedLibraries = new Map<number, string>();
     for (const libraryID of libraryIds) {
       try {
         // @ts-expect-error miss types for `Zotero.Duplicates`
@@ -27,14 +29,22 @@ export const NoItemDuplication = defineRule<NoItemDuplicationOptions>({
         duplicateItemIdsByLibrary.set(libraryID, new Set(searchResult as number[]));
       }
       catch (e) {
+        failedLibraries.set(libraryID, e instanceof Error ? e.message : String(e));
         debug(`Failed to search duplicates for library ${libraryID}:`, e);
       }
     }
 
-    return { duplicateItemIdsByLibrary };
+    return { duplicateItemIdsByLibrary, failedLibraries };
   },
 
   async apply({ item, options, report, debug }) {
+    if (options.failedLibraries.has(item.libraryID)) {
+      report({
+        level: "error",
+        message: getString("rule-no-item-duplication-search-failed", { args: { error: options.failedLibraries.get(item.libraryID)! } }),
+      });
+      return;
+    }
     const duplicateIds = options?.duplicateItemIdsByLibrary?.get(item.libraryID);
     const isDuplicate = duplicateIds ? duplicateIds.has(item.id) : false;
 

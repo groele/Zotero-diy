@@ -1,4 +1,15 @@
-# Linter for Zotero V10 — 10.0.4
+# Linter for Zotero V10 — 10.0.5
+
+## 10.0.5 — 2026-10-07
+
+- Isolated rule applicability failures so subsequent rules still run and their changes are saved. Added separate preparation-failure and skipped-item counts.
+- Kept progress and report window failures from interrupting concurrent processing, persistence, batch cleanup, or runner shutdown. Silent batches retain records without opening reports.
+- Enforced API cooldowns independently of item concurrency, shared each metadata service's request schedule, and blocked aborted queued requests.
+- Reported duplicate-search failures instead of treating them as an absence of duplicates. Prevented duplicate notifier registrations and late property deletion or redefinition after rule execution.
+- Limited title previews to the focused editor in the active library window and made the live focus regression test confirm window focus.
+- Restricted unit test discovery to current source files, excluding stale publish-checkout copies. Validation: 193 unit tests in 26 files, 35 live Zotero tests per locale, production XPI installation, lint, build, and both TypeScript checks.
+
+Zotero compatibility remains 10.0–10.999. Live runtime verification uses Windows Zotero 10.0.5; external service responses are controlled rather than evidence of live website availability.
 
 ## 10.0.4
 

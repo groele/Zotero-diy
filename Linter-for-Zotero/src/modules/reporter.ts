@@ -140,7 +140,7 @@ export function createReporter(infos: ReportInfo[]) {
     };
   }
 
-  openAndWaitClose("Linter for Zotero");
+  return openAndWaitClose("Linter for Zotero");
 }
 
 const PROGRESS_WINDOW_CLOSE_DELAY = 5000;
@@ -224,7 +224,7 @@ export class ProgressUI {
     });
   }
 
-  public showFinished(successCount: number, errorCount: number, duration: number, cancelled = false, skipped = 0): void {
+  public showFinished(successCount: number, errorCount: number, duration: number, cancelled = false, skipped = 0, preparationFailed = 0): void {
     if (!this.progressWindow)
       return;
 
@@ -238,12 +238,14 @@ export class ProgressUI {
             "] ",
             getString("info-batch-finish"),
           ].join("")
-        : getString("info-batch-no-selected");
+        : getString(preparationFailed ? "info-batch-has-error" : "info-batch-no-selected");
 
     this.progressWindow
       .changeLine({ text, progress: 100, idx: 0 })
       .changeLine({ text: getString("info-batch-duration", { args: { seconds: duration.toFixed(1) } }), idx: 2 })
       .startCloseTimer(PROGRESS_WINDOW_CLOSE_DELAY);
+    if (preparationFailed && successCount + errorCount)
+      this.showError();
   }
 
   private handleStopRequest = (ev: MouseEvent): void => {
