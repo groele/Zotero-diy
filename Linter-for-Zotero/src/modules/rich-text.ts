@@ -1,6 +1,7 @@
 import type { FluentMessageId } from "../../typings/i10n";
 import { getString } from "../utils/locale";
 import { getPref } from "../utils/prefs";
+import { removeHtmlTag } from "../utils/str";
 
 const TOOLBAR_CLASS = "metaref-richtext-toolbar";
 const PREVIEW_ID = "zotero-textarea-preview";
@@ -58,9 +59,13 @@ class ButtonManager {
 
   createToolbar(): HTMLDivElement {
     const document = this.window.document;
-    const toolbarDiv = document.createElementNS("http://www.w3.org/1999/xhtml", "div") as HTMLDivElement;
+    const toolbarDiv = (document.createElementNS?.("http://www.w3.org/1999/xhtml", "div")
+      || document.createElement("div")) as HTMLDivElement;
     toolbarDiv.className = TOOLBAR_CLASS;
     toolbarDiv.style.display = "flex";
+    toolbarDiv.style.gap = "4px";
+    toolbarDiv.style.padding = "2px 0 4px 0";
+    toolbarDiv.style.alignItems = "center";
 
     BUTTONS.forEach((btn) => {
       const button = this.createToolbarButton(btn);
@@ -72,7 +77,8 @@ class ButtonManager {
 
   private createToolbarButton(btn: ButtonConfig): HTMLElement {
     const document = this.window.document;
-    const button = document.createElement("toolbarbutton");
+    const button = (document.createXULElement?.("toolbarbutton")
+      || document.createElement("toolbarbutton")) as HTMLElement;
 
     button.id = `metaref-richtext-${btn.hookName}-btn`;
     button.className = "zotero-tb-button";
@@ -82,14 +88,22 @@ class ButtonManager {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
+      cursor: "pointer",
+      padding: "2px 4px",
+      minWidth: "24px",
+      height: "24px",
     });
-    button.setAttribute("title", getString(btn.i18nName));
+    const titleText = getString(btn.i18nName);
+    button.setAttribute("title", titleText);
+    button.setAttribute("tooltiptext", titleText);
 
-    const image = document.createElement("image");
+    const image = (document.createXULElement?.("image")
+      || document.createElement("image")) as HTMLElement;
     image.className = "toolbarbutton-icon";
     image.innerHTML = btn.icon;
 
-    const label = document.createElement("label");
+    const label = (document.createXULElement?.("label")
+      || document.createElement("label")) as HTMLElement;
     label.className = "toolbarbutton-text";
 
     button.append(image, label);
@@ -108,7 +122,10 @@ class ButtonManager {
       return;
 
     const bar = this.createToolbar();
-    textarea.parentElement?.parentElement?.insertBefore(bar, textarea.parentElement);
+    const container = textarea.closest("editable-text[fieldname='title']") || textarea.parentElement;
+    if (container) {
+      container.insertBefore(bar, container.firstChild);
+    }
   }
 
   close(): void {
@@ -137,9 +154,11 @@ class PreviewManager {
   }
 
   private ensurePreview(textarea: HTMLTextAreaElement): HTMLDivElement {
-    let preview = textarea.parentElement?.querySelector<HTMLDivElement>(`#${PREVIEW_ID}`);
-    if (!preview && textarea.parentElement) {
-      preview = this.window.document.createElementNS("http://www.w3.org/1999/xhtml", "div") as HTMLDivElement;
+    const editableText = textarea.closest("editable-text[fieldname='title']") || textarea.parentElement;
+    let preview = editableText?.querySelector<HTMLDivElement>(`#${PREVIEW_ID}`);
+    if (!preview && editableText) {
+      preview = (this.window.document.createElementNS?.("http://www.w3.org/1999/xhtml", "div")
+        || this.window.document.createElement("div")) as HTMLDivElement;
       preview.id = PREVIEW_ID;
       Object.assign(preview.style, {
         border: "1px solid #ccc",
@@ -148,25 +167,21 @@ class PreviewManager {
         whiteSpace: "pre-wrap",
         fontWeight: "normal",
         borderRadius: "5px",
+        color: "inherit",
       });
-      textarea.parentElement.appendChild(preview);
+      editableText.appendChild(preview);
     }
     return preview!;
   }
 
   updatePreview(textarea: HTMLTextAreaElement): void {
-    if (!this.window.document.hasFocus() || getTitleEditor(this.window) !== textarea) {
-      this.close();
-      return;
-    }
     const preview = this.ensurePreview(textarea);
+    if (!preview)
+      return;
     const value = textarea.value;
 
     const errorDetails = this.checkHTMLorXMLValidity(value);
     if (errorDetails) {
-      // We should use textContent instead of innerHTML,
-      // because tags in errorDetails will break the preview,
-      // even we excape the errorDetails.
       preview.textContent = `${getString("richtext-preview-error")}\n${errorDetails}`;
     }
     else {
@@ -183,7 +198,8 @@ class PreviewManager {
           parent.appendChild(this.window.document.createTextNode(source.textContent || ""));
           return;
         }
-        const node = this.window.document.createElementNS("http://www.w3.org/1999/xhtml", tag);
+        const node = (this.window.document.createElementNS?.("http://www.w3.org/1999/xhtml", tag)
+          || this.window.document.createElement(tag)) as HTMLElement;
         if (tag === "span") {
           const element = source as Element;
           const className = element.getAttribute("class");
@@ -201,23 +217,11 @@ class PreviewManager {
   }
 
   checkHTMLorXMLValidity(source: string): string | null {
-    // Should wrap the source with a root tag, because DOMParser
-    // will throw error if the xml doesn't have a root tag.
     const wrapped = `<root>${escapeTitleText(source)}</root>`;
     const parser = new (this.window as Window & typeof globalThis).DOMParser();
     const doc = parser.parseFromString(wrapped, "application/xml");
     const errorNode = doc.querySelector("parsererror");
     if (errorNode) {
-      /**
-       * Example of errorNode.textContent:
-       *
-       * "XML Parsing Error: mismatched tag. Expected: </sub>.
-       * Location: moz-nullprincipal:{0cfb54c0-6fe2-48bb-963b-db92e9a2ce31}
-       * Line Number 1, Column 115:<root>Enhancing performance of Co/CeO<sub>2</sub> catalyst by Sr doping for catalytic combustion of toluene<sub></root>
-       * ------------------------------------------------------------------------------------------------------------------^"
-       *
-       * We only need the first line of errorDetails.
-       */
       return errorNode.textContent?.split("\n")[0] || "Unknown parsing error";
     }
     return null;
@@ -241,8 +245,8 @@ class PreviewManager {
 export class RichTextToolBar {
   private buttonManager: ButtonManager;
   private previewManager: PreviewManager;
-  private refreshTimer?: number;
   private observer?: MutationObserver;
+  private closeTimer?: number;
 
   constructor(private window: Window) {
     this.buttonManager = new ButtonManager(window);
@@ -250,56 +254,117 @@ export class RichTextToolBar {
   }
 
   init(): void {
-    this.window.addEventListener("focus", this.onFocus, true);
-    this.window.addEventListener("blur", this.onBlur, true);
-    this.window.document.addEventListener("focusin", this.onFocus);
-    this.window.document.addEventListener("focusout", this.onBlur);
+    const initialTextarea = getTitleEditor(this.window);
+    if (initialTextarea) {
+      this.openFor(initialTextarea);
+    }
+
+    this.window.document.addEventListener("focusin", this.onFocusIn, true);
+    this.window.document.addEventListener("focusout", this.onFocusOut, true);
     this.window.document.addEventListener("input", this.onInput, true);
-    this.observer = new (this.window as Window & typeof globalThis).MutationObserver((records) => {
-      if (records.some(record => [...record.addedNodes, ...record.removedNodes].some(node => (node as Element).localName === "textarea" || (node as Element).querySelector?.("editable-text[fieldname='title']")))) {
-        this.onFocus(new (this.window as Window & typeof globalThis).Event("focus"));
+    this.window.document.addEventListener("click", this.onClick, true);
+
+    const MutationObserver = (this.window as Window & typeof globalThis).MutationObserver;
+    if (MutationObserver) {
+      this.observer = new MutationObserver((records) => {
+        for (const record of records) {
+          if (record.type === "attributes" && record.attributeName === "class") {
+            const target = record.target as HTMLElement;
+            if (target?.localName === "editable-text" && target.getAttribute?.("fieldname") === "title") {
+              if (target.classList.contains("focused")) {
+                const textarea = target.querySelector("textarea");
+                if (textarea)
+                  this.openFor(textarea);
+              }
+              else {
+                this.close();
+              }
+            }
+          }
+          else if (record.type === "childList") {
+            for (const node of record.addedNodes) {
+              const el = node as HTMLElement;
+              if (el?.localName === "textarea" && el.closest?.("editable-text[fieldname='title']")) {
+                const editable = el.closest("editable-text[fieldname='title']");
+                if (editable?.classList.contains("focused") || this.window.document.activeElement === el) {
+                  this.openFor(el as HTMLTextAreaElement);
+                }
+              }
+            }
+          }
+        }
+      });
+      const root = this.window.document.documentElement || this.window.document.body;
+      if (root) {
+        this.observer.observe(root, {
+          attributes: true,
+          attributeFilter: ["class"],
+          childList: true,
+          subtree: true,
+        });
       }
-    });
-    this.observer.observe(this.window.document.documentElement!, { childList: true, subtree: true });
-    this.onFocus();
+    }
   }
 
-  private onFocus = (event?: Event): void => {
-    if (event) {
-      this.window.clearTimeout(this.refreshTimer);
-      // Focus events can arrive before the deferred refresh in background windows.
-      this.close();
-      this.refreshTimer = this.window.setTimeout(() => {
-        this.refreshTimer = undefined;
-        this.onFocus();
-      }, 0);
+  private onFocusIn = (event: Event): void => {
+    this.window.clearTimeout(this.closeTimer);
+    const target = event.target as HTMLElement | null;
+    if (!target)
       return;
+    if (target.localName === "textarea" && target.closest?.("editable-text[fieldname='title']")) {
+      this.openFor(target as HTMLTextAreaElement);
     }
-    const textarea = getTitleEditor(this.window);
-    this.close();
-    if (!textarea || !this.window.document.hasFocus())
-      return;
+    else if (target.localName === "editable-text" && target.getAttribute?.("fieldname") === "title") {
+      const textarea = target.querySelector("textarea");
+      if (textarea)
+        this.openFor(textarea);
+    }
+  };
+
+  private onFocusOut = (event: FocusEvent): void => {
+    const target = event.target as HTMLElement | null;
+    if (target?.localName === "textarea" && target.closest?.("editable-text[fieldname='title']")) {
+      const related = event.relatedTarget as HTMLElement | null;
+      if (related && (related.closest?.(`.${TOOLBAR_CLASS}`) || related.closest?.("editable-text[fieldname='title']")))
+        return;
+
+      this.window.clearTimeout(this.closeTimer);
+      this.closeTimer = this.window.setTimeout(() => {
+        const active = this.window.document.activeElement as HTMLElement | null;
+        if (active?.closest?.("editable-text[fieldname='title']") || active?.closest?.(`.${TOOLBAR_CLASS}`))
+          return;
+        this.close();
+      }, 100);
+    }
+  };
+
+  private onInput = (event: Event): void => {
+    const target = event.target as HTMLElement | null;
+    if (target?.localName === "textarea" && target.closest?.("editable-text[fieldname='title']")) {
+      if (getPref("richtext.preview"))
+        this.previewManager.updatePreview(target as HTMLTextAreaElement);
+    }
+  };
+
+  private onClick = (event: MouseEvent): void => {
+    const target = event.target as HTMLElement | null;
+    const editable = target?.closest?.("editable-text[fieldname='title']");
+    if (editable) {
+      this.window.setTimeout(() => {
+        const textarea = editable.querySelector("textarea");
+        if (textarea)
+          this.openFor(textarea);
+      }, 50);
+    }
+  };
+
+  openFor(textarea: HTMLTextAreaElement): void {
+    this.window.clearTimeout(this.closeTimer);
     if (getPref("richtext.toolBar"))
       this.buttonManager.attachToolbar(textarea);
     if (getPref("richtext.preview"))
       this.previewManager.attachPreview(textarea);
-  };
-
-  private onBlur = (event: Event): void => {
-    this.window.clearTimeout(this.refreshTimer);
-    this.close();
-    if (event.target === this.window)
-      return;
-    const relatedTarget = (event as FocusEvent).relatedTarget as Element | null;
-    if (relatedTarget && !relatedTarget.closest?.("editable-text[fieldname='title']"))
-      return;
-    this.onFocus(event);
-  };
-
-  private onInput = (): void => {
-    if (getTitleEditor(this.window) && getPref("richtext.preview") && !this.window.document.getElementById(PREVIEW_ID))
-      this.onFocus();
-  };
+  }
 
   /** Close all toolbar and preview elements when the title editor loses focus. */
   close(): void {
@@ -309,13 +374,12 @@ export class RichTextToolBar {
 
   /** Remove window-local listeners when the window or plugin closes. */
   clean(): void {
-    this.window.clearTimeout(this.refreshTimer);
+    this.window.clearTimeout(this.closeTimer);
     this.observer?.disconnect();
-    this.window.removeEventListener("focus", this.onFocus, true);
-    this.window.removeEventListener("blur", this.onBlur, true);
-    this.window.document.removeEventListener("focusin", this.onFocus);
-    this.window.document.removeEventListener("focusout", this.onBlur);
+    this.window.document.removeEventListener("focusin", this.onFocusIn, true);
+    this.window.document.removeEventListener("focusout", this.onFocusOut, true);
     this.window.document.removeEventListener("input", this.onInput, true);
+    this.window.document.removeEventListener("click", this.onClick, true);
     this.close();
   }
 }
@@ -330,43 +394,67 @@ export function escapeTitleText(source: string): string {
       .replace(/>/g, "&gt;");
   }).join("");
 }
+
 export function getTitleEditor(win: Window): HTMLTextAreaElement | null {
-  const active = win.document.activeElement;
-  if (active?.localName !== "textarea" || !active.closest("editable-text[fieldname='title']"))
-    return null;
-  return active as HTMLTextAreaElement;
+  const active = win.document.activeElement as HTMLElement | null;
+  if (active?.localName === "textarea" && active.closest?.("editable-text[fieldname='title']"))
+    return active as HTMLTextAreaElement;
+
+  const focusedEditable = win.document.querySelector("editable-text[fieldname='title'].focused");
+  if (focusedEditable) {
+    const textarea = focusedEditable.querySelector("textarea");
+    if (textarea)
+      return textarea as HTMLTextAreaElement;
+  }
+
+  const anyTitleTextarea = win.document.querySelector("editable-text[fieldname='title'] textarea");
+  if (anyTitleTextarea)
+    return anyTitleTextarea as HTMLTextAreaElement;
+
+  return null;
 }
 
 /**
  * Get the selected text and replace it with text with or without HTML tags depending on the operation.
- * @param tag sub | sup | b | i
+ * @param tag sub | sup | b | i | span
  * @param attribute Optional tag attribute
  * @param value Attribute value
  * @param win Window containing the title editor
- * @see https://stackoverflow.com/questions/31036076/how-to-replace-selected-text-in-a-textarea-with-javascript
  */
 export function setHtmlTag(tag: string, attribute?: string, value?: string, win: Window = Zotero.getMainWindow()): void {
   const textarea = getTitleEditor(win);
-  if (!textarea || textarea.selectionStart == null || textarea.selectionEnd == null || textarea.selectionStart === textarea.selectionEnd)
+  if (!textarea || textarea.selectionStart == null || textarea.selectionEnd == null)
     return;
 
   const { selectionStart: start, selectionEnd: end, value: text } = textarea;
-  let selectedText = text.slice(start, end);
-
   const attributeText = attribute ? ` ${attribute}="${value}"` : "";
   const openTag = `<${tag}${attributeText}>`;
   const closeTag = `</${tag}>`;
-  selectedText = selectedText.startsWith(openTag) && selectedText.endsWith(closeTag)
-    ? selectedText.slice(openTag.length, -closeTag.length)
-    : `${openTag}${selectedText}${closeTag}`;
 
-  textarea.setRangeText(selectedText, start, end, "select");
+  if (start === end) {
+    const emptyTag = `${openTag}${closeTag}`;
+    textarea.setRangeText(emptyTag, start, end, "end");
+    const newPos = start + openTag.length;
+    textarea.setSelectionRange(newPos, newPos);
+  }
+  else {
+    let selectedText = text.slice(start, end);
+    if (selectedText.startsWith(openTag) && selectedText.endsWith(closeTag)) {
+      selectedText = selectedText.slice(openTag.length, -closeTag.length);
+    }
+    else if (selectedText.startsWith(`<${tag}`) && selectedText.endsWith(`</${tag}>`)) {
+      selectedText = removeHtmlTag(selectedText);
+    }
+    else {
+      selectedText = `${openTag}${selectedText}${closeTag}`;
+    }
+    textarea.setRangeText(selectedText, start, end, "select");
+  }
 
-  // The changes of content may cause the height of textarea to change
   textarea.style.height = "auto";
+  if (textarea.scrollHeight > 0)
+    textarea.style.height = `${textarea.scrollHeight}px`;
 
-  // Dispatch input event to trigger any listeners
-  // Zotero not expose Event as global vars, so we define it here
   const Event = (win as Window & typeof globalThis).Event;
   const inputEvent = new Event("input", { bubbles: true });
   textarea.dispatchEvent(inputEvent);

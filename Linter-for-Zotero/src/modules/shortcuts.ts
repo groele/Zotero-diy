@@ -31,7 +31,7 @@ export function registerShortcuts(win: Window): () => void {
       event.stopPropagation();
       void addon.hooks.onLintInBatch(action === "lint" ? "standard" : "correct-title-chemical-formula", items);
     }
-    else if (getPref("richtext.hotkey") && editor && editor.selectionStart !== editor.selectionEnd) {
+    else if (getPref("richtext.hotkey") && editor) {
       event.preventDefault();
       event.stopPropagation();
       addon.hooks.onShortcuts(action, win);
