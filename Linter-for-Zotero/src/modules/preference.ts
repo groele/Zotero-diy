@@ -74,11 +74,13 @@ function setupCustomDataReset(pane: Element) {
     const button = input.ownerDocument.createXULElement("button");
     input.ownerDocument.l10n!.setAttributes(button, "metaref-settings-custom-data-reset");
     button.setAttribute("native", "true");
-    button.addEventListener("command", () => {
-      const key = input.getAttribute("preference")!.replace(`${addon.data.config.prefsPrefix}.`, "");
-      setPref(key as any, "");
-      input.value = "";
-    });
+    if (!input.closest("[data-journal-database]")) {
+      button.addEventListener("command", () => {
+        const key = input.getAttribute("preference")!.replace(`${addon.data.config.prefsPrefix}.`, "");
+        setPref(key as any, "");
+        input.value = "";
+      });
+    }
     input.parentElement!.appendChild(button);
   }
 }

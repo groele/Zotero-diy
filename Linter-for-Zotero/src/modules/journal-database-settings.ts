@@ -13,8 +13,11 @@ export function setupJournalDatabases(pane: Element) {
     const buttons = [...group.querySelectorAll<HTMLButtonElement>("button")];
     const pathInput = group.querySelector<HTMLInputElement>("input[readonly]")!;
     let busy = false;
-    for (const action of ["choose", "validate", "export", "reload"] as const) {
-      group.querySelector(`#metaref-${kind}-${action}-custom-data-button`)!.addEventListener("command", async () => {
+    for (const action of ["choose", "validate", "export", "reload", "reset"] as const) {
+      const button = action === "reset"
+        ? group.querySelector("[data-l10n-id='metaref-settings-custom-data-reset']")!
+        : group.querySelector(`#metaref-${kind}-${action}-custom-data-button`)!;
+      button.addEventListener("command", async () => {
         if (busy)
           return;
         busy = true;
@@ -22,7 +25,14 @@ export function setupJournalDatabases(pane: Element) {
         buttons.forEach(button => button.disabled = true);
         status.textContent = getString("journal-database-working");
         try {
-          if (action === "export") {
+          if (action === "reset") {
+            const result = await validateJournalDatabase(kind, "");
+            setPref(key, "");
+            pathInput.value = "";
+            await refreshJournalInsights();
+            status.textContent = getString("journal-database-valid", { args: { count: result.journals, source: getString("journal-database-builtin") } });
+          }
+          else if (action === "export") {
             const path = await new ztoolkit.FilePicker(getString("journal-database-export-title"), "save", [["JSON", "*.json"]], `metaref-${kind}-journals.json`).open();
             if (!path) {
               status.textContent = "";
@@ -62,8 +72,5 @@ export function setupJournalDatabases(pane: Element) {
         }
       });
     }
-    group.querySelector("[data-l10n-id='metaref-settings-custom-data-reset']")!.addEventListener("command", () => {
-      status.textContent = "";
-    });
   }
 }

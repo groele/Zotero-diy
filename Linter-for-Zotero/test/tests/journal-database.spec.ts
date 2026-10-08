@@ -136,9 +136,22 @@ describe("user-defined journal databases in Zotero", function () {
       await act("export");
       assert.equal((await plugin().api.validateJournalDatabase("nature", output)).journals, 177);
       assert.equal(JSON.parse(await Zotero.File.getContentsAsync(output) as string).venues.length, 178);
-      group.querySelector("[data-l10n-id='metaref-settings-custom-data-reset']")!.dispatchEvent(new win.Event("command", { bubbles: true }));
+      const builtinItem = new Zotero.Item("journalArticle");
+      builtinItem.setField("title", "Database reset regression");
+      builtinItem.setField("publicationTitle", "Physical Review Letters");
+      await builtinItem.saveTx();
+      items.push(builtinItem);
+      assert.isFalse((await plugin().api.getJournalInsights(builtinItem)).natureIndex);
+      const reset = group.querySelector("[data-l10n-id='metaref-settings-custom-data-reset']") as HTMLButtonElement;
+      reset.dispatchEvent(new win.Event("command", { bubbles: true }));
+      assert.isTrue(reset.disabled, "reset remains disabled until the built-in database is active");
+      for (let attempt = 0; attempt < 200 && reset.disabled; attempt++)
+        await Zotero.Promise.delay(50);
+      assert.isFalse(reset.disabled);
       assert.equal(Zotero.Prefs.get(`${config.prefsPrefix}.insights.natureCustomDataPath`, true), "");
       assert.equal((group.querySelector("input[readonly]") as HTMLInputElement).value, "");
+      assert.include(status.textContent!, "177");
+      assert.isTrue((await plugin().api.getJournalInsights(builtinItem)).natureIndex, "reset restores the built-in journal matches");
       assert.isEmpty(choices);
     }
     finally {

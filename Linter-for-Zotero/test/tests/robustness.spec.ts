@@ -572,7 +572,7 @@ describe("data processing resilience in Zotero", function () {
     assert.equal(editor.value, "H<sub>2</sub>O", "toolbar formats the selected title text");
     editor.value = "A & B: H<sub>2</sub>O <span onclick='bad()'>safe</span><img src='https://invalid.example/qa'>";
     editor.dispatchEvent(new win.Event("input", { bubbles: true }));
-    const preview = win.document.getElementById("zotero-textarea-preview")!;
+    const preview = win.document.getElementById("metaref-title-preview")!;
     assert.isNotNull(preview, `title preview exists after focus: active=${win.document.activeElement?.localName}, enabled=${Zotero.Prefs.get(`${config.prefsPrefix}.richtext.preview`, true)}`);
     assert.include(preview.textContent, "A & B");
     assert.equal(preview.querySelector("sub")?.textContent, "2");
@@ -587,9 +587,9 @@ describe("data processing resilience in Zotero", function () {
       await Zotero.Promise.delay(25);
     assert.isTrue(win.document.hasFocus(), "focus changes must occur in the active library window");
     otherInput.focus();
-    for (let attempt = 0; attempt < 20 && win.document.getElementById("zotero-textarea-preview"); attempt++)
+    for (let attempt = 0; attempt < 20 && win.document.getElementById("metaref-title-preview"); attempt++)
       await Zotero.Promise.delay(25);
-    assert.isNull(win.document.getElementById("zotero-textarea-preview"), `preview closes after blur: active=${win.document.activeElement?.localName}, focused=${win.document.hasFocus()}`);
+    assert.isNull(win.document.getElementById("metaref-title-preview"), `preview closes after blur: active=${win.document.activeElement?.localName}, focused=${win.document.hasFocus()}`);
     const infoEditor = win.document.querySelector("#zotero-item-pane editable-text[fieldname='title'] textarea") as HTMLTextAreaElement;
     assert.isNotNull(infoEditor);
     infoEditor.focus();

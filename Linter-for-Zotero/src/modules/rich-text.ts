@@ -4,7 +4,7 @@ import { getPref } from "../utils/prefs";
 import { removeHtmlTag } from "../utils/str";
 
 const TOOLBAR_CLASS = "metaref-richtext-toolbar";
-const PREVIEW_ID = "zotero-textarea-preview";
+const PREVIEW_ID = "metaref-title-preview";
 const HEADER_TITLE_SELECTOR = "item-pane-header .title editable-text";
 const BUTTON_ICON_SIZE = 16;
 
