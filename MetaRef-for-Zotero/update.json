@@ -3,7 +3,7 @@
     "metaref@groele": {
       "updates": [
         {
-          "version": "11.0.5",
+          "version": "11.0.6",
           "update_link": "https://raw.githubusercontent.com/groele/Zotero-diy/main/Linter-for-Zotero/dist/metaref-for-zotero.xpi",
           "applications": {
             "zotero": {

@@ -46,6 +46,8 @@ describe("independent journal insights in Zotero", function () {
     await win.ZoteroPane.selectItem(item.id);
     const section = win.document.querySelector("item-pane-custom-section[data-pane*='metaref-journal-insights']") as any;
     assert.isNotNull(section);
+    const heading = section.querySelector("collapsible-section > .head .title");
+    assert.equal(win.getComputedStyle(heading!, "::before")?.display, "none", "the empty custom section icon does not indent the heading");
     await section._handleRefresh();
     const body = section.querySelector("[data-type='body']") as HTMLElement;
     assert.include(body.textContent!, "ESI");

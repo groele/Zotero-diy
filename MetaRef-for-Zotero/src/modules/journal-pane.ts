@@ -22,6 +22,9 @@ export function registerJournalPane() {
     header: { icon: "", l10nID: getLocaleID("journal-insights-heading")! },
     sidenav: { icon, l10nID: getLocaleID("journal-insights-heading")! },
     onInit({ body, refresh, setEnabled }) {
+      const style = body.closest("item-pane-custom-section")?.querySelector(".custom-style");
+      if (style)
+        style.textContent = "item-pane-custom-section[data-pane*='metaref-journal-insights'] collapsible-section[custom] > .head .title::before { display: none; }";
       refreshers.set(body, async () => {
         setEnabled(getPref("insights.showPane", true) && items.get(body)?.itemType === "journalArticle");
         await refresh();
