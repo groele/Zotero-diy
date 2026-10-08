@@ -90,6 +90,7 @@ export type FluentMessageId =
   | 'notify-on-lint'
   | 'prefs-title'
   | 'richtext-settings-description'
+  | 'richtext-toolbar-label'
   | 'rule-correct-bookTitle-sentence-case'
   | 'rule-correct-conference-abbr'
   | 'rule-correct-conference-abbr-description'

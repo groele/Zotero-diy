@@ -569,6 +569,20 @@ describe("data processing resilience in Zotero", function () {
     toolbar.querySelector<HTMLButtonElement>("#metaref-richtext-subscript-btn")!
       .dispatchEvent(new win.MouseEvent("mousedown", { bubbles: true, cancelable: true }));
     assert.equal(editor.value, "H<sub>2</sub>O", "toolbar formats the selected title text");
+    const subscriptStart = editor.value.indexOf("<sub>");
+    const digitStart = editor.value.indexOf("2", subscriptStart);
+    editor.setSelectionRange(digitStart, digitStart + 1);
+    editor.dispatchEvent(new win.Event("select"));
+    const boldButton = toolbar.querySelector<HTMLButtonElement>("#metaref-richtext-bold-btn")!;
+    boldButton.focus();
+    boldButton.dispatchEvent(new win.MouseEvent("click", { bubbles: true, detail: 0 }));
+    assert.equal(editor.value, "H<sub><b>2</b></sub>O", "keyboard activation keeps the title selection and adds nested formatting");
+    editor.setSelectionRange(subscriptStart, editor.value.indexOf("</sub>") + "</sub>".length);
+    editor.dispatchEvent(new win.Event("select"));
+    const subscriptButton = toolbar.querySelector<HTMLButtonElement>("#metaref-richtext-subscript-btn")!;
+    subscriptButton.focus();
+    subscriptButton.dispatchEvent(new win.MouseEvent("click", { bubbles: true, detail: 0 }));
+    assert.equal(editor.value, "H<b>2</b>O", "removing a format preserves nested bold markup");
     assert.isNull(titleField.querySelector("#metaref-title-preview"), "title formatting does not add a duplicate preview box");
     editor.value = "inline title formatting";
     editor.dispatchEvent(new win.Event("input", { bubbles: true }));

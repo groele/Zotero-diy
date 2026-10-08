@@ -1,4 +1,5 @@
 ## menu
+richtext-toolbar-label = 论文标题格式工具栏
 menuitem-label = 
   .label = MetaRef
 menuitem-stdFormatFlow = 

@@ -1,4 +1,5 @@
 ## menu
+richtext-toolbar-label = Title formatting toolbar
 menuitem-label = 
   .label = MetaRef
 menuitem-stdFormatFlow = 

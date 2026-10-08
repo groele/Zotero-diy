@@ -1,11 +1,22 @@
 import type { FluentMessageId } from "../../typings/i10n";
 import { getString } from "../utils/locale";
 import { getPref } from "../utils/prefs";
-import { removeHtmlTag } from "../utils/str";
 
 const TOOLBAR_CLASS = "metaref-richtext-toolbar";
 const HEADER_TITLE_SELECTOR = "item-pane-header .title editable-text";
 const BUTTON_ICON_SIZE = 16;
+const activeTitleEditors = new WeakMap<Window, HTMLTextAreaElement>();
+const savedTitleSelections = new WeakMap<Window, { editor: HTMLTextAreaElement; start: number; end: number; direction: "forward" | "backward" | "none" }>();
+const selectionCaptureAttached = new WeakSet<HTMLTextAreaElement>();
+
+function rememberTitleSelection(win: Window, editor: HTMLTextAreaElement) {
+  savedTitleSelections.set(win, {
+    editor,
+    start: editor.selectionStart ?? 0,
+    end: editor.selectionEnd ?? 0,
+    direction: (editor.selectionDirection || "none") as "forward" | "backward" | "none",
+  });
+}
 
 interface ButtonConfig {
   name: string;
@@ -62,6 +73,8 @@ class ButtonManager {
     const toolbarDiv = (document.createElementNS?.("http://www.w3.org/1999/xhtml", "div")
       || document.createElement("div")) as HTMLDivElement;
     toolbarDiv.className = TOOLBAR_CLASS;
+    toolbarDiv.setAttribute("role", "toolbar");
+    toolbarDiv.setAttribute("aria-label", getString("richtext-toolbar-label"));
     Object.assign(toolbarDiv.style, {
       display: "flex",
       flexDirection: "row",
@@ -111,6 +124,8 @@ class ButtonManager {
     const titleText = getString(btn.i18nName) || btn.name;
     button.setAttribute("title", titleText);
     button.setAttribute("tooltiptext", titleText);
+    button.setAttribute("aria-label", titleText);
+    button.setAttribute("aria-pressed", "false");
 
     button.innerHTML = btn.icon;
     const svg = button.querySelector("svg");
@@ -127,10 +142,27 @@ class ButtonManager {
       button.style.borderColor = "transparent";
     });
 
-    button.addEventListener("mousedown", (e) => {
+    const activate = () => addon.hooks.onShortcuts(btn.hookName, this.window);
+    button.addEventListener("mousedown", (e: MouseEvent) => {
+      if (e.button !== 0)
+        return;
       e.preventDefault();
       e.stopPropagation();
-      addon.hooks.onShortcuts(btn.hookName, this.window);
+      activate();
+    });
+    button.addEventListener("click", (event) => {
+      if ((event as MouseEvent).detail !== 0)
+        return;
+      event.preventDefault();
+      activate();
+    });
+    button.addEventListener("focus", () => {
+      button.style.backgroundColor = "var(--toolbarbutton-hover-background, rgba(0, 0, 0, 0.08))";
+      button.style.borderColor = "var(--toolbarbutton-hover-bordercolor, rgba(0, 0, 0, 0.15))";
+    });
+    button.addEventListener("blur", () => {
+      button.style.backgroundColor = "transparent";
+      button.style.borderColor = "transparent";
     });
 
     return button;
@@ -150,6 +182,7 @@ class ButtonManager {
 
   close(): void {
     this.window.document.querySelectorAll(`.${TOOLBAR_CLASS}`).forEach((el: Element) => el.remove());
+    activeTitleEditors.delete(this.window);
   }
 }
 
@@ -185,7 +218,7 @@ export class RichTextToolBar {
                 if (textarea)
                   this.openFor(textarea);
               }
-              else if (target.className === "") {
+              else if (target.className === "" && !(this.window.document.activeElement as HTMLElement | null)?.closest?.(`.${TOOLBAR_CLASS}`)) {
                 this.close();
               }
             }
@@ -234,6 +267,15 @@ export class RichTextToolBar {
 
   private onFocusOut = (event: FocusEvent): void => {
     const target = event.target as HTMLElement | null;
+    if (target?.closest?.(`.${TOOLBAR_CLASS}`)) {
+      this.window.clearTimeout(this.closeTimer);
+      this.closeTimer = this.window.setTimeout(() => {
+        const active = this.window.document.activeElement as HTMLElement | null;
+        if (!active?.closest?.(HEADER_TITLE_SELECTOR) && !active?.closest?.(`.${TOOLBAR_CLASS}`))
+          this.close();
+      }, 0);
+      return;
+    }
     if (target?.localName === "textarea" && target.closest?.(HEADER_TITLE_SELECTOR)) {
       const related = event.relatedTarget as HTMLElement | null;
       if (related && (related.closest?.(`.${TOOLBAR_CLASS}`) || related.closest?.(HEADER_TITLE_SELECTOR)))
@@ -268,8 +310,19 @@ export class RichTextToolBar {
     this.window.clearTimeout(this.closeTimer);
     if (!textarea.closest(HEADER_TITLE_SELECTOR))
       return;
+    if (!selectionCaptureAttached.has(textarea)) {
+      const remember = () => rememberTitleSelection(this.window, textarea);
+      textarea.addEventListener("blur", remember, true);
+      textarea.addEventListener("select", remember);
+      textarea.addEventListener("keyup", remember);
+      textarea.addEventListener("mouseup", remember);
+      textarea.addEventListener("keydown", remember, true);
+      selectionCaptureAttached.add(textarea);
+    }
     if (getPref("richtext.toolBar", true))
       this.buttonManager.attachToolbar(textarea);
+    if (getPref("richtext.toolBar", true))
+      activeTitleEditors.set(this.window, textarea);
   }
 
   /** Close the toolbar when the title editor loses focus. */
@@ -292,7 +345,34 @@ export function getTitleEditor(win: Window): HTMLTextAreaElement | null {
   const active = win.document.activeElement as HTMLElement | null;
   if (active?.localName === "textarea" && active.closest?.(HEADER_TITLE_SELECTOR))
     return active as HTMLTextAreaElement;
+  if (active?.closest?.(`.${TOOLBAR_CLASS}`)) {
+    const editor = activeTitleEditors.get(win);
+    const selection = savedTitleSelections.get(win);
+    if (editor && selection?.editor === editor && editor.isConnected)
+      editor.setSelectionRange(selection.start, selection.end, selection.direction);
+    return editor ?? null;
+  }
   return null;
+}
+
+function isSingleOuterTag(source: string, tag: string, expectedOpenTag: string): boolean {
+  if (!source.startsWith(expectedOpenTag) || !source.endsWith(`</${tag}>`))
+    return false;
+  const token = /<\/?([a-z]+)\b[^>]*>/gi;
+  let depth = 0;
+  for (let match = token.exec(source); match; match = token.exec(source)) {
+    if (match[1].toLowerCase() !== tag)
+      continue;
+    if (match[0].startsWith("</")) {
+      depth--;
+      if (depth === 0)
+        return token.lastIndex === source.length;
+    }
+    else if (!match[0].endsWith("/>")) {
+      depth++;
+    }
+  }
+  return false;
 }
 
 /**
@@ -311,6 +391,7 @@ export function setHtmlTag(tag: string, attribute?: string, value?: string, win:
   const attributeText = attribute ? ` ${attribute}="${value}"` : "";
   const openTag = `<${tag}${attributeText}>`;
   const closeTag = `</${tag}>`;
+  const wasWrapped = start !== end && isSingleOuterTag(text.slice(start, end), tag, openTag);
 
   if (start === end) {
     const emptyTag = `${openTag}${closeTag}`;
@@ -320,11 +401,8 @@ export function setHtmlTag(tag: string, attribute?: string, value?: string, win:
   }
   else {
     let selectedText = text.slice(start, end);
-    if (selectedText.startsWith(openTag) && selectedText.endsWith(closeTag)) {
+    if (wasWrapped) {
       selectedText = selectedText.slice(openTag.length, -closeTag.length);
-    }
-    else if (selectedText.startsWith(`<${tag}`) && selectedText.endsWith(`</${tag}>`)) {
-      selectedText = removeHtmlTag(selectedText);
     }
     else {
       selectedText = `${openTag}${selectedText}${closeTag}`;
@@ -339,6 +417,13 @@ export function setHtmlTag(tag: string, attribute?: string, value?: string, win:
   const Event = (win as Window & typeof globalThis).Event;
   const inputEvent = new Event("input", { bubbles: true });
   textarea.dispatchEvent(inputEvent);
+  rememberTitleSelection(win, textarea);
+
+  const toolbar = win.document.querySelector(`.${TOOLBAR_CLASS}`);
+  if (toolbar) {
+    const hookName = tag === "sub" ? "subscript" : tag === "sup" ? "supscript" : tag === "b" ? "bold" : tag === "i" ? "italic" : tag === "span" && attribute === "class" ? "nocase" : "small-caps";
+    toolbar.querySelector(`#metaref-richtext-${hookName}-btn`)?.setAttribute("aria-pressed", String(!wasWrapped));
+  }
 
   textarea.focus();
 }
