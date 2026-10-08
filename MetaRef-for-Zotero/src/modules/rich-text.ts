@@ -223,19 +223,6 @@ export class RichTextToolBar {
               }
             }
           }
-          else if (record.type === "childList") {
-            for (const node of record.addedNodes) {
-              const el = node as HTMLElement;
-              if (el?.localName === "textarea" && el.closest?.(HEADER_TITLE_SELECTOR)) {
-                this.openFor(el as HTMLTextAreaElement);
-              }
-              else if (el?.querySelector) {
-                const nested = el.querySelector(`${HEADER_TITLE_SELECTOR} textarea`) as HTMLTextAreaElement | null;
-                if (nested)
-                  this.openFor(nested);
-              }
-            }
-          }
         }
       });
       const root = this.window.document.documentElement || this.window.document.body;
@@ -243,7 +230,6 @@ export class RichTextToolBar {
         this.observer.observe(root, {
           attributes: true,
           attributeFilter: ["class"],
-          childList: true,
           subtree: true,
         });
       }
@@ -296,6 +282,8 @@ export class RichTextToolBar {
 
   private onClick = (event: MouseEvent): void => {
     const target = event.target as HTMLElement | null;
+    if (target?.closest?.(`.${TOOLBAR_CLASS}`))
+      return;
     const editable = target?.closest?.(HEADER_TITLE_SELECTOR);
     if (editable) {
       this.window.setTimeout(() => {
@@ -303,7 +291,10 @@ export class RichTextToolBar {
         if (textarea)
           this.openFor(textarea);
       }, 50);
+      return;
     }
+    this.window.clearTimeout(this.closeTimer);
+    this.close();
   };
 
   openFor(textarea: HTMLTextAreaElement): void {

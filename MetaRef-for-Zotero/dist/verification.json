@@ -1,9 +1,9 @@
 {
   "date": "2026-10-08",
-  "version": "11.0.7",
+  "version": "11.0.8",
   "name": "MetaRef for Zotero",
   "environment": {
-    "zotero": "10.0.5",
+    "zotero": "runtime tests not run",
     "platform": "Windows"
   },
   "identity": {
@@ -15,8 +15,15 @@
     "preferenceMigration": false
   },
   "unit": {
-    "files": 32,
-    "passed": 210
+    "baseline": {
+      "version": "11.0.7",
+      "files": 32,
+      "passed": 210
+    },
+    "current": {
+      "version": "11.0.8",
+      "status": "not run"
+    }
   },
   "e2e": {
     "baseline": {
@@ -25,30 +32,28 @@
       "en-US": 43
     },
     "current": {
-      "version": "11.0.7",
-      "status": "passed",
-      "Windows Zotero 10.0.5 zh-CN": 43,
-      "productionXPIInstallation": "passed"
+      "version": "11.0.8",
+      "status": "not run"
     }
   },
   "checks": {
-    "eslint": "passed",
+    "eslint": "passed (XHTML line endings temporarily normalized for check, then restored)",
     "autocorrect": "passed",
     "pluginTypeScript": "passed",
-    "testTypeScript": "passed",
+    "testTypeScript": "not run",
     "productionBuild": "passed",
     "canonicalPackageIdentity": "passed",
-    "databaseAndZipSHA256": "passed"
+    "databaseAndZipSHA256": "database archive verified"
   },
   "package": {
     "path": "metaref-for-zotero.xpi",
-    "sha256": "c25581a3ae06de75b817f6d23f677512f235eb837e10c6b3d221acb23b308d3a",
-    "bytes": 1218432,
-    "copiedFromTestedPackage": true,
+    "sha256": "5a197bb3e49563eea95b295dd01edd2c27c7e8e8f6213e0a77d4d020965b36f5",
+    "bytes": 1312775,
+    "copiedFromTestedPackage": false,
     "manifest": {
       "manifest_version": 2,
       "name": "MetaRef for Zotero",
-      "version": "11.0.7",
+      "version": "11.0.8",
       "description": "Validate, organize and enrich reference metadata in Zotero.",
       "homepage_url": "https://github.com/groele/Zotero-diy/tree/main/MetaRef-for-Zotero",
       "author": "northword",
@@ -96,9 +101,10 @@
   "report": "../docs/current-review.md",
   "guide": "../docs/custom-journal-databases.md",
   "limitations": [
+    "No unit or live Zotero tests were run for 11.0.8.",
     "No live external provider availability or response quality was verified.",
     "Database snapshots were not refreshed online.",
     "macOS, Linux and all third-party plugin combinations were not verified.",
-    "After removal of Linter-for-Zotero, users on 11.0.6 or earlier must install 11.0.7 manually because the old update URL is unavailable."
+    "Users on 11.0.6 or earlier must install 11.0.7 manually because the old update URL is unavailable."
   ]
 }
