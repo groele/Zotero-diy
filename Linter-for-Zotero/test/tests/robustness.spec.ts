@@ -552,7 +552,7 @@ describe("data processing resilience in Zotero", function () {
     const item = await create("rich text preview");
     pref("richtext.preview", true);
     await win.ZoteroPane.selectItem(item.id);
-    const editor = win.document.querySelector("#zotero-item-pane editable-text[fieldname='title'] textarea") as HTMLTextAreaElement;
+    const editor = win.document.querySelector("item-pane-header .title editable-text textarea") as HTMLTextAreaElement;
     assert.isNotNull(editor);
     win.focus();
     for (let attempt = 0; attempt < 100 && !win.document.hasFocus(); attempt++)
@@ -560,9 +560,10 @@ describe("data processing resilience in Zotero", function () {
     assert.isTrue(win.document.hasFocus(), "focus the library window before testing title editor events");
     editor.focus();
     await Zotero.Promise.delay(50);
-    const titleField = editor.closest("editable-text[fieldname='title']")!;
+    const titleField = editor.closest("item-pane-header .title")!;
     const toolbar = titleField.querySelector(".metaref-richtext-toolbar")!;
-    assert.isNotNull(toolbar, "formatting toolbar appears in the editable title field");
+    assert.isNotNull(toolbar, "formatting toolbar appears beneath the main header title");
+    assert.isNull(win.document.querySelector("#zotero-item-pane editable-text[fieldname='title'] .metaref-richtext-toolbar"), "the info section does not get a toolbar");
     assert.equal(toolbar.querySelectorAll("button").length, 6);
     editor.value = "H2O";
     editor.setSelectionRange(1, 2);
@@ -589,6 +590,12 @@ describe("data processing resilience in Zotero", function () {
     for (let attempt = 0; attempt < 20 && win.document.getElementById("zotero-textarea-preview"); attempt++)
       await Zotero.Promise.delay(25);
     assert.isNull(win.document.getElementById("zotero-textarea-preview"), `preview closes after blur: active=${win.document.activeElement?.localName}, focused=${win.document.hasFocus()}`);
+    const infoEditor = win.document.querySelector("#zotero-item-pane editable-text[fieldname='title'] textarea") as HTMLTextAreaElement;
+    assert.isNotNull(infoEditor);
+    infoEditor.focus();
+    await Zotero.Promise.delay(50);
+    assert.isNull(win.document.querySelector(".metaref-richtext-toolbar"), "the info title field never opens the header toolbar");
+    infoEditor.blur();
     otherInput.remove();
   });
 

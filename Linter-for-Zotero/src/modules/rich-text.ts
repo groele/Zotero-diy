@@ -5,6 +5,7 @@ import { removeHtmlTag } from "../utils/str";
 
 const TOOLBAR_CLASS = "metaref-richtext-toolbar";
 const PREVIEW_ID = "zotero-textarea-preview";
+const HEADER_TITLE_SELECTOR = "item-pane-header .title editable-text";
 const BUTTON_ICON_SIZE = 16;
 
 interface ButtonConfig {
@@ -137,11 +138,15 @@ class ButtonManager {
   }
 
   attachToolbar(textarea: HTMLTextAreaElement): void {
+    const editable = textarea.closest(HEADER_TITLE_SELECTOR);
+    const container = editable?.parentElement;
+    if (!container)
+      return;
+    if (container.querySelector(`.${TOOLBAR_CLASS}`))
+      return;
     this.close();
     const bar = this.createToolbar();
-    const editable = textarea.closest("editable-text[fieldname='title']");
-    if (editable)
-      editable.insertBefore(bar, editable.querySelector(`#${PREVIEW_ID}`));
+    container.insertBefore(bar, container.querySelector(`#${PREVIEW_ID}`) || editable!.nextSibling);
   }
 
   close(): void {
@@ -170,9 +175,9 @@ class PreviewManager {
   }
 
   private ensurePreview(textarea: HTMLTextAreaElement): HTMLDivElement {
-    const editableText = textarea.closest("editable-text[fieldname='title']") || textarea.parentElement;
-    let preview = editableText?.querySelector<HTMLDivElement>(`#${PREVIEW_ID}`);
-    if (!preview && editableText) {
+    const container = textarea.closest(HEADER_TITLE_SELECTOR)?.parentElement;
+    let preview = container?.querySelector<HTMLDivElement>(`#${PREVIEW_ID}`);
+    if (!preview && container) {
       preview = (this.window.document.createElementNS?.("http://www.w3.org/1999/xhtml", "div")
         || this.window.document.createElement("div")) as HTMLDivElement;
       preview.id = PREVIEW_ID;
@@ -188,7 +193,7 @@ class PreviewManager {
         fontSize: "12px",
         lineHeight: "1.4",
       });
-      editableText.appendChild(preview);
+      container.appendChild(preview);
     }
     return preview!;
   }
@@ -289,7 +294,7 @@ export class RichTextToolBar {
         for (const record of records) {
           if (record.type === "attributes" && record.attributeName === "class") {
             const target = record.target as HTMLElement;
-            if (target?.localName === "editable-text" && target.getAttribute?.("fieldname") === "title") {
+            if (target?.matches?.(HEADER_TITLE_SELECTOR)) {
               if (target.classList.contains("focused")) {
                 const textarea = target.querySelector("textarea") || getTitleEditor(this.window);
                 if (textarea)
@@ -303,11 +308,11 @@ export class RichTextToolBar {
           else if (record.type === "childList") {
             for (const node of record.addedNodes) {
               const el = node as HTMLElement;
-              if (el?.localName === "textarea" && el.closest?.("editable-text[fieldname='title']")) {
+              if (el?.localName === "textarea" && el.closest?.(HEADER_TITLE_SELECTOR)) {
                 this.openFor(el as HTMLTextAreaElement);
               }
               else if (el?.querySelector) {
-                const nested = el.querySelector("editable-text[fieldname='title'] textarea") as HTMLTextAreaElement | null;
+                const nested = el.querySelector(`${HEADER_TITLE_SELECTOR} textarea`) as HTMLTextAreaElement | null;
                 if (nested)
                   this.openFor(nested);
               }
@@ -332,10 +337,10 @@ export class RichTextToolBar {
     const target = event.target as HTMLElement | null;
     if (!target)
       return;
-    if (target.localName === "textarea" && target.closest?.("editable-text[fieldname='title']")) {
+    if (target.localName === "textarea" && target.closest?.(HEADER_TITLE_SELECTOR)) {
       this.openFor(target as HTMLTextAreaElement);
     }
-    else if (target.localName === "editable-text" && target.getAttribute?.("fieldname") === "title") {
+    else if (target.matches?.(HEADER_TITLE_SELECTOR)) {
       const textarea = target.querySelector("textarea") || getTitleEditor(this.window);
       if (textarea)
         this.openFor(textarea);
@@ -344,15 +349,15 @@ export class RichTextToolBar {
 
   private onFocusOut = (event: FocusEvent): void => {
     const target = event.target as HTMLElement | null;
-    if (target?.localName === "textarea" && target.closest?.("editable-text[fieldname='title']")) {
+    if (target?.localName === "textarea" && target.closest?.(HEADER_TITLE_SELECTOR)) {
       const related = event.relatedTarget as HTMLElement | null;
-      if (related && (related.closest?.(`.${TOOLBAR_CLASS}`) || related.closest?.("editable-text[fieldname='title']")))
+      if (related && (related.closest?.(`.${TOOLBAR_CLASS}`) || related.closest?.(HEADER_TITLE_SELECTOR)))
         return;
 
       this.window.clearTimeout(this.closeTimer);
       this.closeTimer = this.window.setTimeout(() => {
         const active = this.window.document.activeElement as HTMLElement | null;
-        if (active?.closest?.("editable-text[fieldname='title']") || active?.closest?.(`.${TOOLBAR_CLASS}`))
+        if (active?.closest?.(HEADER_TITLE_SELECTOR) || active?.closest?.(`.${TOOLBAR_CLASS}`))
           return;
         const editor = getTitleEditor(this.window);
         if (editor && (editor === active || editor.closest("editable-text")?.classList.contains("focused")))
@@ -364,7 +369,7 @@ export class RichTextToolBar {
 
   private onInput = (event: Event): void => {
     const target = event.target as HTMLElement | null;
-    if (target?.localName === "textarea" && target.closest?.("editable-text[fieldname='title']")) {
+    if (target?.localName === "textarea" && target.closest?.(HEADER_TITLE_SELECTOR)) {
       if (getPref("richtext.preview", true))
         this.previewManager.updatePreview(target as HTMLTextAreaElement);
     }
@@ -372,7 +377,7 @@ export class RichTextToolBar {
 
   private onClick = (event: MouseEvent): void => {
     const target = event.target as HTMLElement | null;
-    const editable = target?.closest?.("editable-text[fieldname='title']");
+    const editable = target?.closest?.(HEADER_TITLE_SELECTOR);
     if (editable) {
       this.window.setTimeout(() => {
         const textarea = editable.querySelector("textarea") || getTitleEditor(this.window);
@@ -384,6 +389,8 @@ export class RichTextToolBar {
 
   openFor(textarea: HTMLTextAreaElement): void {
     this.window.clearTimeout(this.closeTimer);
+    if (!textarea.closest(HEADER_TITLE_SELECTOR))
+      return;
     if (getPref("richtext.toolBar", true))
       this.buttonManager.attachToolbar(textarea);
     if (getPref("richtext.preview", true))
@@ -421,13 +428,8 @@ export function escapeTitleText(source: string): string {
 
 export function getTitleEditor(win: Window): HTMLTextAreaElement | null {
   const active = win.document.activeElement as HTMLElement | null;
-  if (active?.localName === "textarea" && active.closest?.("editable-text[fieldname='title']"))
+  if (active?.localName === "textarea" && active.closest?.(HEADER_TITLE_SELECTOR))
     return active as HTMLTextAreaElement;
-
-  const focused = win.document.querySelector("editable-text[fieldname='title'].focused textarea");
-  if (focused)
-    return focused as HTMLTextAreaElement;
-
   return null;
 }
 

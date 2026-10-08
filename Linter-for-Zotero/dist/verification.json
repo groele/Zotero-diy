@@ -1,6 +1,6 @@
 {
   "date": "2026-10-08",
-  "version": "11.0.1",
+  "version": "11.0.2",
   "name": "MetaRef for Zotero",
   "environment": {
     "zotero": "10.0.5",
@@ -25,9 +25,9 @@
       "en-US": 43
     },
     "current": {
-      "version": "11.0.1",
+      "version": "11.0.2",
       "status": "not-completed",
-      "reason": "A running Zotero instance prevented the isolated test instance from starting."
+      "reason": "Windows desktop was locked during visual QA; the isolated Zotero test process also could not start beside the running instance."
     }
   },
   "checks": {
@@ -41,13 +41,13 @@
   },
   "package": {
     "path": "metaref-for-zotero.xpi",
-    "sha256": "0c8cff2e72d12d166c09438d195c3daa66b9d869cad2aeb8d403059eb3b0bf3d",
-    "bytes": 1218865,
+    "sha256": "6f1a37c96d9aba539cc4c96fe09454f4e1ba89cc1ada0c1083dcdd86ee34c1c3",
+    "bytes": 1218897,
     "copiedFromTestedPackage": false,
     "manifest": {
       "manifest_version": 2,
       "name": "MetaRef for Zotero",
-      "version": "11.0.1",
+      "version": "11.0.2",
       "description": "Validate, organize and enrich reference metadata in Zotero.",
       "homepage_url": "https://github.com/groele/Zotero-diy/tree/main/Linter-for-Zotero",
       "author": "northword",

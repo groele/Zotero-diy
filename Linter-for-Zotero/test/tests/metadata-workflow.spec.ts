@@ -245,8 +245,7 @@ describe("metadata workflow in Zotero", function () {
     const item = await create("H2O");
     const win = Zotero.getMainWindow();
     await win.ZoteroPane.selectItem(item.id);
-    const field = win.document.querySelector("#zotero-item-pane editable-text[fieldname='title']")
-      ?? win.document.querySelector("editable-text[fieldname='title']");
+    const field = win.document.querySelector("item-pane-header .title editable-text");
     assert.isNotNull(field);
     const editor = field!.querySelector("textarea") as HTMLTextAreaElement;
     assert.isNotNull(editor);
