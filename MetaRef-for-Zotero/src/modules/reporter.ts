@@ -96,7 +96,7 @@ export function createReporter(infos: ReportInfo[]) {
           tag: "a",
           properties: {
             textContent: info.label ?? info.ruleID,
-          // href: `https://github.com/groele/Zotero-diy/blob/main/Linter-for-Zotero/docs/rules/${info.ruleID}.md`,
+          // href: `https://github.com/groele/Zotero-diy/blob/main/MetaRef-for-Zotero/docs/rules/${info.ruleID}.md`,
           },
           styles: {
             fontWeight: "bold",

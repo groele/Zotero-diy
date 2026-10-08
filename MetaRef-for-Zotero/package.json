@@ -1,7 +1,7 @@
 {
   "name": "metaref-for-zotero",
   "type": "module",
-  "version": "11.0.6",
+  "version": "11.0.7",
   "packageManager": "pnpm@12.3.4",
   "description": "Validate, organize and enrich reference metadata in Zotero.",
   "config": {
@@ -13,7 +13,7 @@
   },
   "author": "northword",
   "license": "AGPL-3.0-or-later",
-  "homepage": "https://github.com/groele/Zotero-diy/tree/main/Linter-for-Zotero",
+  "homepage": "https://github.com/groele/Zotero-diy/tree/main/MetaRef-for-Zotero",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/groele/Zotero-diy.git",

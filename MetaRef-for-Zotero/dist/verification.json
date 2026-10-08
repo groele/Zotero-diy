@@ -1,6 +1,6 @@
 {
   "date": "2026-10-08",
-  "version": "11.0.6",
+  "version": "11.0.7",
   "name": "MetaRef for Zotero",
   "environment": {
     "zotero": "10.0.5",
@@ -25,10 +25,9 @@
       "en-US": 43
     },
     "current": {
-      "version": "11.0.6",
+      "version": "11.0.7",
       "status": "passed",
       "Windows Zotero 10.0.5 zh-CN": 43,
-      "Windows Zotero 10.0.5 en-US": 43,
       "productionXPIInstallation": "passed"
     }
   },
@@ -43,15 +42,15 @@
   },
   "package": {
     "path": "metaref-for-zotero.xpi",
-    "sha256": "5b3487d1951da154db92d2b46c0ca2b22ba68613a3a57f30d2822d7165a0cdc6",
-    "bytes": 1218434,
+    "sha256": "c25581a3ae06de75b817f6d23f677512f235eb837e10c6b3d221acb23b308d3a",
+    "bytes": 1218432,
     "copiedFromTestedPackage": true,
     "manifest": {
       "manifest_version": 2,
       "name": "MetaRef for Zotero",
-      "version": "11.0.6",
+      "version": "11.0.7",
       "description": "Validate, organize and enrich reference metadata in Zotero.",
-      "homepage_url": "https://github.com/groele/Zotero-diy/tree/main/Linter-for-Zotero",
+      "homepage_url": "https://github.com/groele/Zotero-diy/tree/main/MetaRef-for-Zotero",
       "author": "northword",
       "icons": {
         "48": "content/icons/metaref-48.png",
@@ -61,7 +60,7 @@
       "applications": {
         "zotero": {
           "id": "metaref@groele",
-          "update_url": "https://raw.githubusercontent.com/groele/Zotero-diy/main/Linter-for-Zotero/dist/update.json",
+          "update_url": "https://raw.githubusercontent.com/groele/Zotero-diy/main/MetaRef-for-Zotero/dist/update.json",
           "strict_min_version": "10.0",
           "strict_max_version": "10.999"
         }
@@ -99,6 +98,7 @@
   "limitations": [
     "No live external provider availability or response quality was verified.",
     "Database snapshots were not refreshed online.",
-    "macOS, Linux and all third-party plugin combinations were not verified."
+    "macOS, Linux and all third-party plugin combinations were not verified.",
+    "After removal of Linter-for-Zotero, users on 11.0.6 or earlier must install 11.0.7 manually because the old update URL is unavailable."
   ]
 }
