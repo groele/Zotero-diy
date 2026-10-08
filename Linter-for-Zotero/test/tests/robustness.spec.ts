@@ -560,6 +560,15 @@ describe("data processing resilience in Zotero", function () {
     assert.isTrue(win.document.hasFocus(), "focus the library window before testing title editor events");
     editor.focus();
     await Zotero.Promise.delay(50);
+    const titleField = editor.closest("editable-text[fieldname='title']")!;
+    const toolbar = titleField.querySelector(".metaref-richtext-toolbar")!;
+    assert.isNotNull(toolbar, "formatting toolbar appears in the editable title field");
+    assert.equal(toolbar.querySelectorAll("button").length, 6);
+    editor.value = "H2O";
+    editor.setSelectionRange(1, 2);
+    toolbar.querySelector<HTMLButtonElement>("#metaref-richtext-subscript-btn")!
+      .dispatchEvent(new win.MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+    assert.equal(editor.value, "H<sub>2</sub>O", "toolbar formats the selected title text");
     editor.value = "A & B: H<sub>2</sub>O <span onclick='bad()'>safe</span><img src='https://invalid.example/qa'>";
     editor.dispatchEvent(new win.Event("input", { bubbles: true }));
     const preview = win.document.getElementById("zotero-textarea-preview")!;

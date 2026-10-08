@@ -137,27 +137,11 @@ class ButtonManager {
   }
 
   attachToolbar(textarea: HTMLTextAreaElement): void {
-    if (this.window.document?.querySelector(`.${TOOLBAR_CLASS}`))
-      return;
-
+    this.close();
     const bar = this.createToolbar();
-    const parent = textarea.parentElement;
-    if (!parent)
-      return;
-
-    const editableText = textarea.closest("editable-text[fieldname='title']");
-    if (editableText && editableText.contains(parent) && editableText !== parent) {
-      editableText.insertBefore(bar, parent);
-    }
-    else if (editableText) {
-      editableText.insertBefore(bar, editableText.firstChild);
-    }
-    else if (parent.parentElement) {
-      parent.parentElement.insertBefore(bar, parent);
-    }
-    else {
-      parent.insertBefore(bar, textarea);
-    }
+    const editable = textarea.closest("editable-text[fieldname='title']");
+    if (editable)
+      editable.insertBefore(bar, editable.querySelector(`#${PREVIEW_ID}`));
   }
 
   close(): void {
@@ -440,16 +424,9 @@ export function getTitleEditor(win: Window): HTMLTextAreaElement | null {
   if (active?.localName === "textarea" && active.closest?.("editable-text[fieldname='title']"))
     return active as HTMLTextAreaElement;
 
-  const focusedEditable = win.document.querySelector("editable-text[fieldname='title'].focused");
-  if (focusedEditable) {
-    const textarea = focusedEditable.querySelector("textarea");
-    if (textarea)
-      return textarea as HTMLTextAreaElement;
-  }
-
-  const anyTitleTextarea = win.document.querySelector("editable-text[fieldname='title'] textarea");
-  if (anyTitleTextarea)
-    return anyTitleTextarea as HTMLTextAreaElement;
+  const focused = win.document.querySelector("editable-text[fieldname='title'].focused textarea");
+  if (focused)
+    return focused as HTMLTextAreaElement;
 
   return null;
 }

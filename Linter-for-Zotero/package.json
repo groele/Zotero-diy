@@ -1,7 +1,7 @@
 {
   "name": "metaref-for-zotero",
   "type": "module",
-  "version": "11.0.0",
+  "version": "11.0.1",
   "packageManager": "pnpm@12.3.4",
   "description": "Validate, organize and enrich reference metadata in Zotero.",
   "config": {

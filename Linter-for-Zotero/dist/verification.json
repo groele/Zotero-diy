@@ -1,6 +1,6 @@
 {
-  "date": "2026-10-07",
-  "version": "11.0.0",
+  "date": "2026-10-08",
+  "version": "11.0.1",
   "name": "MetaRef for Zotero",
   "environment": {
     "zotero": "10.0.5",
@@ -15,27 +15,20 @@
     "preferenceMigration": false
   },
   "unit": {
-    "log": "../.scaffold/qa/native-style-unit.log",
     "files": 32,
     "passed": 210
   },
   "e2e": {
-    "zh-CN": {
-      "log": "../.scaffold/qa/native-style-zh-CN.log",
-      "passed": 43
+    "baseline": {
+      "version": "11.0.0",
+      "zh-CN": 43,
+      "en-US": 43
     },
-    "en-US": {
-      "log": "../.scaffold/qa/native-style-en-US.log",
-      "passed": 43
-    },
-    "productionXPIInstalled": true,
-    "nativeMenuCommands": true,
-    "repeatedClickAndSave": true,
-    "indexReportOpenAndClose": true,
-    "customDatabaseSettings": true,
-    "paneAndColumns": true,
-    "noIndexMetadataWrites": true,
-    "filePickerBoundary": "Paths substituted in real Zotero; native Windows file dialog clicks were not automated."
+    "current": {
+      "version": "11.0.1",
+      "status": "not-completed",
+      "reason": "A running Zotero instance prevented the isolated test instance from starting."
+    }
   },
   "checks": {
     "eslint": "passed",
@@ -48,13 +41,13 @@
   },
   "package": {
     "path": "metaref-for-zotero.xpi",
-    "sha256": "39b7ba511ebaebd97ee7d6e194a2eca526c34fc019f2d6c1189c9b05a6d9f3d2",
-    "bytes": 1216746,
-    "copiedFromTestedPackage": true,
+    "sha256": "0c8cff2e72d12d166c09438d195c3daa66b9d869cad2aeb8d403059eb3b0bf3d",
+    "bytes": 1218865,
+    "copiedFromTestedPackage": false,
     "manifest": {
       "manifest_version": 2,
       "name": "MetaRef for Zotero",
-      "version": "11.0.0",
+      "version": "11.0.1",
       "description": "Validate, organize and enrich reference metadata in Zotero.",
       "homepage_url": "https://github.com/groele/Zotero-diy/tree/main/Linter-for-Zotero",
       "author": "northword",
@@ -101,7 +94,6 @@
   },
   "report": "../docs/current-review.md",
   "guide": "../docs/custom-journal-databases.md",
-  "published": false,
   "limitations": [
     "No live external provider availability or response quality was verified.",
     "Database snapshots were not refreshed online.",

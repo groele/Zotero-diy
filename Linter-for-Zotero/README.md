@@ -2,11 +2,11 @@
 
 <img src="addon/content/icons/metaref-128.png" alt="MetaRef icon" width="64" height="64" />
 
-用于校验、整理和补全文献元数据的 Zotero 插件，当前版本 **11.0.0**，支持 Zotero **10.0–10.999**。项目仓库：[Zotero-diy / Linter-for-Zotero](https://github.com/groele/Zotero-diy/tree/main/Linter-for-Zotero)。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 开发，保留上游版权及 AGPL-3.0 许可证。
+用于校验、整理和补全文献元数据的 Zotero 插件，当前版本 **11.0.1**，支持 Zotero **10.0–10.999**。项目仓库：[Zotero-diy / Linter-for-Zotero](https://github.com/groele/Zotero-diy/tree/main/Linter-for-Zotero)。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 开发，保留上游版权及 AGPL-3.0 许可证。
 
 ## 安装
 
-下载 [MetaRef 11.0.0 安装包](dist/metaref-for-zotero.xpi)，在 Zotero 插件管理器中选择「从文件安装插件」。MetaRef 使用独立插件 ID `metaref@groele`、资源命名空间 `metaref`、实例 `Zotero.MetaRef` 和设置前缀 `extensions.zotero.metaref`。
+下载 [MetaRef 11.0.1 安装包](dist/metaref-for-zotero.xpi)，在 Zotero 插件管理器中选择「从文件安装插件」。MetaRef 使用独立插件 ID `metaref@groele`、资源命名空间 `metaref`、实例 `Zotero.MetaRef` 和设置前缀 `extensions.zotero.metaref`。
 
 安装前移除已有 Linter／旧 MetaRef 插件，避免两个实例同时整理条目。此版本从默认设置开始，不迁移旧设置；需要重新选择自定义数据库及配置快捷键。
 
