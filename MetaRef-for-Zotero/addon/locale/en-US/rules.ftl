@@ -14,8 +14,9 @@ rule-no-article-webpage-report-message = The URL contains a major publisher doma
 
 ## no-journal-preprint
 rule-no-journal-preprint =
-  .label = No JournalArticle items with preprint URLs
-rule-no-journal-preprint-report-message = The URL contains a preprint server domain, please confirm item type!
+  .label = No preprints typed as journal articles
+rule-no-journal-preprint-report-message = This item has a preprint identifier but is typed as a journal article. Check its type and metadata.
+rule-no-journal-preprint-report-action = Try updating metadata
 
 
 ## no-value-nullish

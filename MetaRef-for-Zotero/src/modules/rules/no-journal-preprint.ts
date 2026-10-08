@@ -1,20 +1,25 @@
 import { getString } from "../../utils/locale";
-import { isStringMatchStringInArray } from "../../utils/str";
 import { defineRule } from "./rule-base";
-
-const publisherUrlKeyWords = ["arxiv.org", "biorxiv.org", "medrxiv.org", "chinaxiv.org"];
+import { extractIdentifiers, isPreprint } from "./tool-update-metadata/identifiers";
 
 export const NoJournalPreprint = defineRule({
   id: "no-journal-preprint",
   scope: "item",
   targetItemTypes: ["journalArticle"],
-  async apply({ item, report }) {
-    const url = item.getField("url");
-    if (typeof url === "string" && url !== "" && isStringMatchStringInArray(url, publisherUrlKeyWords)) {
-      // show alart todo: 对话框完善，通过 URL 获取 DOI 并通过 DOI 强制更新条目类别
+  apply({ item, report }) {
+    const identifiers = extractIdentifiers(item);
+    if (isPreprint(item, identifiers)) {
       report({
         level: "warning",
         message: getString("rule-no-journal-preprint-report-message"),
+        action: {
+          label: getString("rule-no-journal-preprint-report-action"),
+          callback: () => {
+            const currentItem = Zotero.Items.get(item.id);
+            if (currentItem && !currentItem.deleted)
+              return addon.hooks.onLintInBatch(["tool-update-metadata"], [currentItem]);
+          },
+        },
       });
     }
   },

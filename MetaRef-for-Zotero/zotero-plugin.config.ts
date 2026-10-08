@@ -47,7 +47,7 @@ export default defineConfig({
         },
         bundle: true,
         format: "esm",
-        target: "firefox115",
+        target: "firefox140",
         outdir: `.scaffold/build/addon/content/scripts/`,
         external: ["Zotero"],
       },

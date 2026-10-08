@@ -15,7 +15,8 @@ rule-no-article-webpage-report-message = 该网页条目 URL 中包含了主要�
 ## no-journal-preprint
 rule-no-journal-preprint =
   .label = 预印本不应保存为期刊文章
-rule-no-journal-preprint-report-message = 该期刊文章条目 URL 中包含了预印本服务器的域名，请确认条目类型！
+rule-no-journal-preprint-report-message = 该条目包含预印本标识符，但类型为期刊文章。请核对类型和元数据。
+rule-no-journal-preprint-report-action = 尝试更新元数据
 
 
 ## no-value-nullish

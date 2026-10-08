@@ -2,11 +2,11 @@
 
 <img src="addon/content/icons/metaref-128.png" alt="MetaRef icon" width="64" height="64" />
 
-用于校验、整理和补全文献元数据的 Zotero 插件，当前版本 **11.0.8**，支持 Zotero **10.0–10.999**。项目仓库：[Zotero-diy / MetaRef-for-Zotero](https://github.com/groele/Zotero-diy/tree/main/MetaRef-for-Zotero)。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 开发，保留上游版权及 AGPL-3.0 许可证。
+用于校验、整理和补全文献元数据的 Zotero 插件，当前版本 **12.0.0**，面向 Zotero **10.0.x**。项目仓库：[Zotero-diy / MetaRef-for-Zotero](https://github.com/groele/Zotero-diy/tree/main/MetaRef-for-Zotero)。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 开发，保留上游版权及 AGPL-3.0 许可证。
 
 ## 安装
 
-下载 [MetaRef 11.0.8 安装包](dist/metaref-for-zotero.xpi)，在 Zotero 插件管理器中选择「从文件安装插件」。MetaRef 使用独立插件 ID `metaref@groele`、资源命名空间 `metaref`、实例 `Zotero.MetaRef` 和设置前缀 `extensions.zotero.metaref`。
+下载 [MetaRef 12.0.0 安装包](dist/metaref-for-zotero.xpi)，在 Zotero 插件管理器中选择「从文件安装插件」。MetaRef 使用独立插件 ID `metaref@groele`、资源命名空间 `metaref`、实例 `Zotero.MetaRef` 和设置前缀 `extensions.zotero.metaref`。自动更新清单和安装包均从本仓库的 `MetaRef-for-Zotero/dist` 路径获取。
 
 如果当前安装的是 11.0.6 或更早版本，请手动安装 11.0.7 一次：旧目录删除后，旧版本的自动更新地址不再可用。11.0.7 起自动更新地址位于本项目目录。
 
@@ -21,6 +21,7 @@
 - ESI 与 Nature Index 可分别使用自定义 JSON／CSV，支持校验、重新读取、恢复内置名单及导出内置 JSON。异常文件回退到内置数据并显示原因。
 - 快捷键支持录制、禁用、重置与冲突检查；默认上标组合为 Ctrl+Shift+=，macOS 使用 Cmd。
 - 批处理采用有界并发和统一保存，支持取消、事务失败恢复、撤销／重做及规则错误隔离。
+- 预印本检测同时识别支持的 DOI 和 URL；报告操作可直接启动元数据更新，并在条目已删除时安全跳过。
 
 详细操作见 [元数据整理流程](docs/metadata-workflow-zh.md)，数据库格式见 [自定义数据库指南](docs/custom-journal-databases.md)。
 

@@ -1,10 +1,11 @@
 {
-  "date": "2026-10-08",
-  "version": "11.0.8",
+  "date": "2026-10-09",
+  "version": "12.0.0",
   "name": "MetaRef for Zotero",
   "environment": {
-    "zotero": "runtime tests not run",
-    "platform": "Windows"
+    "zotero": "10.0.6",
+    "platform": "Windows",
+    "testProfile": ".scaffold/qa/profile"
   },
   "identity": {
     "addonID": "metaref@groele",
@@ -21,8 +22,10 @@
       "passed": 210
     },
     "current": {
-      "version": "11.0.8",
-      "status": "not run"
+      "version": "12.0.0",
+      "files": 33,
+      "passed": 213,
+      "status": "passed"
     }
   },
   "e2e": {
@@ -32,28 +35,33 @@
       "en-US": 43
     },
     "current": {
-      "version": "11.0.8",
-      "status": "not run"
+      "version": "12.0.0",
+      "productionXPIInstalled": true,
+      "enUS": 43,
+      "zhCN": 43,
+      "zotero": "10.0.6"
     }
   },
   "checks": {
-    "eslint": "passed (XHTML line endings temporarily normalized for check, then restored)",
+    "eslint": "passed (preferences.xhtml line endings temporarily normalized for check, then original bytes restored)",
     "autocorrect": "passed",
     "pluginTypeScript": "passed",
-    "testTypeScript": "not run",
+    "testTypeScript": "passed",
     "productionBuild": "passed",
     "canonicalPackageIdentity": "passed",
-    "databaseAndZipSHA256": "database archive verified"
+    "databaseAndZipSHA256": "database archive verified",
+    "productionXPIE2E": "passed in isolated Zotero 10.0.6 profile for zh-CN and en-US",
+    "updatePathConsistency": "passed"
   },
   "package": {
     "path": "metaref-for-zotero.xpi",
-    "sha256": "5a197bb3e49563eea95b295dd01edd2c27c7e8e8f6213e0a77d4d020965b36f5",
-    "bytes": 1312775,
-    "copiedFromTestedPackage": false,
+    "sha256": "fd13700dac9495e61df6cf9f7b1acc5a56a997cf66d11be35dddced8835cbe15",
+    "bytes": 1312733,
+    "copiedFromTestedPackage": true,
     "manifest": {
       "manifest_version": 2,
       "name": "MetaRef for Zotero",
-      "version": "11.0.8",
+      "version": "12.0.0",
       "description": "Validate, organize and enrich reference metadata in Zotero.",
       "homepage_url": "https://github.com/groele/Zotero-diy/tree/main/MetaRef-for-Zotero",
       "author": "northword",
@@ -67,9 +75,13 @@
           "id": "metaref@groele",
           "update_url": "https://raw.githubusercontent.com/groele/Zotero-diy/main/MetaRef-for-Zotero/dist/update.json",
           "strict_min_version": "10.0",
-          "strict_max_version": "10.999"
+          "strict_max_version": "10.0.*"
         }
       }
+    },
+    "updatePath": {
+      "manifest": "https://raw.githubusercontent.com/groele/Zotero-diy/main/MetaRef-for-Zotero/dist/update.json",
+      "xpi": "https://raw.githubusercontent.com/groele/Zotero-diy/main/MetaRef-for-Zotero/dist/metaref-for-zotero.xpi"
     }
   },
   "icons": {
@@ -101,10 +113,16 @@
   "report": "../docs/current-review.md",
   "guide": "../docs/custom-journal-databases.md",
   "limitations": [
-    "No unit or live Zotero tests were run for 11.0.8.",
-    "No live external provider availability or response quality was verified.",
-    "Database snapshots were not refreshed online.",
-    "macOS, Linux and all third-party plugin combinations were not verified.",
-    "Users on 11.0.6 or earlier must install 11.0.7 manually because the old update URL is unavailable."
-  ]
+    "Live external provider availability and response quality were not verified.",
+    "macOS and Linux were not runtime-tested.",
+    "All third-party plugin combinations were not verified.",
+    "Users on 11.0.6 and earlier must install 11.0.7 manually because the legacy update URL is unavailable."
+  ],
+  "updatePath": {
+    "configManifest": "https://raw.githubusercontent.com/groele/Zotero-diy/main/MetaRef-for-Zotero/dist/update.json",
+    "manifest": "https://raw.githubusercontent.com/groele/Zotero-diy/main/MetaRef-for-Zotero/dist/update.json",
+    "updateLink": "https://raw.githubusercontent.com/groele/Zotero-diy/main/MetaRef-for-Zotero/dist/metaref-for-zotero.xpi",
+    "verifiedAgainst": "groele/Zotero-diy main",
+    "configXPI": "https://raw.githubusercontent.com/groele/Zotero-diy/main/MetaRef-for-Zotero/dist/metaref-for-zotero.xpi"
+  }
 }

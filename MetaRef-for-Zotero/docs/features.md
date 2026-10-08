@@ -15,7 +15,7 @@ Warns with a popup when an imported item duplicates an existing one in the libra
 ### Correct Item Type (`no-article-webpage`, `no-journal-preprint`)
 
 - If an item is imported as `Webpage` but the URL points to a major journal publisher, it is likely that the Zotero Connector was not ready and misclassified the item. A warning popup is shown.
-- If the item type is `journalArticle` but the `url` contains `arxiv`, the item is probably a preprint and should be changed to `preprint`.
+- If the item type is `journalArticle` but the URL or DOI identifies it as a supported preprint, the rule reports it and offers an action to try updating its metadata. Review any suggested item-type change before applying it.
 
 _Todo:_ Automatically resolve identifiers from URLs and enforce metadata updates.
 

@@ -156,6 +156,7 @@ export type FluentMessageId =
   | 'rule-no-item-duplication-report-message'
   | 'rule-no-item-duplication-search-failed'
   | 'rule-no-journal-preprint'
+  | 'rule-no-journal-preprint-report-action'
   | 'rule-no-journal-preprint-report-message'
   | 'rule-no-pages-extra-zeros'
   | 'rule-no-title-trailing-dot'

@@ -82,4 +82,4 @@ flowchart LR
 
 当前实现与环境见 [本轮审查](current-review.md)，通过数量及生产包散列见 [`dist/verification.json`](../dist/verification.json)。开发与测试命令见 [项目 README](../README.md)。真实 E2E 在独立资料库验证菜单、设置、保存、事务回滚、取消、超时、撤销、PDF 及生产包安装。外部服务采用受控响应验证。
 
-批次结果分别统计规则准备失败、条目执行失败和跳过条目。静默批次保留报告记录而不打开报告窗口。当前清单支持 Zotero 10.0–10.999，实际运行验证使用 Windows Zotero 10.0.5。
+批次结果分别统计规则准备失败、条目执行失败和跳过条目。静默批次保留报告记录而不打开报告窗口。当前清单面向 Zotero 10.0.x，实际运行验证使用 Windows Zotero 10.0.5。
