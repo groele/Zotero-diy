@@ -12,7 +12,6 @@ export const DEFAULT_PREFS: Partial<PluginPrefsMap> = {
   "lint.delayOnAdded": 500,
   "richtext.toolBar": true,
   "richtext.hotkey": true,
-  "richtext.preview": true,
   "shortcut.subscript": "accel,=",
   "shortcut.supscript": "accel,shift,=",
   "shortcut.bold": "accel,B",

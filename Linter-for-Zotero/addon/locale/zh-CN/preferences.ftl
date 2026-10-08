@@ -18,11 +18,9 @@ settings-custom-data-reset =
 
 enable-richtext-toolbar =
     .label = 启用富文本编辑工具条
-enable-richtext-preview =
-    .label = 启用富文本编辑预览框
 enable-richtext-hotkey =
     .label = 启用富文本编辑快捷键
-richtext-settings-description = 工具条和预览会在标题编辑器下次获得焦点时更新；快捷键开关立即生效。
+richtext-settings-description = 编辑顶部主标题时显示工具条；快捷键设置立即生效。
 
 shortcuts-header = 快捷键设置
 shortcut-description = 点击录制或粘贴组合键，Esc 退出；修改立即生效。富文本用于标题选区，批量操作用于条目列表。

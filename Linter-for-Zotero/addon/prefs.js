@@ -12,7 +12,6 @@ pref("lint.delayOnAdded", 500);
 // --------------------
 pref("richtext.toolBar", true);
 pref("richtext.hotkey", true);
-pref("richtext.preview", true);
 pref("shortcut.subscript", "accel,=");
 pref("shortcut.supscript", "accel,shift,=");
 pref("shortcut.bold", "accel,B");

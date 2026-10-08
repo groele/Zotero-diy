@@ -4,7 +4,6 @@ import { getPref } from "../utils/prefs";
 import { removeHtmlTag } from "../utils/str";
 
 const TOOLBAR_CLASS = "metaref-richtext-toolbar";
-const PREVIEW_ID = "metaref-title-preview";
 const HEADER_TITLE_SELECTOR = "item-pane-header .title editable-text";
 const BUTTON_ICON_SIZE = 16;
 
@@ -146,7 +145,7 @@ class ButtonManager {
       return;
     this.close();
     const bar = this.createToolbar();
-    container.insertBefore(bar, container.querySelector(`#${PREVIEW_ID}`) || editable!.nextSibling);
+    container.insertBefore(bar, editable!.nextSibling);
   }
 
   close(): void {
@@ -154,127 +153,14 @@ class ButtonManager {
   }
 }
 
-/** -------------------- PREVIEW MODULE -------------------- */
-class PreviewManager {
-  private listeners = new Map<HTMLTextAreaElement, { focus: () => void; input: () => void }>();
-
-  constructor(private window: Window) {}
-
-  attachPreview(textarea: HTMLTextAreaElement): void {
-    this.updatePreview(textarea);
-    if (this.listeners.has(textarea))
-      return;
-
-    const focusListener = () => this.updatePreview(textarea);
-    const inputListener = () => this.updatePreview(textarea);
-
-    textarea.addEventListener("focus", focusListener);
-    textarea.addEventListener("input", inputListener);
-
-    this.listeners.set(textarea, { focus: focusListener, input: inputListener });
-  }
-
-  private ensurePreview(textarea: HTMLTextAreaElement): HTMLDivElement {
-    const container = textarea.closest(HEADER_TITLE_SELECTOR)?.parentElement;
-    let preview = container?.querySelector<HTMLDivElement>(`#${PREVIEW_ID}`);
-    if (!preview && container) {
-      preview = (this.window.document.createElementNS?.("http://www.w3.org/1999/xhtml", "div")
-        || this.window.document.createElement("div")) as HTMLDivElement;
-      preview.id = PREVIEW_ID;
-      Object.assign(preview.style, {
-        border: "1px solid var(--material-border, #ccc)",
-        padding: "6px",
-        marginTop: "6px",
-        whiteSpace: "pre-wrap",
-        fontWeight: "normal",
-        borderRadius: "5px",
-        color: "inherit",
-        backgroundColor: "var(--material-background, #fff)",
-        fontSize: "12px",
-        lineHeight: "1.4",
-      });
-      container.appendChild(preview);
-    }
-    return preview!;
-  }
-
-  updatePreview(textarea: HTMLTextAreaElement): void {
-    const preview = this.ensurePreview(textarea);
-    if (!preview)
-      return;
-    const value = textarea.value;
-
-    const errorDetails = this.checkHTMLorXMLValidity(value);
-    if (errorDetails) {
-      preview.textContent = `${getString("richtext-preview-error")}\n${errorDetails}`;
-    }
-    else {
-      const parser = new (this.window as Window & typeof globalThis).DOMParser();
-      const doc = parser.parseFromString(`<root>${escapeTitleText(value)}</root>`, "application/xml");
-      const fragment = this.window.document.createDocumentFragment();
-      const appendSafe = (source: Node, parent: Node) => {
-        if (source.nodeType === 3) {
-          parent.appendChild(this.window.document.createTextNode(source.textContent || ""));
-          return;
-        }
-        const tag = (source as Element).localName;
-        if (!["i", "b", "sub", "sup", "span"].includes(tag)) {
-          parent.appendChild(this.window.document.createTextNode(source.textContent || ""));
-          return;
-        }
-        const node = (this.window.document.createElementNS?.("http://www.w3.org/1999/xhtml", tag)
-          || this.window.document.createElement(tag)) as HTMLElement;
-        if (tag === "span") {
-          const element = source as Element;
-          const className = element.getAttribute("class");
-          if (className === "nocase" || className === "nc")
-            node.setAttribute("class", className);
-          if (/^font-variant:\s*small-caps;?$/.test(element.getAttribute("style") || ""))
-            node.setAttribute("style", "font-variant: small-caps");
-        }
-        source.childNodes.forEach(child => child && appendSafe(child, node));
-        parent.appendChild(node);
-      };
-      doc.documentElement?.childNodes.forEach(child => child && appendSafe(child, fragment));
-      preview.replaceChildren(fragment);
-    }
-  }
-
-  checkHTMLorXMLValidity(source: string): string | null {
-    const wrapped = `<root>${escapeTitleText(source)}</root>`;
-    const parser = new (this.window as Window & typeof globalThis).DOMParser();
-    const doc = parser.parseFromString(wrapped, "application/xml");
-    const errorNode = doc.querySelector("parsererror");
-    if (errorNode) {
-      return errorNode.textContent?.split("\n")[0] || "Unknown parsing error";
-    }
-    return null;
-  }
-
-  close(): void {
-    this.window.document
-      .querySelectorAll(`#${PREVIEW_ID}`)
-      .forEach((el: Element) => el.remove());
-
-    this.listeners.forEach((listener, textarea) => {
-      textarea.removeEventListener("focus", listener.focus);
-      textarea.removeEventListener("input", listener.input);
-    });
-
-    this.listeners.clear();
-  }
-}
-
 /** -------------------- MAIN CLASS -------------------- */
 export class RichTextToolBar {
   private buttonManager: ButtonManager;
-  private previewManager: PreviewManager;
   private observer?: MutationObserver;
   private closeTimer?: number;
 
   constructor(private window: Window) {
     this.buttonManager = new ButtonManager(window);
-    this.previewManager = new PreviewManager(window);
   }
 
   init(): void {
@@ -285,7 +171,6 @@ export class RichTextToolBar {
 
     this.window.document.addEventListener("focusin", this.onFocusIn, true);
     this.window.document.addEventListener("focusout", this.onFocusOut, true);
-    this.window.document.addEventListener("input", this.onInput, true);
     this.window.document.addEventListener("click", this.onClick, true);
 
     const MutationObserver = (this.window as Window & typeof globalThis).MutationObserver;
@@ -367,14 +252,6 @@ export class RichTextToolBar {
     }
   };
 
-  private onInput = (event: Event): void => {
-    const target = event.target as HTMLElement | null;
-    if (target?.localName === "textarea" && target.closest?.(HEADER_TITLE_SELECTOR)) {
-      if (getPref("richtext.preview", true))
-        this.previewManager.updatePreview(target as HTMLTextAreaElement);
-    }
-  };
-
   private onClick = (event: MouseEvent): void => {
     const target = event.target as HTMLElement | null;
     const editable = target?.closest?.(HEADER_TITLE_SELECTOR);
@@ -393,14 +270,11 @@ export class RichTextToolBar {
       return;
     if (getPref("richtext.toolBar", true))
       this.buttonManager.attachToolbar(textarea);
-    if (getPref("richtext.preview", true))
-      this.previewManager.attachPreview(textarea);
   }
 
-  /** Close all toolbar and preview elements when the title editor loses focus. */
+  /** Close the toolbar when the title editor loses focus. */
   close(): void {
     this.buttonManager.close();
-    this.previewManager.close();
   }
 
   /** Remove window-local listeners when the window or plugin closes. */
@@ -409,21 +283,9 @@ export class RichTextToolBar {
     this.observer?.disconnect();
     this.window.document.removeEventListener("focusin", this.onFocusIn, true);
     this.window.document.removeEventListener("focusout", this.onFocusOut, true);
-    this.window.document.removeEventListener("input", this.onInput, true);
     this.window.document.removeEventListener("click", this.onClick, true);
     this.close();
   }
-}
-
-export function escapeTitleText(source: string): string {
-  return source.split(/(<\/?(?:i|b|sub|sup|span)\b[^>]*>)/gi).map((part, index) => {
-    if (index % 2)
-      return part;
-    return part.replace(/&nbsp;/g, "&#160;")
-      .replace(/&(?!(?:amp|lt|gt|quot|apos|#\d+|#x[\da-f]+);)/gi, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
-  }).join("");
 }
 
 export function getTitleEditor(win: Window): HTMLTextAreaElement | null {

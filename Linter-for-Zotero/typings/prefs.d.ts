@@ -14,7 +14,6 @@ declare namespace _ZoteroTypes {
       "lint.delayOnAdded": number;
       "richtext.toolBar": boolean;
       "richtext.hotkey": boolean;
-      "richtext.preview": boolean;
       "shortcut.subscript": string;
       "shortcut.supscript": string;
       "shortcut.bold": string;

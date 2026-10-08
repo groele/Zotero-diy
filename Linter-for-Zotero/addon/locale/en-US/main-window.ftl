@@ -4,7 +4,6 @@ menuitem-label =
 menuitem-stdFormatFlow = 
   .label = Lint and Fix
 field-nature-index = Nature Index
-richtext-preview-error = Preview failed. Check formatting tags in the title.
 
 menu-group-primary = Common actions
 menu-group-title = Title & rich text

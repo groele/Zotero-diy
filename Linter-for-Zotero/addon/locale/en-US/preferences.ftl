@@ -18,11 +18,9 @@ settings-custom-data-reset =
 
 enable-richtext-toolbar =
     .label = Enable rich text toolbar
-enable-richtext-preview =
-    .label = Enable rich text preview
 enable-richtext-hotkey =
     .label = Enable rich text hotkey
-richtext-settings-description = Toolbar and preview update the next time the title editor receives focus; the shortcut toggle applies immediately.
+richtext-settings-description = The toolbar appears while editing the main title; shortcut changes apply immediately.
 
 shortcuts-header = Keyboard shortcuts
 shortcut-description = Click to record or paste a binding; Esc exits. Changes apply immediately. Rich text acts on title selections; batch actions act on the item list.

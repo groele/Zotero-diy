@@ -549,8 +549,7 @@ describe("data processing resilience in Zotero", function () {
     assert.equal(metarefMenu.menus.filter((menu: any) => menu.menuType === "submenu").length, 0, "all commands are directly accessible without nested submenus");
     assert.equal(metarefMenu.menus.filter((menu: any) => menu.menuType === "menuitem").length, 22);
     assert.equal(metarefMenu.menus.filter((menu: any) => menu.l10nID === "metaref-tool-query-nature-index-menu-item").length, 1);
-    const item = await create("rich text preview");
-    pref("richtext.preview", true);
+    const item = await create("inline title formatting");
     await win.ZoteroPane.selectItem(item.id);
     const editor = win.document.querySelector("item-pane-header .title editable-text textarea") as HTMLTextAreaElement;
     assert.isNotNull(editor);
@@ -570,15 +569,8 @@ describe("data processing resilience in Zotero", function () {
     toolbar.querySelector<HTMLButtonElement>("#metaref-richtext-subscript-btn")!
       .dispatchEvent(new win.MouseEvent("mousedown", { bubbles: true, cancelable: true }));
     assert.equal(editor.value, "H<sub>2</sub>O", "toolbar formats the selected title text");
-    editor.value = "A & B: H<sub>2</sub>O <span onclick='bad()'>safe</span><img src='https://invalid.example/qa'>";
-    editor.dispatchEvent(new win.Event("input", { bubbles: true }));
-    const preview = win.document.getElementById("metaref-title-preview")!;
-    assert.isNotNull(preview, `title preview exists after focus: active=${win.document.activeElement?.localName}, enabled=${Zotero.Prefs.get(`${config.prefsPrefix}.richtext.preview`, true)}`);
-    assert.include(preview.textContent, "A & B");
-    assert.equal(preview.querySelector("sub")?.textContent, "2");
-    assert.isNull(preview.querySelector("img"));
-    assert.isNull(preview.querySelector("[onclick]"));
-    editor.value = "rich text preview";
+    assert.isNull(titleField.querySelector("#metaref-title-preview"), "title formatting does not add a duplicate preview box");
+    editor.value = "inline title formatting";
     editor.dispatchEvent(new win.Event("input", { bubbles: true }));
     const otherInput = win.document.createElementNS("http://www.w3.org/1999/xhtml", "input") as HTMLInputElement;
     win.document.documentElement!.appendChild(otherInput);
@@ -587,9 +579,9 @@ describe("data processing resilience in Zotero", function () {
       await Zotero.Promise.delay(25);
     assert.isTrue(win.document.hasFocus(), "focus changes must occur in the active library window");
     otherInput.focus();
-    for (let attempt = 0; attempt < 20 && win.document.getElementById("metaref-title-preview"); attempt++)
+    for (let attempt = 0; attempt < 20 && win.document.querySelector(".metaref-richtext-toolbar"); attempt++)
       await Zotero.Promise.delay(25);
-    assert.isNull(win.document.getElementById("metaref-title-preview"), `preview closes after blur: active=${win.document.activeElement?.localName}, focused=${win.document.hasFocus()}`);
+    assert.isNull(win.document.querySelector(".metaref-richtext-toolbar"), `toolbar closes after blur: active=${win.document.activeElement?.localName}, focused=${win.document.hasFocus()}`);
     const infoEditor = win.document.querySelector("#zotero-item-pane editable-text[fieldname='title'] textarea") as HTMLTextAreaElement;
     assert.isNotNull(infoEditor);
     infoEditor.focus();
