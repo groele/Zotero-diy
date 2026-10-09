@@ -1,0 +1,32 @@
+[
+  {
+    "version": "12.2.0",
+    "zoteroVersion": "10.0.6",
+    "locale": "zh-CN",
+    "itemCount": 160,
+    "sequentialBatches": 8,
+    "journalFileReads": 1,
+    "indexingMs": 651,
+    "batchMs": 1861,
+    "progressUpdates": 19,
+    "burstItems": 16,
+    "burstBatches": 1,
+    "burstMs": 556,
+    "notificationMs": 168
+  },
+  {
+    "version": "12.2.0",
+    "zoteroVersion": "10.0.6",
+    "locale": "en-US",
+    "itemCount": 160,
+    "sequentialBatches": 8,
+    "journalFileReads": 1,
+    "indexingMs": 216,
+    "batchMs": 1363,
+    "progressUpdates": 16,
+    "burstItems": 16,
+    "burstBatches": 1,
+    "burstMs": 599,
+    "notificationMs": 101
+  }
+]

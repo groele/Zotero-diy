@@ -752,7 +752,7 @@ describe("data processing resilience in Zotero", function () {
       const find = (menus: any[]): any => menus.find(menu => menu.l10nID === "metaref-rule-correct-title-chemical-formula-menu-item") || menus.map(menu => find(menu.menus || [])).find(Boolean);
       const command = find(entries.flatMap((entry: any) => entry.menus));
       assert.isDefined(command);
-      await command.onCommand(null, { collectionTreeRows: [row] });
+      await command.onCommand(new win.Event("command"), { collectionTreeRows: [row] });
       assert.equal(item.getField("title", false, true), "collection MoS<sub>2</sub>");
       assert.equal(unrelated.getField("title", false, true), "outside WS2");
       await tree.selectLibrary(Zotero.Libraries.userLibraryID);

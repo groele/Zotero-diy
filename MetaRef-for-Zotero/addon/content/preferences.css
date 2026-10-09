@@ -1,7 +1,8 @@
 .metaref-settings-search {
   box-sizing: border-box;
+  flex: 1;
   width: 100%;
-  margin-block: 8px;
+  margin: 0;
 }
 
 #metaref [hidden] {
@@ -194,4 +195,74 @@
 
 .journal-database-status:empty {
   display: none;
+}
+
+.metaref-settings-tools {
+  display: grid;
+  gap: 8px;
+  margin-block: 8px 14px;
+}
+
+.metaref-settings-search-row,
+.metaref-settings-rule-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.metaref-settings-tools button,
+.metaref-settings-rule-actions button {
+  margin: 0;
+}
+
+.metaref-settings-jump {
+  max-width: 100%;
+  width: fit-content;
+  padding: 5px;
+  color: inherit;
+  background-color: Field;
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-radius: 4px;
+}
+
+.metaref-settings-count {
+  font-size: 0.9em;
+}
+
+#metaref input:focus-visible,
+.metaref-settings-jump:focus-visible {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+}
+
+#metaref input[aria-invalid="true"] {
+  outline: 2px solid #c43b3b;
+}
+
+.metaref-input-status {
+  flex-basis: 100%;
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+}
+
+.metaref-input-status:empty {
+  display: none;
+}
+
+#metaref groupbox {
+  min-width: 0;
+}
+
+#metaref hbox > input[readonly] {
+  flex-basis: 12em;
+}
+
+#metaref hbox > label {
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+
+#metaref hbox > radiogroup {
+  flex-wrap: wrap;
 }

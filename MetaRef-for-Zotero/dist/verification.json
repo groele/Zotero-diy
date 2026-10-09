@@ -1,6 +1,6 @@
 {
   "date": "2026-10-09",
-  "version": "12.1.0",
+  "version": "12.2.0",
   "name": "MetaRef for Zotero",
   "environment": {
     "zotero": "10.0.6",
@@ -15,8 +15,8 @@
     "preferenceMigration": false
   },
   "unit": {
-    "files": 34,
-    "passed": 221
+    "files": 36,
+    "passed": 246
   },
   "e2e": {
     "baseline": {
@@ -24,11 +24,11 @@
       "zh-CN": 44
     },
     "current": {
-      "version": "12.1.0",
+      "version": "12.2.0",
       "status": "passed",
-      "Windows Zotero 10.0.6 zh-CN": 44,
-      "Windows Zotero 10.0.6 en-US": 44,
-      "productionXPIInstallation": "passed in both locales"
+      "Windows Zotero 10.0.6 zh-CN": 48,
+      "Windows Zotero 10.0.6 en-US": 48,
+      "productionXPIInstallation": "same production XPI passed in both locales"
     }
   },
   "checks": {
@@ -42,13 +42,13 @@
   },
   "package": {
     "path": "metaref-for-zotero.xpi",
-    "sha256": "900e2962564e52b4a2eca388c8ea86a05a041272a4e6e23e24da5b2bc3d8587a",
-    "bytes": 1220496,
+    "sha256": "dd2338a55b92b38d9fadeee6ff7aac56d058b055cc997e2437ca30b4baae3f65",
+    "bytes": 1223922,
     "copiedFromTestedPackage": true,
     "manifest": {
       "manifest_version": 2,
       "name": "MetaRef for Zotero",
-      "version": "12.1.0",
+      "version": "12.2.0",
       "description": "Validate, organize and enrich reference metadata in Zotero.",
       "homepage_url": "https://github.com/groele/Zotero-diy/tree/main/MetaRef-for-Zotero",
       "author": "northword",
@@ -103,6 +103,15 @@
   ],
   "performance": {
     "report": "../docs/performance-audit-2026-10-09.md",
-    "metrics": "../docs/assets/performance-v12.1.0.json"
+    "metrics": "../docs/assets/performance-v12.1.0.json",
+    "currentMetrics": "../docs/assets/performance-v12.2.0.json"
+  },
+  "settings": {
+    "report": "../docs/settings-panel-audit-2026-10-09.md",
+    "screenshots": {
+      "zh-CN": "../docs/assets/settings-panel-zh-CN.png",
+      "en-US": "../docs/assets/settings-panel-en-US.png"
+    },
+    "menus": "three consecutive ESI / Nature Index query cycles passed in both locales"
   }
 }

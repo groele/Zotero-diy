@@ -43,6 +43,24 @@ describe("menu module", () => {
       vi.unstubAllGlobals();
     }
   });
+
+  it("executes a native command event once while allowing the next click", async () => {
+    try {
+      const root = registered();
+      const run = vi.fn();
+      (addon as any).hooks = { onLintInBatch: run };
+      const command = root.menus.find((menu: any) => menu.l10nID === "metaref-menuitem-stdFormatFlow");
+      const event = new Event("command");
+      await Promise.all([command.onCommand(event, { items: [] }), command.onCommand(event, { items: [] })]);
+      expect(run).toHaveBeenCalledTimes(1);
+      await command.onCommand(new Event("command"), { items: [] });
+      expect(run).toHaveBeenCalledTimes(2);
+    }
+    finally {
+      unregisterMenu();
+      vi.unstubAllGlobals();
+    }
+  });
   describe("shouldShowSeparator", () => {
     it("returns true when current section and subsequent section both have visible items", () => {
       const current = ["a", "b"];

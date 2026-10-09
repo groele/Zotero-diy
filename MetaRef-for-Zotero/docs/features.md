@@ -48,7 +48,7 @@ This plugin provides a toolbar and shortcuts to insert tags for **superscript, s
   - Italic: `Ctrl` + `I`
   - Nocase: `Ctrl` + `N`
   - Format chemical formulas for selected library items: `Ctrl` + `Alt` + `S`
-  - Standard Lint for selected library items: `Ctrl` + `Alt` + `L`
+  - MetaRef: Check and Fix Metadata for selected library items: `Ctrl` + `Alt` + `L`
 
 Shortcuts are configurable, can be disabled or reset, and reject duplicate bindings. Rich text shortcuts only act on title selections. On macOS, use Cmd and Option instead of Ctrl and Alt.
 
@@ -62,7 +62,7 @@ Shortcuts are configurable, can be disabled or reset, and reject duplicate bindi
 
 Automatically corrects chemical formulae in titles. Supports Charge Number (e.g. `Co2+` -> `Co<sup>2+</sup>`) and Stoichiometric Number (e.g. `Cu2O` → `Cu<sub>2</sub>O`)
 
-Enable the rule in the Title preferences to include it in standard and automatic Lint. The rule is disabled by default; context menus and the dedicated shortcut can invoke it independently. Space repair has its own option. Existing scripts and nocase content are preserved. Formula formatting precedes short-title generation. See the [metadata workflow guide](metadata-workflow-zh.md) for the processing order and recognition limits.
+Enable the rule in the Title preferences to include it in standard and automatic metadata checks. The rule is disabled by default; context menus and the dedicated shortcut can invoke it independently. Space repair has its own option. Existing scripts and nocase content are preserved. Formula formatting precedes short-title generation. See the [metadata workflow guide](metadata-workflow-zh.md) for the processing order and recognition limits.
 
 ## Author Rules
 

@@ -4,6 +4,7 @@ const localeFilesForJS = [
   "addon.ftl",
   "main-window.ftl",
   "rules.ftl",
+  "preferences.ftl",
 ];
 
 const localeFilesForMainWindow = [

@@ -145,9 +145,11 @@ describe("user-defined journal databases in Zotero", function () {
       const reset = group.querySelector("[data-l10n-id='metaref-settings-custom-data-reset']") as HTMLButtonElement;
       reset.dispatchEvent(new win.Event("command", { bubbles: true }));
       assert.isTrue(reset.disabled, "reset remains disabled until the built-in database is active");
-      for (let attempt = 0; attempt < 200 && reset.disabled; attempt++)
+      for (let attempt = 0; attempt < 200 && group.hasAttribute("data-busy"); attempt++)
         await Zotero.Promise.delay(50);
-      assert.isFalse(reset.disabled);
+      assert.isFalse(group.hasAttribute("data-busy"));
+      assert.isTrue(reset.disabled, "a built-in database has no custom path to clear");
+      assert.isFalse((group.querySelector("#metaref-nature-choose-custom-data-button") as HTMLButtonElement).disabled);
       assert.equal(Zotero.Prefs.get(`${config.prefsPrefix}.insights.natureCustomDataPath`, true), "");
       assert.equal((group.querySelector("input[readonly]") as HTMLInputElement).value, "");
       assert.include(status.textContent!, "177");

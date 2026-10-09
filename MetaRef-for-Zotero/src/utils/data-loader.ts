@@ -128,6 +128,13 @@ export class DataLoader {
     }
   }
 
+  static invalidateFile(path: string) {
+    for (const key of this.cache.keys()) {
+      if (!this.persistentKeys.has(key) && key.includes(`:${path}:`))
+        this.cache.delete(key);
+    }
+  }
+
   static clearBatchCache() {
     for (const key of this.cache.keys()) {
       if (!this.persistentKeys.has(key))

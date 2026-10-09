@@ -8,11 +8,29 @@
   id="__addonRef__"
   onload="Zotero.__addonInstance__.hooks.onPrefsEvent('load', { window })"
 >
-  <html:input
-    class="metaref-settings-search"
-    type="search"
-    data-l10n-id="settings-search"
-  />
+  <html:div class="metaref-settings-tools">
+    <html:div class="metaref-settings-search-row">
+      <html:input
+        class="metaref-settings-search"
+        type="search"
+        data-l10n-id="settings-search"
+      />
+      <button
+        class="metaref-settings-clear"
+        data-l10n-id="settings-search-clear"
+        native="true"
+      />
+    </html:div>
+    <html:select class="metaref-settings-jump" data-l10n-id="settings-jump">
+      <html:option value="" data-l10n-id="settings-jump-placeholder" />
+    </html:select>
+    <html:div
+      class="metaref-settings-count"
+      role="status"
+      aria-live="polite"
+      hidden="true"
+    />
+  </html:div>
   <description
     class="metaref-settings-empty"
     data-l10n-id="settings-no-results"
@@ -217,6 +235,21 @@
 
   <!-- 详细设置 -->
   <groupbox>
+    <label><html:h2 data-l10n-id="section-rules" /></label>
+    <html:div class="metaref-settings-rule-actions">
+      <button
+        class="metaref-settings-disclosure"
+        data-open="true"
+        data-l10n-id="settings-expand-all"
+        native="true"
+      />
+      <button
+        class="metaref-settings-disclosure"
+        data-open="false"
+        data-l10n-id="settings-collapse-all"
+        native="true"
+      />
+    </html:div>
     <description
       data-l10n-id="section-item-description"
       class="metaref-pref-description"

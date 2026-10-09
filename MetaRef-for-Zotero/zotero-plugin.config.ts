@@ -97,7 +97,7 @@ export default defineConfig({
     },
   },
   test: {
-    entries: ["test/tests"],
+    entries: [env.METAREF_TEST_ENTRIES || "test/tests"],
     prefs: {
       "metaref.test.fixturePath": resolve("test/data"),
       ...env.METAREF_TEST_PACKAGE_PATH && { "metaref.test.packagePath": env.METAREF_TEST_PACKAGE_PATH },

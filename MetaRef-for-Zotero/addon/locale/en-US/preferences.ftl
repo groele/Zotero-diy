@@ -11,7 +11,7 @@ notify-on-lint =
 lint-numConcurrent = Number of concurrent:
 lint-numConcurrent-description = Range: 1–16. Recommended: 1. Changes apply to the next metadata check. Concurrency does not increase external service request rates.
 settings-search =
-    .placeholder = Search settings or rule names; Esc clears
+    .placeholder = Search names or preference keys; separate keywords with spaces; Esc clears
     .aria-label = Search MetaRef settings
 settings-no-results = No matching settings. Try a different keyword.
 settings-custom-data-reset =
@@ -109,3 +109,28 @@ journal-database-reload =
     .label = Reload
 journal-database-export =
     .label = Export built-in JSON
+
+## Settings navigation and validation
+section-rules = Metadata Rules
+settings-search-clear =
+    .label = Clear
+    .tooltiptext = Clear search and restore your expanded rule groups
+settings-jump =
+    .aria-label = Jump to a settings section
+settings-jump-placeholder = Jump to section…
+settings-results = Matching settings: { $count }
+settings-expand-all =
+    .label = Expand all rule groups
+    .tooltiptext = Changes visibility only; does not enable rules. Unavailable during search.
+settings-collapse-all =
+    .label = Collapse all rule groups
+    .tooltiptext = Changes visibility only; does not disable rules. Unavailable during search.
+settings-concurrency-invalid = Enter a whole number from 1 to 16. This value has not been saved.
+settings-concurrency-restored = Invalid value discarded; the last saved value has been restored.
+
+settings-abbr-file-title = Select a custom abbreviation file
+settings-title-file-title = Select a custom title terms file
+settings-file-working = Reading and validating the file…
+settings-file-empty = The file has no usable records.
+settings-file-valid = Validated and activated { $count } records. Changes apply to the next check.
+settings-file-error = File not activated; the previous path is unchanged. { $error }

@@ -22,6 +22,7 @@ export function setupJournalDatabases(pane: Element) {
           return;
         busy = true;
         group.setAttribute("data-busy", "true");
+        group.setAttribute("aria-busy", "true");
         buttons.forEach(button => button.disabled = true);
         status.textContent = getString("journal-database-working");
         try {
@@ -68,7 +69,8 @@ export function setupJournalDatabases(pane: Element) {
         finally {
           busy = false;
           group.removeAttribute("data-busy");
-          buttons.forEach(button => button.disabled = false);
+          group.removeAttribute("aria-busy");
+          buttons.forEach(button => button.disabled = pathInput.disabled || (button.dataset.resetPath === "true" && !pathInput.value));
         }
       });
     }

@@ -35,6 +35,19 @@ describe("batch data cache", () => {
     expect(header).toEqual([{ title: "Nature", abbr: "Nat." }]);
   });
 
+  it("invalidates only the selected custom file before revalidation", async () => {
+    vi.stubGlobal("rootURI", "test/");
+    read.mockResolvedValue("{}");
+    const builtin = await DataLoader.getJournalAbbrMaps();
+    const other = await DataLoader.load("json", "other.json");
+    await DataLoader.load("json", "selected.json");
+    read.mockResolvedValue("broken JSON");
+    DataLoader.invalidateFile("selected.json");
+    await expect(DataLoader.load("json", "selected.json")).rejects.toThrow();
+    expect(await DataLoader.load("json", "other.json")).toBe(other);
+    expect(await DataLoader.getJournalAbbrMaps()).toBe(builtin);
+  });
+
   it("reuses immutable built-in indexes across batches while re-reading user files", async () => {
     vi.stubGlobal("rootURI", "test/");
     read.mockResolvedValue("{\"Nature\":\"Nat.\"}");

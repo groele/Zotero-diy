@@ -29,7 +29,8 @@ describe("native flat menu commands", function () {
   const wait = async (condition: () => boolean, label = "native command") => {
     for (let attempt = 0; attempt < 200 && !condition(); attempt++)
       await Zotero.Promise.delay(50);
-    assert.isTrue(condition(), `${label} must complete`);
+    const windows = [...plugin().data.dialogs].map(([id, window]: [string, Window]) => ({ id, closed: window.closed, title: window.document?.title }));
+    assert.isTrue(condition(), `${label} must complete; tracked=${JSON.stringify(windows)}`);
   };
 
   beforeEach(async function () {
@@ -40,8 +41,14 @@ describe("native flat menu commands", function () {
 
   const menu = async () => {
     const win = Zotero.getMainWindow();
+    win.focus();
+    await wait(() => win.document.hasFocus(), "main window focus");
     await win.ZoteroPane.buildItemContextMenu();
     const popup = win.document.getElementById("zotero-itemmenu") as any;
+    if (popup.state !== "closed") {
+      popup.hidePopup();
+      await wait(() => popup.state === "closed", "previous popup closing");
+    }
     popup.openPopup(win.document.getElementById("zotero-items-tree"), "after_start", 0, 0, true);
     await wait(() => popup.state === "open", "main popup opening");
     const root = popup.querySelector("menu[data-l10n-id='metaref-menuitem-label']") as any;
@@ -76,9 +83,11 @@ describe("native flat menu commands", function () {
   });
 
   it("shows visible results for both index commands without saving item metadata", async function () {
+    this.timeout(60_000);
     const item = items[0];
     const snapshot = JSON.stringify(item.toJSON());
-    for (const [id, expected] of [["rule-tool-query-esi-menu-item", "ESI"], ["tool-query-nature-index-menu-item", "Nature Index"]]) {
+    const commands = [["rule-tool-query-esi-menu-item", "ESI"], ["tool-query-nature-index-menu-item", "Nature Index"]];
+    for (const [id, expected] of [...commands, ...commands, ...commands]) {
       const { win, popup, sub } = await menu();
       const command = sub.querySelector(`menuitem[data-l10n-id='metaref-${id}']`) as any;
       assert.isFalse(command.disabled);

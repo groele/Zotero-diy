@@ -28,6 +28,15 @@ function hasMenuItems(context: LibraryContext): boolean {
 
 const icon = typeof rootURI !== "undefined" ? `${rootURI}/content/icons/metaref-96.png` : "";
 const registeredMenus: string[] = [];
+const handledCommands = new WeakSet<Event>();
+
+function acceptCommand(event: Event) {
+  // Native menu listeners are removed at idle; rapid reopenings can deliver one event twice.
+  if (handledCommands.has(event))
+    return false;
+  handledCommands.add(event);
+  return true;
+}
 
 function addMenu<T extends _ZoteroTypes.MenuManager.ValidTarget>(options: _ZoteroTypes.MenuManager.MenuOptions<T>) {
   const id = Zotero.MenuManager.registerMenu(options);
@@ -72,6 +81,8 @@ function registerFieldMenus() {
         checkL10nString(context.menuElem, rule.id, rule.fieldMenu?.l10nID);
       },
       onCommand: (_event, context) => {
+        if (!acceptCommand(_event))
+          return;
         if (rule.fieldMenu?.onCommand) {
           rule.fieldMenu.onCommand(context);
           return;
@@ -128,6 +139,8 @@ function registerItemMenus() {
       },
       onShown(_event, context) { checkL10nString(context.menuElem, key, l10nID); },
       async onCommand(_event, context) {
+        if (!acceptCommand(_event))
+          return;
         const items = await menuItems(context);
         if (indexing) {
           await refreshJournalInsights();

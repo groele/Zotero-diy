@@ -2,9 +2,11 @@ import { homepage } from "../../package.json";
 import { getString } from "../utils/locale";
 import { getPref, setPref } from "../utils/prefs";
 import { normalizeShortcut, recordShortcut, SHORTCUT_DEFAULTS, shortcutPreview } from "../utils/shortcuts";
+import { setupCustomDataFiles } from "./custom-data-settings";
 import { setupJournalDatabases } from "./journal-database-settings";
 import { MENU_GROUPS, MENU_SECTIONS } from "./menu";
 import { Rules } from "./rules";
+import { setupSettingsPanel } from "./settings-panel";
 
 const initializedPanes = new WeakSet<Element>();
 
@@ -36,12 +38,12 @@ export function registerPrefsScripts(_window: Window) {
     return;
   initializedPanes.add(pane);
   setupMenuSettings(pane);
-  updatePrefsUI();
   setupCustomDataReset(pane);
+  setupCustomDataFiles(pane);
   setupJournalDatabases(pane);
   setupDependencies(pane);
-  setupSettingsSearch(pane);
   setupShortcutInputs();
+  setupSettingsPanel(pane);
 }
 
 function setupMenuSettings(pane: Element) {
@@ -74,8 +76,14 @@ function setupCustomDataReset(pane: Element) {
     const button = input.ownerDocument.createXULElement("button");
     input.ownerDocument.l10n!.setAttributes(button, "metaref-settings-custom-data-reset");
     button.setAttribute("native", "true");
+    button.dataset.resetPath = "true";
     if (!input.closest("[data-journal-database]")) {
       button.addEventListener("command", () => {
+        if (input.parentElement!.hasAttribute("data-busy"))
+          return;
+        const status = input.parentElement!.querySelector(".metaref-custom-data-status");
+        if (status)
+          status.textContent = "";
         const key = input.getAttribute("preference")!.replace(`${addon.data.config.prefsPrefix}.`, "");
         setPref(key as any, "");
         input.value = "";
@@ -83,47 +91,6 @@ function setupCustomDataReset(pane: Element) {
     }
     input.parentElement!.appendChild(button);
   }
-}
-
-function updatePrefsUI() {
-  // You can initialize some UI elements on prefs window
-  // with addon.data.prefs.window.document
-  // Or bind some events to the elements
-
-  addon.data.prefs?.window.document
-    .querySelector(`#${addon.data.config.addonRef}-abbr-choose-custom-data-button`)
-    ?.addEventListener("command", async () => {
-      const filename = await new ztoolkit.FilePicker(
-        "Select File",
-        "open",
-        [
-          ["CSV File (*.csv)", "*.csv"],
-          ["JSON File (*.json)", "*.json"],
-          ["Any", "*.*"],
-        ],
-        "metaref-custom-abbr-data.csv",
-      ).open();
-      if (filename) {
-        setPref("rule.require-journal-abbr.customDataPath", filename);
-      }
-    });
-
-  addon.data.prefs?.window.document
-    .querySelector(`#${addon.data.config.addonRef}-title-choose-custom-data-button`)
-    ?.addEventListener("command", async () => {
-      const filename = await new ztoolkit.FilePicker(
-        "Select File",
-        "open",
-        [
-          ["CSV File (*.csv)", "*.csv"],
-          ["Any", "*.*"],
-        ],
-        "metaref-custom-title-terms.csv",
-      ).open();
-      if (filename) {
-        setPref("rule.correct-title-sentence-case.custom-term-path", filename);
-      }
-    });
 }
 
 function setupDependencies(pane: Element) {
@@ -145,55 +112,18 @@ function setupDependencies(pane: Element) {
     if (auto && group)
       group.disabled = !auto.checked;
     for (const button of pane.querySelectorAll<HTMLButtonElement>("hbox button")) {
-      if (button.closest("[data-journal-database][data-busy='true']")) {
+      if (button.closest("[data-busy='true']")) {
         button.disabled = true;
         continue;
       }
       const input = button.parentElement?.querySelector("input[preference]") as HTMLInputElement | null;
       if (input)
-        button.disabled = input.disabled;
+        button.disabled = input.disabled || (button.dataset.resetPath === "true" && !input.value);
     }
   };
   pane.addEventListener("command", update);
-  pane.addEventListener("syncfrompreference", () => setTimeout(update, 0));
+  pane.addEventListener("syncfrompreference", () => setTimeout(update, 0), true);
   update();
-}
-
-function setupSettingsSearch(pane: Element) {
-  const search = pane.querySelector<HTMLInputElement>(".metaref-settings-search");
-  if (!search)
-    return;
-  const groups = [...pane.querySelectorAll<HTMLElement>(":scope > groupbox")];
-  const details = [...pane.querySelectorAll<HTMLDetailsElement>("details")];
-  let openStates: Map<HTMLDetailsElement, boolean> | undefined;
-  const text = (element: Element) => `${element.textContent} ${[...element.querySelectorAll("[label]")].map(node => node.getAttribute("label")).join(" ")}`.toLocaleLowerCase();
-  const update = () => {
-    const query = search.value.trim().toLocaleLowerCase();
-    if (query && !openStates)
-      openStates = new Map(details.map(detail => [detail, detail.open]));
-    for (const group of groups)
-      group.hidden = !!query && !text(group).includes(query);
-    for (const detail of details) {
-      detail.hidden = !!query && !text(detail).includes(query);
-      if (query)
-        detail.open = !detail.hidden;
-      else if (openStates)
-        detail.open = openStates.get(detail)!;
-    }
-    if (!query)
-      openStates = undefined;
-    const empty = pane.querySelector<HTMLElement>(".metaref-settings-empty");
-    if (empty)
-      empty.hidden = groups.some(group => !group.hidden);
-  };
-  search.addEventListener("input", update);
-  search.addEventListener("keydown", (event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      event.preventDefault();
-      search.value = "";
-      update();
-    }
-  });
 }
 
 // ---------- Shortcut input recording & preview ----------
@@ -204,6 +134,10 @@ function setupShortcutInputs() {
     return;
   const doc = win.document;
   const status = doc.querySelector<HTMLElement>(".metaref-shortcut-status");
+  if (status) {
+    status.id = "metaref-shortcut-status";
+    status.setAttribute("role", "status");
+  }
   const inputs = [...doc.querySelectorAll<HTMLInputElement>(".metaref-shortcut-input")];
   const prefKey = (input: HTMLInputElement) => input.getAttribute("preference")!
     .replace(`${addon.data.config.prefsPrefix}.`, "");
@@ -251,6 +185,7 @@ function setupShortcutInputs() {
     label.id = `${input.id}-label`;
     label.setAttribute("control", input.id);
     input.setAttribute("aria-labelledby", label.id);
+    input.setAttribute("aria-describedby", "metaref-shortcut-status");
     doc.l10n!.setAttributes(input, "metaref-shortcut-input-hint");
     const actions = doc.createElementNS("http://www.w3.org/1999/xhtml", "div");
     actions.className = "metaref-shortcut-actions";
@@ -280,6 +215,7 @@ function setupShortcutInputs() {
         updatePreview(input);
       }
     }, true);
+    input.addEventListener("blur", () => input.removeAttribute("aria-invalid"));
     input.addEventListener("keydown", (event: KeyboardEvent) => {
       if (event.key === "Tab")
         return;

@@ -11,7 +11,7 @@ notify-on-lint =
 lint-numConcurrent = 并行运行的数量：
 lint-numConcurrent-description = 范围 1–16，建议设为 1；修改从下一批整理任务开始生效。并发数不会提高外部服务的请求速率。
 settings-search =
-    .placeholder = 搜索设置或规则名称，Esc 清空
+    .placeholder = 搜索名称或设置键；空格分隔关键词，Esc 清空
     .aria-label = 搜索 MetaRef 设置
 settings-no-results = 没有匹配的设置。请更换关键词。
 settings-custom-data-reset =
@@ -108,3 +108,28 @@ journal-database-reload =
     .label = 重新读取
 journal-database-export =
     .label = 导出内置 JSON
+
+## 设置导航与校验
+section-rules = 元数据规则
+settings-search-clear =
+    .label = 清空
+    .tooltiptext = 清空搜索并恢复原来的规则展开状态
+settings-jump =
+    .aria-label = 跳转到设置分区
+settings-jump-placeholder = 跳转到分区…
+settings-results = 找到 { $count } 项匹配设置
+settings-expand-all =
+    .label = 展开全部规则组
+    .tooltiptext = 只改变显示状态，不启用规则；搜索期间不可用
+settings-collapse-all =
+    .label = 收起全部规则组
+    .tooltiptext = 只改变显示状态，不停用规则；搜索期间不可用
+settings-concurrency-invalid = 请输入 1–16 的整数；当前值尚未保存。
+settings-concurrency-restored = 已丢弃无效输入，恢复上次保存的数值。
+
+settings-abbr-file-title = 选择自定义缩写文件
+settings-title-file-title = 选择自定义标题术语文件
+settings-file-working = 正在读取并校验文件…
+settings-file-empty = 文件中没有可用记录。
+settings-file-valid = 已校验并启用 { $count } 条记录，从下一次检查开始生效。
+settings-file-error = 文件未启用，原路径保持不变。{ $error }

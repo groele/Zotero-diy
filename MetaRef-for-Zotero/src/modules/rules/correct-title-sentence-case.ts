@@ -1,7 +1,7 @@
 import contryJson from "../../utils/country-by-capital-city.json";
-import { DataLoader } from "../../utils/data-loader";
 import { getPref } from "../../utils/prefs";
 import { convertToRegex, escapeRegex, functionWords } from "../../utils/str";
+import { loadTitleTerms } from "../../utils/title-terms";
 import { defineRule } from "./rule-base";
 
 /** =============================  Special Words Begin  ============================= */
@@ -272,9 +272,7 @@ function createCorrectTitleSentenceCaseRule(targetItemField: "title" | "shortTit
       const customTermFilePath = getPref("rule.correct-title-sentence-case.custom-term-path");
       if (customTermFilePath) {
         return {
-          data: await DataLoader.load("csv", customTermFilePath, {
-            headers: ["search", "replace"],
-          }),
+          data: await loadTitleTerms(customTermFilePath),
         };
       }
       else {
