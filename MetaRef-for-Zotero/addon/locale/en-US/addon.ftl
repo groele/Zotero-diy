@@ -7,7 +7,7 @@ field-abbr = Abbr
 ## batch
 info-batch-init = Preparing...
 info-batch-no-selected = No selected items or rules
-info-batch-running = Linting...
+info-batch-running = Checking metadata...
 info-batch-finish = Finished
 info-batch-break = Click here to stop this process
 info-batch-stop-next = Will stop when current item is complete
@@ -27,8 +27,8 @@ unimplemented = This feature is unimplemented.
 info-batch-pending-save = Pending save...
 info-batch-saving = Saving...
 undo-action-lint-metadata = { $count ->
-    [one] Lint Metadata
-   *[other] Lint Metadata for { $count } Items
+    [one] Organize Metadata
+   *[other] Organize Metadata for { $count } Items
 }
 info-batch-cancelled = Stopped: processed { $processed }, skipped { $skipped }
 info-batch-duration = Finished in { $seconds } seconds

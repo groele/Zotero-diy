@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-09",
+  "baseline": {
+    "version": "11.0.8",
+    "itemCount": 160,
+    "sequentialBatches": 8,
+    "journalFileReads": 8,
+    "indexingMs": 667,
+    "batchMs": 814,
+    "progressUpdates": 323,
+    "burstItems": 16,
+    "burstBatches": 16,
+    "burstMs": 565,
+    "notificationMs": 653
+  },
+  "current": {
+    "zh-CN": {
+      "version": "12.1.0",
+      "zoteroVersion": "10.0.6",
+      "locale": "zh-CN",
+      "itemCount": 160,
+      "sequentialBatches": 8,
+      "journalFileReads": 1,
+      "indexingMs": 238,
+      "batchMs": 658,
+      "progressUpdates": 9,
+      "burstItems": 16,
+      "burstBatches": 1,
+      "burstMs": 541,
+      "notificationMs": 94
+    },
+    "en-US": {
+      "version": "12.1.0",
+      "zoteroVersion": "10.0.6",
+      "locale": "en-US",
+      "itemCount": 160,
+      "sequentialBatches": 8,
+      "journalFileReads": 1,
+      "indexingMs": 229,
+      "batchMs": 836,
+      "progressUpdates": 10,
+      "burstItems": 16,
+      "burstBatches": 1,
+      "burstMs": 543,
+      "notificationMs": 124
+    }
+  },
+  "timingScope": "Single-run observations in isolated Windows Zotero profiles; no long-term memory or external provider availability benchmark."
+}

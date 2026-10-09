@@ -344,7 +344,7 @@ rule-tool-set-language-menu-item =
 rule-tool-update-metadata =
   .label = 通过标识符更新元数据
 rule-tool-update-metadata-menu-item =
-  .label = 通过标识符更新元数据并 Lint
+  .label = MetaRef：更新元数据并检查整理
 rule-tool-update-metadata-option-semanticScholarToken = Semantic Scholar API Key:
   .label = Semantic Scholar Token
   .placeholder = Semantic Scholar Token
@@ -366,6 +366,7 @@ rule-tool-update-metadata-dialog-allow-type-changed =
 rule-tool-update-metadata-dialog-notes = 说明
 rule-tool-update-metadata-dialog-note-rate-limit = 某些 API 有速率限制；请避免批量处理。
 rule-tool-update-metadata-dialog-note-chinese-limit = 由于数据源限制，中文出版物无法使用此功能。
+rule-tool-update-metadata-dialog-note-type-change = 「所有字段」模式下若允许更改条目类型，Zotero 可能会移除新类型不支持的字段或调整作者角色；请先检查更新结果。
 
 
 ## tool-get-short-doi
@@ -392,7 +393,7 @@ rule-tool-clean-extra-select = 选择要清理的额外字段
 
 rule-correct-title-chemical-formula-option-normalize-spaces =
   .label = 修复化学式内部及异质结构分隔符两侧的多余空格
-rule-correct-title-chemical-formula-description = 勾选后加入标准 Lint 和新条目自动整理；默认关闭，可通过右键菜单或 Ctrl+Alt+S 单独执行。支持 MoS2、Fe(NO3)3、Fe3+ 等，保留已有上下标和保持大小写标记。C4、P3 等含义不明确的缩写仍需人工复核。菜单显示开关不影响自动规则。
+rule-correct-title-chemical-formula-description = 勾选后加入常规元数据检查和新条目自动整理；默认关闭，可通过右键菜单或 Ctrl+Alt+S 单独执行。支持 MoS2、Fe(NO3)3、Fe3+ 等，保留已有上下标和保持大小写标记。C4、P3 等含义不明确的缩写仍需人工复核。菜单显示开关不影响自动规则。
 rule-no-article-webpage-report-action = 尝试更新元数据
 rule-require-journal-abbr-custom-data-error = 自定义缩写数据不可用，已回退至内置数据：{ $error }
 rule-tool-update-metadata-no-identifiers = 未找到可用的标识符或网址。

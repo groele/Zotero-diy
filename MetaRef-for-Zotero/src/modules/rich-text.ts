@@ -191,6 +191,7 @@ export class RichTextToolBar {
   private buttonManager: ButtonManager;
   private observer?: MutationObserver;
   private closeTimer?: number;
+  private openTimer?: number;
 
   constructor(private window: Window) {
     this.buttonManager = new ButtonManager(window);
@@ -286,7 +287,9 @@ export class RichTextToolBar {
       return;
     const editable = target?.closest?.(HEADER_TITLE_SELECTOR);
     if (editable) {
-      this.window.setTimeout(() => {
+      this.window.clearTimeout(this.openTimer);
+      this.openTimer = this.window.setTimeout(() => {
+        this.openTimer = undefined;
         const textarea = editable.querySelector("textarea") || getTitleEditor(this.window);
         if (textarea)
           this.openFor(textarea);
@@ -299,8 +302,12 @@ export class RichTextToolBar {
 
   openFor(textarea: HTMLTextAreaElement): void {
     this.window.clearTimeout(this.closeTimer);
-    if (!textarea.closest(HEADER_TITLE_SELECTOR))
+    const editable = textarea.closest(HEADER_TITLE_SELECTOR);
+    const active = this.window.document.activeElement as HTMLElement | null;
+    if (!textarea.isConnected || !editable || (active?.closest?.(HEADER_TITLE_SELECTOR) !== editable
+      && !active?.closest?.(`.${TOOLBAR_CLASS}`))) {
       return;
+    }
     if (!selectionCaptureAttached.has(textarea)) {
       const remember = () => rememberTitleSelection(this.window, textarea);
       textarea.addEventListener("blur", remember, true);
@@ -318,6 +325,8 @@ export class RichTextToolBar {
 
   /** Close the toolbar when the title editor loses focus. */
   close(): void {
+    this.window.clearTimeout(this.openTimer);
+    this.openTimer = undefined;
     this.buttonManager.close();
   }
 

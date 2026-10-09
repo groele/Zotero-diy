@@ -97,6 +97,8 @@ export class LintRunner {
   private saved = 0;
   private failedItems = new Set<number | Zotero.Item>();
   private preparationFailed = 0;
+  private lastProgressTime = 0;
+  private lastProgressPhase?: RunnerStats["phase"];
   public lastResult?: BatchResult;
   private readonly ui = new ProgressUI({
     onCancel: () => this.cancel(),
@@ -401,6 +403,11 @@ export class LintRunner {
   }
 
   private updateProgress(current: number, total: number) {
+    const now = Date.now();
+    if (this.lastProgressPhase === this.stats.phase && current > 0 && current < total && now - this.lastProgressTime < 100)
+      return;
+    this.lastProgressTime = now;
+    this.lastProgressPhase = this.stats.phase;
     try {
       this.ui.updateProgress(current, total, this.stats.phase);
     }
@@ -413,6 +420,8 @@ export class LintRunner {
     this.cancelled = false;
     this.saved = 0;
     this.preparationFailed = 0;
+    this.lastProgressTime = 0;
+    this.lastProgressPhase = undefined;
     this.failedItems.clear();
     if (!this.stats.startTime)
       this.stats.startTime = Date.now();
@@ -437,7 +446,7 @@ export class LintRunner {
     };
     // Release batch state before opening UI, which may fail when a window closes.
     this.modifiedItems.clear();
-    DataLoader.clearCache();
+    DataLoader.clearBatchCache();
     this.stats = this.emptyStats();
     logger.debug(`Batch tasks completed in ${duration}s`);
     if (addon.data.alive) {

@@ -3,6 +3,12 @@ import { closeAllDialogs, useDialog } from "./dialog";
 
 vi.mock("./logger", () => ({ createLogger: () => ({ debug: vi.fn(), error: vi.fn() }) }));
 
+const observers = new Set<{ observe: (subject: unknown, topic: string) => void }>();
+function nativeClose(window: unknown) {
+  for (const observer of observers)
+    observer.observe(window, "domwindowclosed");
+}
+
 function deferred() {
   let resolve!: () => void;
   const promise = new Promise<void>((done) => {
@@ -26,6 +32,7 @@ function createDialog() {
     close: vi.fn(() => {
       window.closed = true;
       events.dispatchEvent(new Event("unload"));
+      nativeClose(window);
       // Toolkit does not resolve unloadLock when a window closes before loading.
       if (loaded)
         unloadLock.resolve();
@@ -43,11 +50,19 @@ function createDialog() {
 
 describe("dialog lifecycle", () => {
   beforeEach(() => {
+    observers.clear();
+    vi.stubGlobal("Services", { ww: {
+      registerNotification: (observer: any) => observers.add(observer),
+      unregisterNotification: (observer: any) => observers.delete(observer),
+    } });
     vi.stubGlobal("addon", { data: { alive: true, dialogs: new Map() } });
     vi.stubGlobal("Zotero", { Utilities: { randomString: () => "qa" } });
     vi.stubGlobal("Components", {});
   });
-  afterEach(() => vi.unstubAllGlobals());
+  afterEach(() => {
+    expect(observers.size).toBe(0);
+    vi.unstubAllGlobals();
+  });
 
   it("tracks and closes a dialog before its load lock resolves", async () => {
     const { dialog, window } = createDialog();
@@ -88,6 +103,7 @@ describe("dialog lifecycle", () => {
     window.close.mockImplementation(() => {
       window.closed = true;
       window.dispatchEvent(new Event("unload"));
+      nativeClose(window);
     });
     const pending = useDialog(dialog as any).openAndWaitClose("Native close");
     loadLock.resolve();
@@ -111,5 +127,42 @@ describe("dialog lifecycle", () => {
     window.close();
     await pending;
     expect(addon.data.dialogs.size).toBe(0);
+  });
+
+  it("completes when the native window closes before its document loads", async () => {
+    const { dialog, window } = createDialog();
+    const pending = useDialog(dialog as any).openAndWaitClose("Native early close");
+    window.close();
+    await pending;
+    expect(addon.data.dialogs.size).toBe(0);
+    expect(window.focus).not.toHaveBeenCalled();
+  });
+
+  it("ignores native lifetime notifications for other windows", async () => {
+    const { dialog, loadLock, window } = createDialog();
+    const pending = useDialog(dialog as any).openAndWaitClose("Other window");
+    loadLock.resolve();
+    await Promise.resolve();
+    for (const observer of observers) {
+      observer.observe({}, "domwindowclosed");
+      observer.observe(window, "domwindowopened");
+    }
+    expect(addon.data.dialogs.size).toBe(1);
+    window.close();
+    await pending;
+  });
+
+  it("keeps a loaded native window tracked during document unload", async () => {
+    const { dialog, loadLock, unloadLock, window } = createDialog();
+    const pending = useDialog(dialog as any).openAndWaitClose("Document navigation");
+    loadLock.resolve();
+    await Promise.resolve();
+    window.dispatchEvent(new Event("unload"));
+    unloadLock.resolve();
+    await Promise.resolve();
+    expect(addon.data.dialogs.size).toBe(1);
+    expect(window.closed).toBe(false);
+    window.close();
+    await pending;
   });
 });

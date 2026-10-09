@@ -27,8 +27,8 @@ unimplemented = 此功能尚未实现。
 info-batch-pending-save = 等待保存...
 info-batch-saving = 正在保存...
 undo-action-lint-metadata = { $count ->
-    [one] Lint 元数据
-   *[other] Lint { $count } 个条目的元数据
+    [one] 整理元数据
+   *[other] 整理 { $count } 个条目的元数据
 }
 info-batch-cancelled = 已停止：处理 { $processed } 条，跳过 { $skipped } 条
 info-batch-duration = 耗时 { $seconds } 秒

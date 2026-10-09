@@ -343,7 +343,7 @@ rule-tool-set-language-menu-item =
 rule-tool-update-metadata =
   .label = Retrieve item metadata via identifier
 rule-tool-update-metadata-menu-item =
-  .label = Retrieve metadata via identifier and lint
+  .label = MetaRef: Update Metadata and Check
 rule-tool-update-metadata-option-semanticScholarToken = Semantic Scholar API Key:
   .label = Semantic Scholar Token
   .placeholder = Semantic Scholar Token
@@ -365,6 +365,7 @@ rule-tool-update-metadata-dialog-allow-type-changed =
 rule-tool-update-metadata-dialog-notes = Notes
 rule-tool-update-metadata-dialog-note-rate-limit = Some APIs have rate limits; please avoid bulk processing.
 rule-tool-update-metadata-dialog-note-chinese-limit = Chinese publications could not use this feature due to data source limitations.
+rule-tool-update-metadata-dialog-note-type-change = In “All Fields” mode, allowing an item-type change may make Zotero remove fields that the new type does not support or change creator roles. Review the result after updating.
 
 
 ## tool-get-short-doi
@@ -391,7 +392,7 @@ rule-tool-clean-extra-select = Select fields to clean
 
 rule-correct-title-chemical-formula-option-normalize-spaces =
   .label = Remove extra spaces inside formulas and around heterostructure separators
-rule-correct-title-chemical-formula-description = Enable to include formulas in standard Lint and automatic linting of new items. Disabled by default; run separately from the context menu or Ctrl+Alt+S (Cmd+Option+S on macOS). Handles MoS2, Fe(NO3)3 and Fe3+ while preserving existing scripts and nocase markup. Ambiguous abbreviations such as C4 or P3 need review. Menu visibility does not enable the automatic rule.
+rule-correct-title-chemical-formula-description = Enable to include formulas in standard metadata checks and automatic processing of new items. Disabled by default; run separately from the context menu or Ctrl+Alt+S (Cmd+Option+S on macOS). Handles MoS2, Fe(NO3)3 and Fe3+ while preserving existing scripts and nocase markup. Ambiguous abbreviations such as C4 or P3 need review. Menu visibility does not enable the automatic rule.
 rule-no-article-webpage-report-action = Try updating metadata
 rule-require-journal-abbr-custom-data-error = Custom abbreviations are unavailable; using built-in data: { $error }
 rule-tool-update-metadata-no-identifiers = No usable identifier or URL was found.

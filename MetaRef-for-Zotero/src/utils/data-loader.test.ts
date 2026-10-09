@@ -35,6 +35,20 @@ describe("batch data cache", () => {
     expect(header).toEqual([{ title: "Nature", abbr: "Nat." }]);
   });
 
+  it("reuses immutable built-in indexes across batches while re-reading user files", async () => {
+    vi.stubGlobal("rootURI", "test/");
+    read.mockResolvedValue("{\"Nature\":\"Nat.\"}");
+    const builtin = await DataLoader.getJournalAbbrMaps();
+    const custom = await DataLoader.load("json", "custom.json");
+    DataLoader.clearBatchCache();
+    expect(await DataLoader.getJournalAbbrMaps()).toBe(builtin);
+    expect(await DataLoader.load("json", "custom.json")).not.toBe(custom);
+    expect(read.mock.calls.filter(([path]) => path === "test/data/journal-abbr/journal-abbr.json")).toHaveLength(1);
+    expect(read.mock.calls.filter(([path]) => path === "custom.json")).toHaveLength(2);
+    DataLoader.clearCache();
+    expect(await DataLoader.getJournalAbbrMaps()).not.toBe(builtin);
+  });
+
   it("does not repopulate a cleared cache when an old read finishes", async () => {
     let resolve!: (data: string) => void;
     read.mockReturnValue(new Promise<string>((done) => {

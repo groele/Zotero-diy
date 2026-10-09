@@ -89,7 +89,7 @@ describe("native flat menu commands", function () {
       assert.include(report.document.body!.textContent!, expected);
       assert.equal(JSON.stringify(item.toJSON()), snapshot);
       report.close();
-      await wait(() => plugin().data.dialogs.size === 0, `${id} result window closing`);
+      await wait(() => plugin().data.dialogs.size === 0, `${id} result window closing (initial closed=${report.closed})`);
     }
   });
 });

@@ -53,10 +53,21 @@ export function useDialog<T extends DialogHelper | SettingsDialogHelper>(dialog:
     logger.debug(`opening dialog ${id}...`);
     dialog.open(title);
     const window = dialog.window;
-    const onUnload = () => {
-      dialog.dialogData.loadLock?.resolve();
-      dialog.dialogData.unloadLock?.resolve();
+    let resolveClosed!: () => void;
+    const closed = new Promise<void>((resolve) => {
+      resolveClosed = resolve;
+    });
+    const observer = {
+      observe(subject: unknown, topic: string) {
+        if (topic !== "domwindowclosed" || subject !== window)
+          return;
+        dialog.dialogData.loadLock?.resolve();
+        dialog.dialogData.unloadLock?.resolve();
+        resolveClosed();
+      },
     };
+    // Track the native window lifetime, independent of document navigation/unload.
+    Services.ww.registerNotification(observer);
     // The toolkit's unloadLock remains pending if the window closes before loading.
     pendingDialogs.add(window);
     const loadResolver = dialog.dialogData.loadLock?.resolve;
@@ -66,17 +77,16 @@ export function useDialog<T extends DialogHelper | SettingsDialogHelper>(dialog:
       await dialog.dialogData.loadLock?.promise;
       if (!addon.data.alive || window.closed)
         return;
-      window.addEventListener("unload", onUnload, { once: true });
       pendingDialogs.delete(window);
       pendingLoadResolvers.delete(window);
       addon.data.dialogs.set(id, window);
       logger.debug("dialog opened, awaiting operation...");
       window.focus();
       (window.document.getElementById(OK_BUTTON_ID) as HTMLButtonElement | null)?.focus();
-      await dialog.dialogData.unloadLock?.promise;
+      await closed;
     }
     finally {
-      window.removeEventListener("unload", onUnload);
+      Services.ww.unregisterNotification(observer);
       pendingDialogs.delete(window);
       pendingLoadResolvers.delete(window);
       addon.data.dialogs.delete(id);

@@ -3,7 +3,7 @@ richtext-toolbar-label = Title formatting toolbar
 menuitem-label = 
   .label = MetaRef
 menuitem-stdFormatFlow = 
-  .label = Lint and Fix
+  .label = MetaRef: Check and Fix Metadata
 field-nature-index = Nature Index
 
 menu-group-primary = Common actions

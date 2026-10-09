@@ -3,7 +3,7 @@ richtext-toolbar-label = 论文标题格式工具栏
 menuitem-label = 
   .label = MetaRef
 menuitem-stdFormatFlow = 
-  .label = Lint 并修复
+  .label = MetaRef：检查并修复元数据
 field-nature-index = Nature Index
 
 menu-group-primary = 常用操作

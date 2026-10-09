@@ -20,16 +20,21 @@ export interface JournalLookupMaps {
 
 export class DataLoader {
   private static cache = new Map<string, any>();
-  private static derived<T>(key: string, build: () => Promise<T>): Promise<T> {
+  private static persistentKeys = new Set<string>();
+  private static derived<T>(key: string, build: () => Promise<T>, persistent = false): Promise<T> {
     const cacheKey = `derived:${key}`;
     if (this.cache.has(cacheKey))
       return this.cache.get(cacheKey);
     const pending = build().catch((error) => {
-      if (this.cache.get(cacheKey) === pending)
+      if (this.cache.get(cacheKey) === pending) {
         this.cache.delete(cacheKey);
+        this.persistentKeys.delete(cacheKey);
+      }
       throw error;
     });
     this.cache.set(cacheKey, pending);
+    if (persistent)
+      this.persistentKeys.add(cacheKey);
     return pending;
   }
 
@@ -46,7 +51,7 @@ export class DataLoader {
           titleMap.set(normalized, title);
       }
       return { abbrMap, titleMap };
-    });
+    }, true);
   }
 
   static getConferenceAbbrMap(): Promise<Map<string, string>> {
@@ -59,7 +64,7 @@ export class DataLoader {
           map.set(normalized, abbr);
       }
       return map;
-    });
+    }, true);
   }
 
   static getESIJournalMaps(customDataPath?: string): Promise<ESILookupMaps> {
@@ -68,7 +73,7 @@ export class DataLoader {
         ? await this.load(/\.csv$/i.test(customDataPath) ? "csv" : "json", customDataPath, { noheader: false })
         : await this.load("esiJournals");
       return buildESILookupMaps(parseESIDataset(entries));
-    });
+    }, !customDataPath);
   }
 
   static getNatureIndexJournalMaps(customDataPath?: string): Promise<NatureIndexLookupMaps> {
@@ -77,7 +82,7 @@ export class DataLoader {
         ? await this.load(/\.csv$/i.test(customDataPath) ? "csv" : "json", customDataPath, { noheader: false })
         : await this.load("natureIndexJournals");
       return buildNatureIndexLookupMaps(parseNatureDataset(data));
-    });
+    }, !customDataPath);
   }
   static async load(key: "esiJournals"): Promise<ESIJournalEntry[]>;
   static async load(key: "natureIndexJournals"): Promise<{ venues: { title: string; type: "journal" | "conference"; aliases?: string[]; issn?: string[] }[] }>;
@@ -109,18 +114,30 @@ export class DataLoader {
     });
     // Share the in-flight read as well as its result between concurrent items.
     this.cache.set(cacheKey, pending);
+    if (["journalAbbr", "conferencesAbbr", "universityPlace", "esiJournals", "natureIndexJournals"].includes(key))
+      this.persistentKeys.add(cacheKey);
     try {
       return await pending;
     }
     catch (error) {
-      if (this.cache.get(cacheKey) === pending)
+      if (this.cache.get(cacheKey) === pending) {
         this.cache.delete(cacheKey);
+        this.persistentKeys.delete(cacheKey);
+      }
       throw error;
+    }
+  }
+
+  static clearBatchCache() {
+    for (const key of this.cache.keys()) {
+      if (!this.persistentKeys.has(key))
+        this.cache.delete(key);
     }
   }
 
   static clearCache() {
     this.cache.clear();
+    this.persistentKeys.clear();
 
     logger.debug("Data cache cleared");
   }

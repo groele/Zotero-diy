@@ -7,6 +7,7 @@ import { registerPrefs, registerPrefsScripts } from "./modules/preference";
 import { RichTextToolBar, setHtmlTag } from "./modules/rich-text";
 import { Rules } from "./modules/rules";
 import { registerShortcuts } from "./modules/shortcuts";
+import { AutomaticItems } from "./utils/automatic-items";
 import { closeAllDialogs } from "./utils/dialog";
 import { toArray } from "./utils/general";
 import { loadJournalInsights } from "./utils/journal-insights";
@@ -16,6 +17,10 @@ import { getPref } from "./utils/prefs";
 
 const shortcutCleanups = new Map<Window, () => void>();
 const toolbars = new Map<Window, RichTextToolBar>();
+const automaticItems = new AutomaticItems(processAddedItems, () => {
+  const configuredDelay = getPref("lint.delayOnAdded");
+  return Number.isFinite(configuredDelay) ? Math.max(500, Math.min(60_000, configuredDelay)) : 500;
+});
 
 async function onStartup() {
   await Promise.all([Zotero.initializationPromise, Zotero.unlockPromise, Zotero.uiReadyPromise]);
@@ -49,6 +54,7 @@ async function onMainWindowUnload(win: Window): Promise<void> {
 
 async function onShutdown() {
   addon.data.alive = false;
+  automaticItems.cancelPending();
   unregisterNotifier();
   closeAllDialogs();
   await addon.runner.stop();
@@ -84,15 +90,15 @@ async function onNotify(
   if (extraData.skipAutoSync)
     return;
 
-  // Wait a short time to allow other plugins' changes to be saved
-  // Use hidden pref `lint.delayOnAdded` but enforce a minimum of 500ms
-  const configuredDelay = getPref("lint.delayOnAdded");
-  const delay = Number.isFinite(configuredDelay) ? Math.max(500, configuredDelay) : 500;
-  await Zotero.Promise.delay(delay);
+  // Let importers finish saving and group nearby notifications into one batch.
+  await automaticItems.enqueue(ids);
+}
+
+async function processAddedItems(ids: number[]) {
   if (!addon.data.alive || !getPref("lint.onAdded"))
     return;
 
-  const items = Zotero.Items.get(ids as number[]).filter(
+  const items = Zotero.Items.get(ids).filter(
     (item): item is Zotero.Item => {
       // skip deleted or non-existent items
       if (!item || !item.isRegularItem())
@@ -127,7 +133,7 @@ async function onNotify(
     await addon.hooks.onLintInBatch("standard", items);
   }
 
-  logger.debug("notify end for", event, type, ids, extraData);
+  logger.debug("automatic batch completed for", ids);
 }
 
 async function onPrefsEvent(type: string, data: { [key: string]: never }) {

@@ -1,3 +1,4 @@
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { env } from "node:process";
 import { defineConfig } from "zotero-plugin-scaffold";
@@ -73,7 +74,9 @@ export default defineConfig({
           | ${Rules.getAll().map(r => `"${r.id}"`).join("\n  | ")}
         `.replaceAll(" ".repeat(8), "");
 
-        fse.outputFileSync("typings/rules.d.ts", dts);
+        const declarationPath = "typings/rules.d.ts";
+        if (!existsSync(declarationPath) || readFileSync(declarationPath, "utf8") !== dts)
+          fse.outputFileSync(declarationPath, dts);
       },
     },
   },

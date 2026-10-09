@@ -130,15 +130,18 @@ function setupDependencies(pane: Element) {
   const prefix = `${addon.data.config.prefsPrefix}.`;
   const controls = [...pane.querySelectorAll<HTMLInputElement>("[preference]")];
   const key = (control: Element) => control.getAttribute("preference")!.replace(prefix, "");
+  const parents = controls.filter(control => control.localName === "checkbox")
+    .map(control => ({ control, prefix: `${key(control)}.` }));
+  const dependencies = controls.map(control => ({
+    control,
+    parents: parents.filter(parent => parent.control !== control && key(control).startsWith(parent.prefix)),
+  }));
+  const auto = controls.find(control => key(control) === "lint.onAdded");
+  const group = controls.find(control => key(control) === "lint.onGroup");
   const update = () => {
-    for (const control of controls) {
-      const pref = key(control);
-      const parents = controls.filter(parent => parent !== control && parent.localName === "checkbox"
-        && pref.startsWith(`${key(parent)}.`));
-      control.disabled = parents.some(parent => !parent.checked);
+    for (const { control, parents } of dependencies) {
+      control.disabled = parents.some(parent => !parent.control.checked);
     }
-    const auto = controls.find(control => key(control) === "lint.onAdded");
-    const group = controls.find(control => key(control) === "lint.onGroup");
     if (auto && group)
       group.disabled = !auto.checked;
     for (const button of pane.querySelectorAll<HTMLButtonElement>("hbox button")) {

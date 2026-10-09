@@ -596,6 +596,12 @@ describe("data processing resilience in Zotero", function () {
     for (let attempt = 0; attempt < 20 && win.document.querySelector(".metaref-richtext-toolbar"); attempt++)
       await Zotero.Promise.delay(25);
     assert.isNull(win.document.querySelector(".metaref-richtext-toolbar"), `toolbar closes after blur: active=${win.document.activeElement?.localName}, focused=${win.document.hasFocus()}`);
+    editor.focus();
+    editor.dispatchEvent(new win.MouseEvent("click", { bubbles: true }));
+    otherInput.focus();
+    otherInput.dispatchEvent(new win.MouseEvent("click", { bubbles: true }));
+    await Zotero.Promise.delay(80);
+    assert.isNull(win.document.querySelector(".metaref-richtext-toolbar"), "a delayed title click cannot reopen the toolbar after an outside click");
     const infoEditor = win.document.querySelector("#zotero-item-pane editable-text[fieldname='title'] textarea") as HTMLTextAreaElement;
     assert.isNotNull(infoEditor);
     infoEditor.focus();

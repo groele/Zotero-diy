@@ -6,7 +6,7 @@ This file provides guidance to AI coding agents when working with code in this r
 
 "MetaRef for Zotero" (package name `metaref-for-zotero`) is a Zotero plugin that validates and formats item metadata. It is built on the [zotero-plugin-template](https://github.com/windingwind/zotero-plugin-template) and [zotero-plugin-scaffold](https://github.com/northword/zotero-plugin-scaffold) toolchain, and bundled with esbuild into an ESM script loaded by Zotero (a Firefox/Gecko `firefox140` runtime — not Node).
 
-Target: Zotero 10.0.x (validated on Windows Zotero 10.0.5); build output targets Firefox 140. Package manager: **pnpm** (12.3.4, pinned in package.json). Node v22+ required for development.
+Target: Zotero 10.0.x (validated on Windows Zotero 10.0.6); build output targets Firefox 140. Package manager: **pnpm** (12.3.4, pinned in package.json). Node v22+ required for development.
 
 ## Commands
 
@@ -85,7 +85,7 @@ Entry points into a batch run go through `addon.hooks.onLintInBatch(ruleIDs, ite
 
 ### Built-in data
 
-Large reference datasets (journal abbreviations, conference abbreviations, university→place map, ISO language maps) live in `data/` and are bundled as assets (see `zotero-plugin.config.ts` `build.assets`). At runtime they are loaded lazily and cached via `src/utils/data-loader.ts` (`DataLoader.load(key, ...)`), resolving paths under `${rootURI}data/...`. The cache is cleared after each batch run. Regenerate these files with `pnpm update-data`, not by hand.
+Large reference datasets (journal abbreviations, conference abbreviations, university→place map, ISO language maps) live in `data/` and are bundled as assets (see `zotero-plugin.config.ts` `build.assets`). At runtime they are loaded lazily and cached via `src/utils/data-loader.ts` (`DataLoader.load(key, ...)`), resolving paths under `${rootURI}data/...`. Immutable built-in data and indexes survive batches; custom-file caches are cleared after each batch. Explicit database reload clears the full cache. Regenerate these files with `pnpm update-data`, not by hand.
 
 ## Conventions
 

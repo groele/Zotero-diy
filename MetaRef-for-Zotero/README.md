@@ -2,15 +2,15 @@
 
 <img src="addon/content/icons/metaref-128.png" alt="MetaRef icon" width="64" height="64" />
 
-用于校验、整理和补全文献元数据的 Zotero 插件，当前版本 **12.0.0**，面向 Zotero **10.0.x**。项目仓库：[Zotero-diy / MetaRef-for-Zotero](https://github.com/groele/Zotero-diy/tree/main/MetaRef-for-Zotero)。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 开发，保留上游版权及 AGPL-3.0 许可证。
+用于校验、整理和补全文献元数据的 Zotero 插件，当前版本 **12.1.0**，面向 Zotero **10.0.x**。项目仓库：[Zotero-diy / MetaRef-for-Zotero](https://github.com/groele/Zotero-diy/tree/main/MetaRef-for-Zotero)。基于 [Northword/Linter for Zotero](https://github.com/northword/zotero-format-metadata) 开发，保留上游版权及 AGPL-3.0 许可证。
 
 ## 安装
 
-下载 [MetaRef 12.0.0 安装包](dist/metaref-for-zotero.xpi)，在 Zotero 插件管理器中选择「从文件安装插件」。MetaRef 使用独立插件 ID `metaref@groele`、资源命名空间 `metaref`、实例 `Zotero.MetaRef` 和设置前缀 `extensions.zotero.metaref`。自动更新清单和安装包均从本仓库的 `MetaRef-for-Zotero/dist` 路径获取。
+下载 [MetaRef 12.1.0 安装包](dist/metaref-for-zotero.xpi)，在 Zotero 插件管理器中选择「从文件安装插件」。MetaRef 使用独立插件 ID `metaref@groele`、资源命名空间 `metaref`、实例 `Zotero.MetaRef` 和设置前缀 `extensions.zotero.metaref`。自动更新清单和安装包均从本仓库的 `MetaRef-for-Zotero/dist` 路径获取。
 
-如果当前安装的是 11.0.6 或更早版本，请手动安装 11.0.7 一次：旧目录删除后，旧版本的自动更新地址不再可用。11.0.7 起自动更新地址位于本项目目录。
+如果当前安装的是 11.0.6 或更早版本，请手动安装 12.1.0 一次：旧目录删除后，旧版本的自动更新地址不再可用。11.0.7 起自动更新地址位于本项目目录。
 
-安装前移除已有 Linter／旧 MetaRef 插件，避免两个实例同时整理条目。此版本从默认设置开始，不迁移旧设置；需要重新选择自定义数据库及配置快捷键。
+安装前移除已有 Linter 插件，避免两个实例同时整理条目。MetaRef 12.0.0 可直接更新到 12.1.0，保留同一 MetaRef 设置空间内的设置；不读取或迁移原 Linter 设置。
 
 ## 功能
 
@@ -21,6 +21,8 @@
 - ESI 与 Nature Index 可分别使用自定义 JSON／CSV，支持校验、重新读取、恢复内置名单及导出内置 JSON。异常文件回退到内置数据并显示原因。
 - 快捷键支持录制、禁用、重置与冲突检查；默认上标组合为 Ctrl+Shift+=，macOS 使用 Cmd。
 - 批处理采用有界并发和统一保存，支持取消、事务失败恢复、撤销／重做及规则错误隔离。
+- 设置页提供「新增条目时自动检查并整理」开关及群组文库开关。短时间的新增通知合并、去重后在后台处理；关闭开关后，等待中的自动任务会跳过。
+- 内置数据及索引跨批次复用，自定义文件在批次结束后释放缓存。进度刷新按阶段节流，保留完整处理与保存计数。
 - 预印本检测同时识别支持的 DOI 和 URL；报告操作可直接启动元数据更新，并在条目已删除时安全跳过。
 
 详细操作见 [元数据整理流程](docs/metadata-workflow-zh.md)，数据库格式见 [自定义数据库指南](docs/custom-journal-databases.md)。
@@ -51,6 +53,6 @@ $env:METAREF_TEST_LOCALE='zh-CN' # 或 en-US
 pnpm test:e2e
 ```
 
-E2E 在独立资料库打开原生菜单、侧栏和设置窗口，并安装生产 XPI 检查打包数据，不替换个人资料库中的插件。当前验收记录见 [verification.json](dist/verification.json) 和 [本轮审查](docs/current-review.md)。外部服务使用受控响应验证；不据此宣称实时网络服务可用。
+E2E 在独立资料库打开原生菜单、侧栏和设置窗口，并安装生产 XPI 检查打包数据，不替换个人资料库中的插件。当前验收记录见 [verification.json](dist/verification.json)、[本轮审查](docs/current-review.md) 和 [性能检验](docs/performance-audit-2026-10-09.md)。外部服务使用受控响应验证；不据此宣称实时网络服务可用。
 
 普通开发的 `pnpm start` 需先配置 `.env.example` 中的程序和独立资料库目录。数据生成见 `pnpm update-data`，普通构建直接读取已生成的数据。上游项目说明保留在 [UPSTREAM-README](docs/UPSTREAM-README.md)。

@@ -1,3 +1,5 @@
+import { logger } from "../utils/logger";
+
 let notifierID: string | undefined;
 
 export function registerNotifier() {
@@ -5,7 +7,7 @@ export function registerNotifier() {
   // Register the callback in Zotero as an item observer
   notifierID = Zotero.Notifier.registerObserver(
     {
-      notify: async (
+      notify: (
         event: string,
         type: string,
         ids: number[] | string[],
@@ -15,7 +17,8 @@ export function registerNotifier() {
           unregisterNotifier();
           return;
         }
-        await addon.hooks.onNotify(event, type, ids, extraData);
+        // Zotero awaits each observer; background formatting must not delay imports.
+        void addon.hooks.onNotify(event, type, ids, extraData).catch(error => logger.error("Automatic metadata processing failed:", error));
       },
     },
     ["item"],

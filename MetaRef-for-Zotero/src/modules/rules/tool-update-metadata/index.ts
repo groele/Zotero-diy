@@ -301,6 +301,11 @@ export const ToolUpdateMetadata = defineRule<UpdateMetadataOption>({
           properties: {
             textContent: getString("rule-tool-update-metadata-dialog-note-chinese-limit"),
           },
+        }, {
+          tag: "li",
+          properties: {
+            textContent: getString("rule-tool-update-metadata-dialog-note-type-change"),
+          },
         }],
       });
 
