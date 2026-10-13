@@ -1,5 +1,10 @@
 # Changelog
 
+## 40.1.2 — 2026-10-13
+
+- Apply LF normalization to all text payloads, including LICENSE, and define repository attributes for reproducible checkouts.
+- Verify all 14 XPI entries against the staged Git index before publishing; runtime behavior remains unchanged.
+
 ## 40.1.1 — 2026-10-13
 
 - Normalize SVG line endings so every packaged runtime file matches the published Git blob byte for byte.
