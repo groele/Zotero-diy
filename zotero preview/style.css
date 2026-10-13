@@ -120,7 +120,6 @@ collapsible-section:has(> .zotero-preview-root) {
 
 .zotero-preview-copy-success {
     transform: scale(1.2);
-    background: color-mix(in srgb, #009900 20%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

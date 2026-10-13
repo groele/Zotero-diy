@@ -1,5 +1,13 @@
 # Changelog
 
+## 40.1.3 — 2026-10-13
+
+- Restore the original position preference: top by default, after Info, or bottom, shared by library and main-window reader sidebars.
+- Apply placement through native section reordering without persisting changes to other sidebar preferences.
+- Restore the original copy animation: 1.2 scale and green checkmark, remove scale at 300 ms, restore clipboard icon at 1000 ms.
+- Cancel previous feedback timers on repeated copy and clear timers during section destruction.
+- Add placement and copy-animation regressions while retaining the reader lifecycle and caching improvements.
+
 ## 40.1.2 — 2026-10-13
 
 - Apply LF normalization to all text payloads, including LICENSE, and define repository attributes for reproducible checkouts.

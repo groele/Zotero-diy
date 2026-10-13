@@ -22,7 +22,12 @@
         </vbox>
     </groupbox>
     <groupbox>
-        <html:p data-l10n-id="zotero-preview-native-position"></html:p>
+        <label><html:h2 data-l10n-id="zotero-preview-settings-position"></html:h2></label>
+        <radiogroup native="true" id="extensions-zoteropreview-position" preference="extensions.zoteropreview.position">
+            <radio id="extensions-zoteropreview-position-top" value="zotero-item-pane-header" data-l10n-id="zotero-preview-settings-position-top"/>
+            <radio id="extensions-zoteropreview-position-afterInfo" value="zotero-editpane-item-box" data-l10n-id="zotero-preview-settings-position-afterinfo"/>
+            <radio id="extensions-zoteropreview-position-bottom" value="zotero-editpane-related" data-l10n-id="zotero-preview-settings-position-bottom"/>
+        </radiogroup>
     </groupbox>
     <groupbox>
         <label><html:h2 data-l10n-id="zotero-preview-settings-display"></html:h2></label>

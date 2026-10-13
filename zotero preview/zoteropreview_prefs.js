@@ -17,6 +17,9 @@ Zotero.zoteropreview.Prefs = {
         }
         menu.value = preview.pref('citationstyle') || '';
         menu.addEventListener('command', () => preview.setPref(preview._prefPrefix + 'citationstyle', menu.value));
+        const position = document.getElementById('extensions-zoteropreview-position');
+        position.value = preview.getPosition();
+        position.addEventListener('command', () => preview.setPref(preview._prefPrefix + 'position', position.value));
         const display = document.getElementById('extensions-zoteropreview-whatToShow');
         display.value = preview.pref('whatToShow') || 'zpboth';
         display.addEventListener('command', () => preview.setPref(preview._prefPrefix + 'whatToShow', display.value));
