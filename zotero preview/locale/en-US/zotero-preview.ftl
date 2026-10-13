@@ -1,6 +1,7 @@
 # The title of the pane element
 zotero-preview-pane-title =
     .label = Preview
+    .tooltiptext = Citation Preview
 
 ######
 # these are all in the Settings
@@ -31,4 +32,15 @@ zotero-preview-copy-unavailable = Copy unavailable. Try Zotero copy shortcuts or
 zotero-preview-quickcopy-unavailable = QuickCopy format is unavailable. Check Quick Copy settings and try again.
 zotero-preview-no-style = No bibliography style is chosen in the settings for QuickCopy. Set Preview preference in Settings.
 zotero-preview-unavailable = Preview unavailable. Try selecting the item again.
-zotero-preview-limit-reached = Showing the first { $shown } of { $total } selected items. Increase the preview limit in ZoteroPreview settings to show more.
+
+zotero-preview-loading = Loading preview…
+zotero-preview-native-position = Preview is available in library and reader sidebars. Drag its sidebar icon to reorder, or right-click to pin the section.
+zotero-preview-truncated = { $count } additional items omitted.
+zotero-preview-follow-quickcopy =
+    .label = Follow Zotero Quick Copy settings
+zotero-preview-copy-bibliography =
+    .title = Copy bibliography
+    .aria-label = Copy bibliography
+zotero-preview-copy-citation =
+    .title = Copy in-text citation
+    .aria-label = Copy in-text citation

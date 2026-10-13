@@ -1,6 +1,7 @@
 # The title of the pane element
 zotero-preview-pane-title =
     .label = Avance
+    .tooltiptext = Vista previa de citas
 
 ######
 # these are all in the Settings
@@ -31,4 +32,15 @@ zotero-preview-copy-unavailable = No se puede copiar. Pruebe los atajos de Zoter
 zotero-preview-quickcopy-unavailable = El formato de Quick Copy no está disponible. Revise sus ajustes e inténtelo de nuevo.
 zotero-preview-no-style = No hay ningún estilo bibliográfico seleccionado en Quick Copy. Elija un estilo en los ajustes de ZoteroPreview.
 zotero-preview-unavailable = La vista previa no está disponible. Vuelva a seleccionar el elemento.
-zotero-preview-limit-reached = Se muestran los primeros { $shown } de { $total } elementos seleccionados. Aumente el límite en la configuración de ZoteroPreview para mostrar más.
+
+zotero-preview-loading = Cargando vista previa…
+zotero-preview-native-position = La vista previa aparece en las barras laterales de la biblioteca y del lector. Arrastre su icono para cambiar el orden o use el menú contextual para fijar la sección.
+zotero-preview-truncated = { $count } elementos adicionales omitidos.
+zotero-preview-follow-quickcopy =
+    .label = Seguir los ajustes de Quick Copy de Zotero
+zotero-preview-copy-bibliography =
+    .title = Copiar bibliografía
+    .aria-label = Copiar bibliografía
+zotero-preview-copy-citation =
+    .title = Copiar cita en el texto
+    .aria-label = Copiar cita en el texto

@@ -9,7 +9,7 @@
 | 项目 | 说明 | 当前版本 | Zotero 兼容声明 | 入口 |
 |---|---|---:|---|---|
 | Zotero Citation | 协助维护 Zotero 与 Word 集成引用信息，并在 Zotero 条目列表中显示引用状态。 | 40.0.3（候选维护版） | `6.999`–`10.0.*`，以子项目 `manifest.json` 为准 | [项目说明](./zotero%20citation/README.md) · [审查记录](./zotero%20citation/PROJECT_AUDIT.md) |
-| ZoteroPreview | 在 Zotero 条目侧栏和 Reader 侧栏预览参考文献及正文引用样式，并提供复制操作。 | 40.0.1 | `8.0`–`10.0.*`，以子项目 `manifest.json` 为准 | [项目说明](./zotero%20preview/README.md) · [审查记录](./zotero%20preview/AUDIT.md) · [XPI 安装包](./zotero%20preview/dist/ZoteroPreview-40.0.1.xpi) |
+| ZoteroPreview | 在 Zotero 主库及主窗口阅读标签页的原生侧栏预览参考文献和正文引用，并提供复制操作。 | 40.1.0 | `8.0`–`10.0.*`，以子项目 `manifest.json` 为准 | [项目说明](./zotero%20preview/README.md) · [验证记录](./zotero%20preview/VALIDATION.md) · [XPI 安装包](./zotero%20preview/dist/ZoteroPreview-40.1.0.xpi) |
 | MetaRef for Zotero (原 Linter) | 校验、整理和补全文献元数据，支持化学式上下标、缩写、全学科 ESI 和 Nature Index 标记。 | 11.0.7 | `10.0`–`10.999`；已在 Windows Zotero 10.0.5 验证 | [项目说明](./MetaRef-for-Zotero/README.md) · [11.0.7 发布记录](./MetaRef-for-Zotero/docs/releases/v11.0.7.md) · [XPI 安装包](./MetaRef-for-Zotero/dist/metaref-for-zotero.xpi) |
 
 兼容范围是各插件清单中声明的范围，不代表已在该范围内所有 Zotero 构建上完成实机验收。尤其是 Zotero 主版本升级后，请先阅读子项目的兼容说明和已知限制。
@@ -18,7 +18,7 @@
 
 ### 安装 ZoteroPreview
 
-1. 从 [ZoteroPreview 40.0.1 XPI](./zotero%20preview/dist/ZoteroPreview-40.0.1.xpi) 下载安装包。
+1. 从 [ZoteroPreview 40.1.0 XPI](./zotero%20preview/dist/ZoteroPreview-40.1.0.xpi) 下载安装包。
 2. 在 Zotero 的插件管理器中选择“从文件安装插件/附加组件”，然后选择下载的 `.xpi` 文件。
 3. 根据 Zotero 提示重启，再按 [项目 README](./zotero%20preview/README.md) 检查设置与功能。
 

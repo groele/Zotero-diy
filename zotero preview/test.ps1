@@ -1,13 +1,11 @@
 $ErrorActionPreference = 'Stop'
-$projectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$node = Get-Command node -ErrorAction Stop
-$jsFiles = @('bootstrap.js', 'zoteropreview.js', 'zoteropreview_prefs.js')
-foreach ($file in $jsFiles) {
-    & $node.Source --check (Join-Path $projectRoot $file)
-    if ($LASTEXITCODE -ne 0) { throw "JavaScript syntax check failed: $file" }
+foreach ($file in @('bootstrap.js','zoteropreview.js','zoteropreview_prefs.js')) {
+    node --check (Join-Path $PSScriptRoot $file)
+    if ($LASTEXITCODE -ne 0) { throw "Syntax check failed: $file" }
 }
-& $node.Source --test (Join-Path $projectRoot 'tests\zoteropreview.test.js')
-if ($LASTEXITCODE -ne 0) { throw 'Node.js test suite failed.' }
-& (Join-Path $projectRoot 'scripts\build.ps1')
-if ($LASTEXITCODE -ne 0) { throw 'XPI build failed.' }
-Write-Host 'All static tests and XPI package checks passed.'
+node --test (Join-Path $PSScriptRoot 'tests\native-sidebar.test.cjs')
+if ($LASTEXITCODE -ne 0) { throw 'Native sidebar regressions failed' }
+& (Join-Path $PSScriptRoot 'build.ps1')
+node --test (Join-Path $PSScriptRoot 'tests\release.test.cjs')
+if ($LASTEXITCODE -ne 0) { throw 'Release consistency checks failed' }
+Write-Host 'Runtime regressions, syntax, XPI payload hashes, and update-feed checks passed.'

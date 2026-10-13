@@ -1,6 +1,7 @@
 # The title of the pane element
 zotero-preview-pane-title =
     .label = 参考文献样式预览
+    .tooltiptext = 参考文献样式预览
 
 ######
 # these are all in the Settings
@@ -31,4 +32,15 @@ zotero-preview-copy-unavailable = 复制不可用。请尝试 Zotero 复制快�
 zotero-preview-quickcopy-unavailable = QuickCopy 格式不可用。请检查 Quick Copy 设置后重试。
 zotero-preview-no-style = QuickCopy 未选择参考文献样式。请在设置中配置预览样式。
 zotero-preview-unavailable = 预览不可用。请重新选择条目。
-zotero-preview-limit-reached = 当前仅显示所选 { $total } 个条目中的前 { $shown } 个。可在 ZoteroPreview 设置中提高预览上限。
+
+zotero-preview-loading = 正在生成预览…
+zotero-preview-native-position = 主库和阅读页均使用原生侧栏。可在 Zotero 侧栏拖动预览图标排序，或右键固定本栏目。
+zotero-preview-truncated = 另有 { $count } 个条目未显示。
+zotero-preview-follow-quickcopy =
+    .label = 跟随 Zotero Quick Copy 设置
+zotero-preview-copy-bibliography =
+    .title = 复制参考文献
+    .aria-label = 复制参考文献
+zotero-preview-copy-citation =
+    .title = 复制正文引用
+    .aria-label = 复制正文引用

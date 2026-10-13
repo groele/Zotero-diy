@@ -1,1019 +1,344 @@
-
+/* Native item-pane lifecycle; independent state per library/reader section. */
 Zotero.zoteropreview = {
-	id: null,
-	version: null,
-	rootURI: null,
 	initialized: false,
-	currentStyle: null,
-	_notifierID: null,
-	_pendingPreviewTimers: null,
-	_windowRetryTimers: null,
-	_previewTargetDoc: null,
-	_selectListeners: null,
-	_addedElementIDs: null,
-	_debugEnabled: false,
-	_lastSelfCheck: null,
-	_windowReadyListeners: null,
-	_previewStates: null,
-	_mountedWindows: null,
-	_maxPreviewItems: 100,
-
+	_prefPrefix: 'extensions.zoteropreview.',
+	_cacheLimit: 64,
+	_cacheByteLimit: 2 * 1024 * 1024,
+	_cacheTTL: 60000,
 	init({ id, version, rootURI }) {
 		if (this.initialized) return;
-		this.id = id;
-		this.version = version;
-		this.rootURI = rootURI;
-		this._addedElementIDs = new Set();
-		this._pendingPreviewTimers = new Map();
-		this._windowRetryTimers = new Map();
-		this._windowReadyListeners = new Map();
-		this._selectListeners = new Map();
-		this._previewStates = new WeakMap();
-		this._mountedWindows = new Set();
-		this._debugEnabled = !!Zotero.Prefs.get('extensions.zoteropreview.debug', true);
-		this._maxPreviewItems = this._getMaxPreviewItems();
+		Object.assign(this, { id, version, rootURI });
+		this._states = new Map();
+		this._cache = new Map();
+		this._cacheBytes = 0;
+		this._prefObservers = [];
+		this._stylesheets = new Map();
+		this._stats = { generations: 0, cacheHits: 0 };
 		this.initialized = true;
 	},
-
-	log(msg) {
-		if (!this._debugEnabled) return;
-		Zotero.debug("zoteropreview: " + msg);
+	log(message) {
+		if (this.pref('debug')) Zotero.debug(`ZoteroPreview: ${message}`);
 	},
-
-	_now() {
-		return Date.now();
-	},
-
-	getPreviewState(doc) {
-		if (!this._previewStates) {
-			this._previewStates = new WeakMap();
-		}
-		if (!this._previewStates.has(doc)) {
-			this._previewStates.set(doc, {
-				currentItemID: null,
-				currentItemIDs: [],
-				lastHTML: null,
-				lastRenderKey: null,
-				copyClickHandler: null,
-				copyFeedbackTimers: new Set(),
-				sourceWindow: null
-			});
-		}
-		return this._previewStates.get(doc);
-	},
-
-	buildRenderKey(item, format, prefs) {
-		var items = Array.isArray(item) ? item : [item];
-		return [
-			items.map(entry => entry?.id || '').join(','),
-			format?.id || '',
-			format?.locale || prefs?.locale || '',
-			prefs?.showpref || '',
-			prefs?.fontSizePref || '',
-			prefs?.spacingPref || ''
-		].join('|');
-	},
-
-	invalidatePreviewCache(ids) {
-		var invalidated = false;
-		for (let win of (this._mountedWindows || [])) {
-			let doc = win?.document;
-			if (!doc) continue;
-			let state = this.getPreviewState(doc);
-			var currentIDs = state.currentItemIDs || (state.currentItemID ? [state.currentItemID] : []);
-			if (Array.isArray(ids) && currentIDs.length && !ids.some(id => currentIDs.includes(id))) {
-				continue;
-			}
-			state.lastRenderKey = null;
-			state.lastHTML = null;
-			invalidated = true;
-		}
-		return invalidated || !Array.isArray(ids);
-	},
-
-	_getPreviewDocuments() {
-		var docs = [];
-		for (let win of (this._mountedWindows || [])) {
-			let doc = win?.document;
-			if (doc?.getElementById?.('zotero-preview')) {
-				docs.push(doc);
-			}
-		}
-		var fallbackDoc = this._getPreviewTargetDoc();
-		if (fallbackDoc?.getElementById?.('zotero-preview') && !docs.includes(fallbackDoc)) {
-			docs.push(fallbackDoc);
-		}
-		return docs;
-	},
-
-	_queueAllPreviews(debugmsg) {
-		var docs = this._getPreviewDocuments();
-		if (!docs.length) {
-			this._queuePreview(debugmsg, this._getPreviewTargetDoc());
-			return;
-		}
-		for (let doc of docs) {
-			let state = this.getPreviewState(doc);
-			state.lastRenderKey = null;
-			state.lastHTML = null;
-			this._queuePreview(debugmsg, doc);
-		}
-	},
-
-	_previewMessage(text, type, l10nId) {
-		var localization = l10nId ? ` data-l10n-id="${l10nId}"` : '';
-		return `<div class="zotero-preview-message zotero-preview-message-${type || 'info'}" role="status" aria-live="polite"${localization}>${text}</div>`;
-	},
-
-	_previewLimitNotice(shown, total) {
-		return `<div class="zotero-preview-message zotero-preview-message-info" role="status" aria-live="polite" data-l10n-id="zotero-preview-limit-reached" data-l10n-args='{"shown":${shown},"total":${total}}'></div>`;
-	},
-
-	_getMaxPreviewItems() {
-		var value = parseInt(Zotero.Prefs.get('extensions.zoteropreview.maxPreviewItems', true), 10);
-		return Number.isFinite(value) ? Math.max(1, Math.min(500, value)) : 100;
-	},
-
-	_clipboardIconSVG() {
-		return `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3V0H1V13H4V16H15V3H12ZM2 1H11V12H2V1ZM14 15H5V13H12V4H14V15Z" fill="#cc9200"/></svg>`;
-	},
-
-	_successIconSVG() {
-		return `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 1L5.5 9.5L2 6" stroke="#009900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-	},
-
-	_copyButton(id, asCitations) {
-		var title = asCitations ? 'Copy or use ctrl + shift + A' : 'Copy or use ctrl + shift + C';
-		return ` <span id="${id}" class="zotero-preview-copy" role="button" tabindex="0" aria-label="${title}" data-copy-citation="${asCitations ? 'true' : 'false'}" title="${title}">${this._clipboardIconSVG()}</span>`;
-	},
-
-	_previewBlockHTML(kind, html, copyId, asCitations) {
-		return [
-			`<section class="zotero-preview-block zotero-preview-block-${kind}">`,
-			`<div class="zotero-preview-block-row">`,
-			`<div class="zotero-preview-block-body">${html}</div>`,
-			`<div class="zotero-preview-block-toolbar">${this._copyButton(copyId, asCitations)}</div>`,
-			`</div>`,
-			`</section>`
-		].join('');
-	},
-
-	_copyItemsToClipboard(items, format, locale, asCitations, sourceDoc) {
-		try {
-			if (typeof Components === 'undefined') {
-				throw new Error('Components API unavailable');
-			}
-			var wm = Components.classes?.["@mozilla.org/appshell/window-mediator;1"]
-						   ?.getService(Components.interfaces.nsIWindowMediator);
-			var browserWindow = wm?.getMostRecentWindow("navigator:browser");
-			var fileInterface = browserWindow?.Zotero_File_Interface;
-			if (!fileInterface?.copyItemsToClipboard) {
-				throw new Error('Zotero clipboard interface unavailable');
-			}
-			fileInterface.copyItemsToClipboard(
-					items, format.id, locale, format.contentType == 'html', asCitations
-			);
-			return true;
-		}
-		catch (err) {
-			this.log('copy failed: ' + err);
-			this._showCopyFailure(sourceDoc);
-			return false;
-		}
-	},
-
-	_showCopyFailure(sourceDoc) {
-		var doc = sourceDoc || this._getPreviewTargetDoc();
-		var preview = doc?.getElementById ? doc.getElementById('zotero-preview') : null;
-		if (!preview) return;
-		var state = this.getPreviewState(doc);
-		this.renderPreview(doc, state, {
-			 html: this._previewMessage('Copy unavailable. Try Zotero copy shortcuts or select the item again.', 'warning', 'zotero-preview-copy-unavailable')
+	pref(name) { return Zotero.Prefs.get(this._prefPrefix + name, true); },
+	start() {
+		if (!Zotero.ItemPaneManager?.registerSection) throw new Error('Native ItemPaneManager API required');
+		const title = { l10nID: 'zotero-preview-pane-title', icon: this.rootURI + 'view.svg' };
+		this._sectionID = Zotero.ItemPaneManager.registerSection({
+			paneID: 'zotero-preview', pluginID: this.id,
+			header: title, sidenav: { ...title, orderable: true },
+			onInit: props => this._initSection(props),
+			onDestroy: ({ body }) => this._destroySection(body),
+			onItemChange: props => this._changeItem(props),
+			onRender: props => this._prepareRender(props),
+			onAsyncRender: props => this._renderSection(props),
+			onToggle: ({ body }) => { const state = this._states.get(body); if (state && !state.payload) this._scheduleRefresh(state); },
 		});
-	},
-
-	_ensurePreviewClickHandler(targetDoc, targetDiv, state) {
-		if (state.copyClickHandler || !targetDiv?.addEventListener) return;
-		state.copyClickHandler = (event) => {
-			var target = event.target;
-			var copyTarget = target?.closest ? target.closest('[data-copy-citation]') : null;
-			if (!copyTarget || !targetDiv.contains(copyTarget)) return;
-			if (event.type === 'keydown' && event.key !== 'Enter' && event.key !== ' ') return;
-			if (event.type === 'keydown') event.preventDefault();
-			this.copyCitation(copyTarget.dataset.copyCitation == 'true', targetDoc);
-		};
-		targetDiv.addEventListener('click', state.copyClickHandler);
-		targetDiv.addEventListener('keydown', state.copyClickHandler);
-	},
-
-	renderPreview(targetDoc, state, payload) {
-		var targetDiv = targetDoc.getElementById('zotero-preview');
-		if (!targetDiv) return false;
-		this._ensurePreviewClickHandler(targetDoc, targetDiv, state);
-		if (payload.fontSizePref) {
-			targetDiv.style.setProperty('--zotero-preview-font-size', payload.fontSizePref + 'em');
+		if (!this._sectionID) throw new Error('Could not register ZoteroPreview section');
+		this._notifierID = Zotero.Notifier.registerObserver(this, ['item', 'tab'], 'zoteropreview');
+		for (const name of ['citationstyle', 'whatToShow', 'fontsize', 'spacing', 'maxPreviewItems']) {
+			this._prefObservers.push(Zotero.Prefs.registerObserver(this._prefPrefix + name,
+				() => this._queueAllPreviews(), true));
 		}
-		if (state.lastHTML === payload.html && targetDiv.innerHTML === payload.html) {
-			return false;
-		}
-		targetDiv.innerHTML = payload.html;
-		state.lastHTML = payload.html;
-		if (payload.spacingPref) {
-			let bibBody = targetDiv.querySelector?.('.csl-bib-body');
-			if (bibBody) {
-				bibBody.style.lineHeight = payload.spacingPref;
-			}
-		}
-		return true;
-	},
-
-	// this was an approach that worked, but since Zotero itself uses stylesheets, I went with that
-	// the ::before selector isn't available in JavaScript
-	addIcon(){
-		var mainDocument = Zotero.getActiveZoteroPane().document;
-		if (mainDocument.getElementById('zpicon') == null){
-			var icon = mainDocument.createElement('span');
-			icon.innerHTML=" ";
-			icon.id='zpicon';
-			icon.className = 'zotero-preview-icon';
-
-			this.log('added span');
-
-			mainDocument.querySelector('#zotero-preview-container .head .title').prepend(icon);
-			this.storeAddedElement(icon);
+		for (const name of ['export.quickCopy.setting', 'export.quickCopy.locale', 'export.quickCopy.dragLimit']) {
+			this._prefObservers.push(Zotero.Prefs.registerObserver(name, () => this._queueAllPreviews()));
 		}
 	},
-
-	_queuePreview(debugmsg, targetDoc) {
-		if (targetDoc) {
-			this._previewTargetDoc = targetDoc;
-		}
-		var candidateDoc = this._getPreviewTargetDoc(targetDoc);
-		if (!candidateDoc || !candidateDoc.getElementById('zotero-preview')) {
-			return;
-		}
-		if (!this._pendingPreviewTimers) {
-			this._pendingPreviewTimers = new Map();
-		}
-		if (this._pendingPreviewTimers.has(candidateDoc)) {
-			clearTimeout(this._pendingPreviewTimers.get(candidateDoc));
-		}
-		var timer = setTimeout(() => {
-			this._pendingPreviewTimers.delete(candidateDoc);
-			this.getCitationPreview(debugmsg || 'queued', candidateDoc);
-		}, 80);
-		this._pendingPreviewTimers.set(candidateDoc, timer);
-	},
-
-	_getSelectedItems(sourceDoc) {
-		try {
-			if (sourceDoc) {
-				var state = this._previewStates ? this.getPreviewState(sourceDoc) : null;
-				var sourceWindow = state?.sourceWindow || sourceDoc.defaultView;
-				var pane = sourceWindow?.ZoteroPane || sourceWindow;
-				if (pane?.getSelectedItems) {
-					var selected = pane.getSelectedItems();
-					return Array.isArray(selected) ? selected.filter(item => item?.id) : [];
-				}
-			}
-			if (!Zotero.getActiveZoteroPane) return [];
-			var pane = Zotero.getActiveZoteroPane();
-			if (!pane || !pane.getSelectedItems) return [];
-			var selected = pane.getSelectedItems();
-			return Array.isArray(selected) ? selected.filter(item => item?.id) : [];
-		}
-		catch (err) {
-			this.log('selected items unavailable: ' + err);
-			return [];
-		}
-	},
-
-	_getPreviewTargetDoc(preferredDoc) {
-		if (preferredDoc?.getElementById?.('zotero-preview')) {
-			return preferredDoc;
-		}
-		if (this._previewTargetDoc?.getElementById?.('zotero-preview')) {
-			return this._previewTargetDoc;
-		}
-		var pane = Zotero.getActiveZoteroPane ? Zotero.getActiveZoteroPane() : null;
-		if (pane?.document?.getElementById?.('zotero-preview')) {
-			return pane.document;
-		}
-		return preferredDoc || this._previewTargetDoc || pane?.document || null;
-	},
-
-	_isMainWindow(window) {
-		return !!(window && window.ZoteroPane);
-	},
-
-	_findReaderMountTarget(doc) {
-		var selectors = [
-			'#reader-sidebar',
-			'#reader-ui .sidebar',
-			'#reader-ui',
-			'#reader-container',
-			'.reader-sidebar',
-			'.sidebar',
-			'main'
-		];
-		for (let selector of selectors) {
-			let el = doc.querySelector(selector);
-			if (el) return el;
-		}
-		return doc.body || null;
-	},
-
-	_findReaderInfoSection(doc) {
-		var selectors = [
-			'collapsible-section[data-pane="info"]',
-			'collapsible-section[data-pane="item-info"]',
-			'#reader-sidebar collapsible-section[data-pane="info"]',
-			'#reader-sidebar [data-pane="info"]',
-			'#reader-sidebar #zotero-editpane-info',
-			'#reader-item-pane [data-pane="info"]',
-			'#zotero-reader-item-pane [data-pane="info"]',
-			'#zotero-reader-item-pane #zotero-editpane-info',
-			'.reader-sidebar [data-pane="info"]',
-			'[data-l10n-id="item-pane-info"]',
-			'[data-l10n-id="zotero-item-pane-info"]'
-		];
-		for (let selector of selectors) {
-			let el = doc.querySelector(selector);
-			if (el) return el;
-		}
-		return null;
-	},
-
-	_getReaderInsertionPoint(doc) {
-		var infoSection = this._findReaderInfoSection(doc);
-		if (infoSection?.parentNode) {
-			return { parent: infoSection.parentNode, before: infoSection };
-		}
-		var mountTarget = this._findReaderMountTarget(doc);
-		if (!mountTarget) return null;
-		return { parent: mountTarget, before: mountTarget.firstChild || null };
-	},
-
-	_runSelfCheck(context) {
-		var warnings = [];
-		if (!Zotero?.QuickCopy) warnings.push('QuickCopy API unavailable');
-		if (!Zotero?.Styles) warnings.push('Styles API unavailable');
-		if (typeof Zotero?.getActiveZoteroPane !== 'function') warnings.push('Active pane API unavailable');
-
-		var fontPref = parseFloat(Zotero.Prefs.get('extensions.zoteropreview.fontsize', true));
-		if (Number.isNaN(fontPref) || fontPref < 0.2 || fontPref > 3) warnings.push('fontsize preference out of range');
-
-		var spacingPref = parseFloat(Zotero.Prefs.get('extensions.zoteropreview.spacing', true));
-		if (Number.isNaN(spacingPref) || spacingPref < 1 || spacingPref > 3) warnings.push('spacing preference out of range');
-
-		this._lastSelfCheck = {
-			ok: warnings.length === 0,
-			context,
-			warnings
-		};
-
-		if (!this._lastSelfCheck.ok || this._debugEnabled) {
-			Zotero.debug('zoteropreview self-check (' + context + '): ' + JSON.stringify(this._lastSelfCheck));
-		}
-
-		return this._lastSelfCheck;
-	},
-
-	_scheduleAddToWindow(window, positionpref, attempt) {
-		var tryCount = typeof attempt === 'number' ? attempt : 0;
-		if (tryCount >= 25) return;
-
-		var key = window || 'main';
-		if (!this._windowRetryTimers) {
-			this._windowRetryTimers = new Map();
-		}
-		if (this._windowRetryTimers.has(key)) {
-			clearTimeout(this._windowRetryTimers.get(key));
-		}
-		// Zotero may finish building a pane after DOMContentLoaded. Back off
-		// while keeping retries bounded so a missing target cannot loop forever.
-		var retryDelay = Math.min(1000, 100 * Math.pow(1.4, tryCount));
-		var timer = setTimeout(() => {
-			this._windowRetryTimers.delete(key);
-			this.addToWindow(window, positionpref, tryCount + 1);
-		}, retryDelay);
-		this._windowRetryTimers.set(key, timer);
-	},
-
-	_waitForWindowReady(window, positionpref) {
-		if (!window) return false;
-		if (!this._windowReadyListeners) {
-			this._windowReadyListeners = new Map();
-		}
-		if (this._windowReadyListeners.has(window)) return true;
-
-		var doc = window.document;
-		if (!doc || doc.readyState !== 'loading') return false;
-
-		var onReady = () => {
-			this._windowReadyListeners.delete(window);
-			doc.removeEventListener('DOMContentLoaded', onReady);
-			this.addToWindow(window, positionpref, 0);
-		};
-		this._windowReadyListeners.set(window, { doc, onReady });
-		doc.addEventListener('DOMContentLoaded', onReady);
-		return true;
-	},
-
-	_registerSelectListener(doc) {
-		if (!doc?.addEventListener) return;
-		if (!this._selectListeners) {
-			this._selectListeners = new Map();
-		}
-		if (this._selectListeners.has(doc)) return;
-		var listener = () => {
-			this._queuePreview('select', doc);
-		};
-		this._selectListeners.set(doc, listener);
-		doc.addEventListener('select', listener);
-	},
-
-	_findMainMountTarget(doc, preferredId) {
-		var candidates = [
-			preferredId,
-			'zotero-item-pane-header',
-			'zotero-editpane-item-box',
-			'zotero-editpane-related'
-		];
-
-		for (let id of candidates) {
-			if (!id) continue;
-			let el = doc.getElementById(id);
-			if (el) return el;
-		}
-		return null;
-	},
-
-	_ensureStylesheet(doc) {
-		var link = doc.getElementById('zotero-preview-stylesheet');
-		if (!link) {
-			link = doc.createElement('link');
-			link.id = 'zotero-preview-stylesheet';
-			link.type = 'text/css';
-			link.rel = 'stylesheet';
-			link.href = this.rootURI + 'style.css';
+	_initSection({ doc, body, refresh }) {
+		if (this._states.has(body)) return;
+		doc.defaultView?.MozXULElement?.insertFTLIfNeeded?.('zotero-preview.ftl');
+		let sheet = this._stylesheets.get(doc);
+		if (!sheet) {
+			const link = doc.createElementNS('http://www.w3.org/1999/xhtml', 'link');
+			Object.assign(link, { rel: 'stylesheet', href: this.rootURI + 'style.css' });
 			doc.documentElement.appendChild(link);
+			sheet = { link, count: 0 };
+			this._stylesheets.set(doc, sheet);
 		}
-		this.storeAddedElement(link);
-		return link;
+		sheet.count++;
+		body.classList.add('zotero-preview-root');
+		const state = { doc, body, refresh, item: null, tabType: null, ids: [],
+			generation: 0, key: null, payload: null, timer: null, resolve: null,
+			refreshTimer: null, feedbackTimers: new Set(), destroyed: false };
+		state.handler = event => {
+			const button = event.target?.closest?.('[data-copy-citation]');
+			if (!button || !body.contains(button)) return;
+			if (event.type === 'keydown' && !['Enter', ' '].includes(event.key)) return;
+			event.preventDefault();
+			this.copyCitation(button.dataset.copyCitation === 'true', body, button);
+		};
+		body.addEventListener('click', state.handler);
+		body.addEventListener('keydown', state.handler);
+		this._states.set(body, state);
+		// XUL descendants can keep a larger intrinsic width than their sidebar.
+		// Observe the native section owner instead of polling window dimensions.
+		const owner = body.closest('item-details');
+		if (owner && doc.defaultView.ResizeObserver) {
+			state.sizingOwner = owner;
+			state.widthObserver = new doc.defaultView.ResizeObserver(() => this._fitWidth(state));
+			state.widthObserver.observe(owner);
+		}
 	},
-
-	_ensureReaderContainer(doc) {
-		var insertionPoint = this._getReaderInsertionPoint(doc);
-		if (!insertionPoint) return null;
-		this._ensureStylesheet(doc);
-
-		var container = doc.getElementById('zotero-preview-reader-container');
-		var preview = doc.getElementById('zotero-preview');
-		var state = this.getPreviewState(doc);
-
-		if (!container) {
-			doc.ownerGlobal?.MozXULElement?.insertFTLIfNeeded?.('zotero-preview.ftl');
-			container = doc.createXULElement ? doc.createXULElement("collapsible-section") : doc.createElement('div');
-			container.id = 'zotero-preview-reader-container';
-			container.setAttribute?.('class', 'zotero-preview-reader-container zotero-preview-section');
-			container.open = "";
-			container.dataset.pane = "preview";
-			container.setAttribute?.('data-l10n-id', 'zotero-preview-pane-title');
-			if (!container.setAttribute) {
-				container.className = 'zotero-preview-reader-container zotero-preview-section';
-			}
-			if (insertionPoint.before) {
-				insertionPoint.parent.insertBefore(container, insertionPoint.before);
+	_fitWidth(state) {
+		if (!state.sizingOwner || state.destroyed) return;
+		const bounds = state.sizingOwner.getBoundingClientRect();
+		if (!bounds.width) return;
+		const width = Math.max(0, Math.min(bounds.width, bounds.right - state.body.getBoundingClientRect().left - 8));
+		state.body.style.maxWidth = `${width}px`;
+	},
+	_normalizeItem(item) {
+		const seen = new Set();
+		while (item?.id && !seen.has(item.id)) {
+			seen.add(item.id);
+			if (item.deleted) return null;
+			if (item.isRegularItem()) return item;
+			if (!item.parentID) return null;
+			item = Zotero.Items.get(item.parentID);
+		}
+		return null;
+	},
+	_changeItem({ body, item, tabType, setEnabled }) {
+		const state = this._states.get(body);
+		if (!state) return;
+		this._cancelRender(state);
+		state.item = this._normalizeItem(item);
+		state.tabType = tabType;
+		state.ids = state.item ? [state.item.id] : [];
+		state.key = null;
+		state.payload = null;
+		setEnabled(!!state.item);
+	},
+	_items(state) {
+		// Reader sections never consult the library selection.
+		if (state.tabType === 'library') {
+			const selection = state.doc.defaultView?.ZoteroPane?.getSelectedItems() || [];
+			const items = [...new Map(selection.map(item => this._normalizeItem(item))
+				.filter(Boolean).map(item => [item.id, item])).values()];
+			if (items.some(item => item.id === state.item?.id)) return items;
+		}
+		return state.item ? [state.item] : [];
+	},
+	_config(item) {
+		const qc = Zotero.QuickCopy;
+		const override = this.pref('citationstyle');
+		const format = { ...qc.unserializeSetting(qc.getFormatFromURL(item?.getField('url') || '')) };
+		if (override) Object.assign(format, { id: override, mode: 'bibliography' });
+		if (format.mode !== 'bibliography' || !format.id) throw new Error('No bibliography style configured');
+		format.locale = format.locale || Zotero.Prefs.get('export.quickCopy.locale');
+		const asHTML = format.contentType === 'html';
+		format.contentType = 'text';
+		const show = this.pref('whatToShow');
+		return { format, asHTML, show: ['zpboth', 'zpbib', 'zpintext'].includes(show) ? show : 'zpboth',
+			font: this._number(this.pref('fontsize'), 1, 0.2, 3),
+			spacing: this._number(this.pref('spacing'), 1.5, 1, 3),
+			limit: Math.min(this._number(this.pref('maxPreviewItems'), 100, 1, 500),
+				this._number(Zotero.Prefs.get('export.quickCopy.dragLimit'), 100, 1, 10000)) };
+	},
+	_number(value, fallback, min, max) {
+		const parsed = Number.parseFloat(value);
+		return Number.isFinite(parsed) ? Math.max(min, Math.min(max, parsed)) : fallback;
+	},
+	_prepareRender(props) {
+		const state = this._states.get(props.body);
+		if (!state) return;
+		if (state.item?.id !== this._normalizeItem(props.item)?.id || state.tabType !== props.tabType) this._changeItem(props);
+		if (!state.payload) this._message(state, 'zotero-preview-loading', 'Loading preview…');
+	},
+	_cancelRender(state) {
+		state.generation++;
+		if (state.timer !== null) clearTimeout(state.timer);
+		state.timer = null;
+		state.resolve?.();
+		state.resolve = null;
+	},
+	async _renderSection({ body }) {
+		const state = this._states.get(body);
+		if (!state || state.destroyed || !state.item) return;
+		this._cancelRender(state);
+		const generation = state.generation;
+		// Coalesce rapid changes and yield before synchronous CSL work.
+		await new Promise(resolve => {
+			state.resolve = resolve;
+			state.timer = setTimeout(() => { state.timer = null; state.resolve = null; resolve(); }, 40);
+		});
+		if (state.destroyed || generation !== state.generation || !this.initialized) return;
+		try {
+			const allItems = this._items(state);
+			state.ids = allItems.map(item => item.id);
+			const config = this._config(state.item);
+			const items = allItems.slice(0, Math.floor(config.limit));
+			const key = JSON.stringify([items.map(item => [item.id, item.getField('dateModified')]),
+				config.format, config.show, Zotero.Styles?.get(config.format.id)?.updated || '']);
+			if (this._cache.has(key) && Date.now() - this._cache.get(key).created > this._cacheTTL) this._cacheDelete(key);
+			let payload = this._cache.get(key)?.payload;
+			if (payload) {
+				this._stats.cacheHits++;
+				const entry = this._cache.get(key);
+				this._cache.delete(key);
+				this._cache.set(key, entry);
 			}
 			else {
-				insertionPoint.parent.appendChild(container);
+				const started = Date.now();
+				payload = this._generate(items, config);
+				this._stats.generations++;
+				this._cachePut(key, payload, items.map(item => item.id));
+				this.log(`CSL ${Date.now() - started}ms, ${items.length} items`);
 			}
+			if (state.destroyed || generation !== state.generation) return;
+			state.key = key;
+			state.payload = payload;
+			state.config = config;
+			this._renderPayload(state, payload, allItems.length - items.length);
 		}
-
-		if (!preview) {
-			preview = doc.createElement('div');
-			preview.id = 'zotero-preview';
-			container.appendChild(preview);
+		catch (error) {
+			state.payload = null;
+			this.log(error.stack || error);
+			this._message(state, 'zotero-preview-unavailable', 'Preview unavailable. Check the selected citation style.', true);
 		}
-
-		this.storeAddedElement(container);
-		this.storeAddedElement(preview);
-		this._ensurePreviewClickHandler(doc, preview, state);
-		return preview;
 	},
-
-	addToWindow(windowOrPosition, positionpref, attempt) {
+	_generate(items, { format, show }) {
+		const payload = {};
+		for (const [kind, enabled, citation] of [
+			['bibliography', show !== 'zpintext', false], ['citation', show !== 'zpbib', true]]) {
+			if (!enabled) continue;
+			// QuickCopy uses Zotero's cached CSL processors and returns HTML + text.
+			const result = Zotero.QuickCopy.getContentFromItems(items, format, null, citation);
+			if (!result?.html) throw new Error(`QuickCopy returned no ${kind}`);
+			payload[kind] = { html: result.html, text: result.text };
+		}
+		return payload;
+	},
+	_cachePut(key, payload, ids) {
+		const bytes = JSON.stringify(payload).length * 2;
+		if (bytes > this._cacheByteLimit) return;
+		while (this._cache.size && (this._cache.size >= this._cacheLimit || this._cacheBytes + bytes > this._cacheByteLimit)) this._cacheDelete(this._cache.keys().next().value);
+		this._cache.set(key, { payload, ids, bytes, created: Date.now() });
+		this._cacheBytes += bytes;
+	},
+	_cacheDelete(key) {
+		this._cacheBytes -= this._cache.get(key)?.bytes || 0;
+		this._cache.delete(key);
+	},
+	_clipboardIconSVG() {
+		return '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3V0H1V13H4V16H15V3H12ZM2 1H11V12H2V1ZM14 15H5V13H12V4H14V15Z" fill="#cc9200"/></svg>';
+	},
+	_block(kind, content) {
+		const label = kind === 'citation' ? 'Copy in-text citation' : 'Copy bibliography';
+		return `<section class="zotero-preview-block"><div class="zotero-preview-block-row"><div class="zotero-preview-block-body">${content.html}</div><div class="zotero-preview-block-toolbar"><span class="zotero-preview-copy" role="button" tabindex="0" title="${label}" aria-label="${label}" data-l10n-id="zotero-preview-copy-${kind}" data-copy-citation="${kind === 'citation'}">${this._clipboardIconSVG()}</span></div></div></section>`;
+	},
+	_renderPayload(state, payload, omitted) {
+		let html = Object.entries(payload).map(([kind, content]) => this._block(kind, content)).join('<hr class="zotero-preview-separator"/>');
+		if (omitted) html += `<div class="zotero-preview-message" data-l10n-id="zotero-preview-truncated" data-l10n-args='${JSON.stringify({ count: omitted })}'>${omitted} additional items omitted.</div>`;
+		const { body, config } = state;
+		body.style.setProperty('--zotero-preview-font-size', config.font + 'em');
+		body.style.setProperty('--zotero-preview-line-height', config.spacing);
+		const wrapped = `<div class="zotero-preview-content">${html}</div>`;
+		// Fluent modifies attributes; compare our source rather than live innerHTML.
+		if (state.lastHTML !== wrapped) { this._setHTML(state, wrapped); state.lastHTML = wrapped; }
+		this._fitWidth(state);
+	},
+	_setHTML(state, html) {
+		// Parse in an HTML document, then import into Zotero's XML/XUL document.
+		// Unqualified innerHTML tags otherwise inherit the host XUL namespace.
+		const parsed = new state.doc.defaultView.DOMParser().parseFromString(html, 'text/html');
+		state.body.replaceChildren(...Array.from(parsed.body.childNodes,
+			node => state.doc.importNode(node, true)));
+	},
+	_message(state, id, fallback, error = false) {
+		state.lastHTML = null;
+		this._setHTML(state, `<div class="zotero-preview-message${error ? ' zotero-preview-message-error' : ''}" role="status" data-l10n-id="${id}">${fallback}</div>`);
+	},
+	copyCitation(asCitations, body, button) {
+		const state = this._states.get(body);
+		const content = state?.payload?.[asCitations ? 'citation' : 'bibliography'];
+		if (!content) return false;
 		try {
-			var targetWindow = null;
-			if (windowOrPosition && typeof windowOrPosition === 'object' && windowOrPosition.document) {
-				targetWindow = windowOrPosition;
+			// Rich clipboard still uses XPCOM in Zotero. No window-mediator or
+			// private File_Interface lookup; setTransferData uses the modern signature.
+			const { classes: Cc, interfaces: Ci } = Components;
+			const transferable = Cc['@mozilla.org/widget/transferable;1'].createInstance(Ci.nsITransferable);
+			transferable.init(null);
+			for (const [flavor, value] of [['text/html', content.html], ['text/plain', state.config.asHTML ? content.html : content.text]]) {
+				const str = Cc['@mozilla.org/supports-string;1'].createInstance(Ci.nsISupportsString);
+				str.data = value;
+				transferable.addDataFlavor(flavor);
+				transferable.setTransferData(flavor, str);
 			}
-
-			if (typeof windowOrPosition === 'string') {
-				positionpref = windowOrPosition;
+			Services.clipboard.setData(transferable, null, Ci.nsIClipboard.kGlobalClipboard);
+			if (button) {
+				button.classList.add('zotero-preview-copy-success');
+				const timer = setTimeout(() => { state.feedbackTimers.delete(timer); button.classList.remove('zotero-preview-copy-success'); }, 600);
+				state.feedbackTimers.add(timer);
 			}
-
-			// the prefs.xhtml has the values of the containers representing the position
-			if (typeof positionpref === 'undefined'){
-				positionpref = Zotero.Prefs.get('extensions.zoteropreview.position', true);
+			return true;
+		}
+		catch (error) {
+			this.log(`Clipboard: ${error}`);
+			let status = body.querySelector('.zotero-preview-copy-status');
+			if (!status) {
+				status = state.doc.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+				status.className = 'zotero-preview-copy-status'; status.setAttribute('role', 'status'); body.appendChild(status);
 			}
-
-			this.log(positionpref);
-
-			if (!targetWindow) {
-				if (!Zotero.getActiveZoteroPane()) {
-					this._scheduleAddToWindow(null, positionpref, attempt);
-					return;
-				}
-				targetWindow = Zotero.getActiveZoteroPane();
-			}
-
-			if (this._waitForWindowReady(targetWindow, positionpref)) {
-				return;
-			}
-
-			var mainDocument = targetWindow.document;
-			this._previewTargetDoc = mainDocument;
-			if (this._mountedWindows) {
-				this._mountedWindows.add(targetWindow);
-			}
-			this.getPreviewState(mainDocument).sourceWindow = targetWindow;
-			this._registerSelectListener(mainDocument);
-
-			var target = this._isMainWindow(targetWindow)
-				? this._findMainMountTarget(mainDocument, positionpref)
-				: mainDocument.getElementById(positionpref);
-			if (!target) {
-				if (!this._isMainWindow(targetWindow) && mainDocument.body) {
-					if (this._ensureReaderContainer(mainDocument)) {
-						this._queuePreview('addtowindow', mainDocument);
-						return;
-					}
-				}
-				this._scheduleAddToWindow(targetWindow, positionpref, attempt);
-				return;
-			}
-			this.log(target);
-
-			var zpdivContainer = mainDocument.getElementById('zotero-preview-container');
-
-			// it appears that if we move a collapsible element, it loses it's contents
-			this.log('zpdiv');
-			var zpdiv = mainDocument.getElementById('zotero-preview');
-			if (zpdiv == null){
-				this.log('adding zpdiv');
-				zpdiv = mainDocument.createElement('div');
-				zpdiv.id = 'zotero-preview';
-				this.storeAddedElement(zpdiv);
-			}
-			if (zpdivContainer == null){
-				this.log('adding zpdivContainer')
-
-				mainDocument.ownerGlobal?.MozXULElement?.insertFTLIfNeeded?.('zotero-preview.ftl');
-
-				zpdivContainer = mainDocument.createXULElement("collapsible-section");
-				zpdivContainer.id='zotero-preview-container';
-				zpdivContainer.setAttribute('class', 'zotero-preview-section');
-				zpdivContainer.open="";
-				zpdivContainer.dataset.pane="preview";
-				zpdivContainer.setAttribute('data-l10n-id', 'zotero-preview-pane-title');
-
-
-				this.log('adding span');
-				this.log('storing elements');
-
-				this._ensureStylesheet(mainDocument);
-
-				this.storeAddedElement(zpdivContainer);
-			}
-
-			if (zpdivContainer.parentNode === target.parentNode && zpdivContainer.previousSibling === target) {
-				if (!zpdiv.innerHTML) {
-					zpdiv.innerHTML = this._previewMessage('Loading preview...', 'info');
-				}
-				this._ensurePreviewClickHandler(mainDocument, zpdiv, this.getPreviewState(mainDocument));
-				this._queuePreview('addtowindow', mainDocument);
-				return;
-			}
-
-			this.log('appending container to target')
-			target.after(zpdivContainer);
-
-			// basic order of operations thing here. add the div after adding the container to the main document
-			this.log('appending zpdiv to zpdivContainer');
-			zpdivContainer.appendChild(zpdiv);
-			if (!zpdiv.innerHTML) {
-				zpdiv.innerHTML = this._previewMessage('Loading preview...', 'info');
-			}
-			this._ensurePreviewClickHandler(mainDocument, zpdiv, this.getPreviewState(mainDocument));
-			// this.addIcon();
-			this.log('store')
-
-			this._queuePreview('addtowindow', mainDocument);
-
-		} catch (error) {
-			this.log('could not add the item pane header thing: ' + error);
+			status.setAttribute('data-l10n-id', 'zotero-preview-copy-unavailable');
+			status.textContent = 'Copy unavailable. Please try again.';
+			return false;
 		}
 	},
-
-	addToAllWindows() {
-		var windows = typeof Zotero.getMainWindows === 'function' ? Zotero.getMainWindows() : [];
-		for (let win of windows) {
-			if (!win.ZoteroPane) continue;
-			this.addToWindow(win, Zotero.Prefs.get('extensions.zoteropreview.position', true));
-		}
-	},
-
-	addToReaderWindow(window) {
-		try {
-			if (!window?.document) return;
-			var doc = window.document;
-			this._previewTargetDoc = doc;
-			this._mountedWindows?.add(window);
-			this.getPreviewState(doc).sourceWindow = window;
-			this._registerSelectListener(doc);
-			if (this._waitForWindowReady(window, Zotero.Prefs.get('extensions.zoteropreview.position', true))) {
-				return;
-			}
-			if (this._ensureReaderContainer(doc)) {
-				this._queuePreview('reader-load', doc);
-				return;
-			}
-			this.addToWindow(window, Zotero.Prefs.get('extensions.zoteropreview.position', true));
-		}
-		catch (err) {
-			this.log('could not add preview to reader window: ' + err);
-		}
-	},
-
-	// keep track of added elements so they can be removed on uninstall and shutdown
-	storeAddedElement(elem) {
-		if (!elem.id) {
-			throw new Error("Element must have an id");
-		}
-		if (!this._addedElementIDs) {
-			this._addedElementIDs = new Set();
-		}
-		this._addedElementIDs.add(elem.id);
-	},
-
-	removeFromWindow(window) {
-		var doc = window.document;
-		if (this._selectListeners?.has(doc)) {
-			doc.removeEventListener('select', this._selectListeners.get(doc));
-			this._selectListeners.delete(doc);
-		}
-		var state = this._previewStates ? this.getPreviewState(doc) : null;
-		var preview = doc.getElementById('zotero-preview');
-		if (preview && state?.copyClickHandler) {
-			preview.removeEventListener('click', state.copyClickHandler);
-			preview.removeEventListener('keydown', state.copyClickHandler);
-			state.copyClickHandler = null;
-		}
-		for (let timer of (state?.copyFeedbackTimers || [])) {
-			clearTimeout(timer);
-		}
-		state?.copyFeedbackTimers?.clear();
-		var retryTimer = this._windowRetryTimers?.get(window);
-		if (retryTimer) {
-			clearTimeout(retryTimer);
-			this._windowRetryTimers.delete(window);
-		}
-		var readyEntry = this._windowReadyListeners?.get(window);
-		if (readyEntry) {
-			readyEntry.doc.removeEventListener('DOMContentLoaded', readyEntry.onReady);
-			this._windowReadyListeners.delete(window);
-		}
-		var pendingTimer = this._pendingPreviewTimers?.get(doc);
-		if (pendingTimer) {
-			clearTimeout(pendingTimer);
-			this._pendingPreviewTimers.delete(doc);
-		}
-		// Remove all elements added to DOM
-		for (let id of (this._addedElementIDs || [])) {
-			doc.getElementById(id)?.remove();
-		}
-		try {
-			doc.querySelector('#zotero-preview-container')?.remove();
-			doc.querySelector('#zotero-preview-reader-container')?.remove();
-			doc.querySelector('[href="zotero-preview.ftl"]')?.remove();
-		}
-		catch(err){
-			this.log(err);
-		}
-		this._mountedWindows?.delete(window);
-	},
-
-	removeFromAllWindows() {
-		var windows = new Set([...(this._mountedWindows || []), ...(Zotero.getMainWindows ? Zotero.getMainWindows() : [])]);
-		for (let win of windows) {
-			this.removeFromWindow(win);
-		}
-		for (let [_win, entry] of (this._windowReadyListeners || new Map())) {
-			entry.doc.removeEventListener('DOMContentLoaded', entry.onReady);
-		}
-		this._windowReadyListeners = new Map();
-		for (let [doc, listener] of (this._selectListeners || new Map())) {
-			doc.removeEventListener('select', listener);
-		}
-		this._selectListeners = new Map();
-		for (let timer of (this._windowRetryTimers || new Map()).values()) {
-			clearTimeout(timer);
-		}
-		this._windowRetryTimers = new Map();
-		for (let timer of (this._pendingPreviewTimers || new Map()).values()) {
-			clearTimeout(timer);
-		}
-		this._pendingPreviewTimers = new Map();
-		this._mountedWindows = new Set();
-		this._previewTargetDoc = null;
-		this._previewStates = new WeakMap();
-	},
-
-	main() {
-		this._runSelfCheck('startup');
-		// this.log('adding notifier');
-		this._notifierID = Zotero.Notifier.registerObserver(this, ['item','itemtree'], 'itemBox');
-		// this.log(this._notifierID);
-
-		// Retrieve a global pref
-		this.log(`Main: Format is ${Zotero.Prefs.get('extensions.zoteropreview.citationstyle', true)}`);
-		// this.addToAllWindows();
-		if(Zotero.getActiveZoteroPane()) {
-			var doc = Zotero.getActiveZoteroPane().document;
-			this._registerSelectListener(doc);
-		}
-		this._queuePreview('startup', Zotero.getActiveZoteroPane?.()?.document);
-	},
-
-	// the way this works is that you register with the Zotero Notifier, which then calls the "notify" function
-	notify(event, _type, ids, extraData) {
-		this.log(event);
-		this.log(_type);
-		this.log(JSON.stringify(ids));
-		this.log(extraData);
-		if (event != 'modify' && event != 'refresh') return;
-		var changedIDs = event == 'modify'
-			? (Array.isArray(ids) ? ids : (ids == null ? [] : [ids]))
-			: null;
-		if (!this.invalidatePreviewCache(changedIDs)) {
+	notify(event, type, ids) {
+		if (this.initialized && type === 'tab' && event === 'select') {
+			for (const state of this._states.values()) if (!state.payload) this._scheduleRefresh(state);
 			return;
 		}
-		var activeDoc = Zotero.getActiveZoteroPane?.()?.document;
-		if (!activeDoc?.getElementById?.('zotero-preview')) {
-			this.addToWindow();
-		}
-		this._queueAllPreviews('notify');
-	},
-
-	// because someone might prefer a different preview to their default, this is a custom function
-	copyCitation(asCitations, sourceDoc){
-		// true = citation
-		// false = bib
-		this.log('copying citation');
-		this.log("parameter is: " + asCitations);
-		var qc = Zotero.QuickCopy;
-		var items = this._getSelectedItems(sourceDoc);
-		if (!items.length) return;
-		var format = this._getQuickCopyFormat();
-		if (!format) {
-			this._showCopyFailure(sourceDoc);
-			return;
-		}
-		var locale = format.locale ? format.locale : Zotero.Prefs.get('export.quickCopy.locale');
-		var userpref = Zotero.Prefs.get('extensions.zoteropreview.citationstyle', true);
-		if ( userpref != "" ){
-			format.id = userpref;
-		}
-
-		if (!this._copyItemsToClipboard(items, format, locale, asCitations, sourceDoc)) {
-			return;
-		}
-		this.log('copy done');
-
-		// Show success feedback
-		var doc = sourceDoc || this._getPreviewTargetDoc();
-		var copyIconId = asCitations ? 'zpcitecopy' : 'zpbibcopy';
-		var copyIcon = doc?.getElementById ? doc.getElementById(copyIconId) : null;
-		if (copyIcon) {
-			var state = doc ? this.getPreviewState(doc) : null;
-			copyIcon.classList.add('zotero-preview-copy-success');
-			copyIcon.innerHTML = this._successIconSVG();
-			var feedbackTimers = state?.copyFeedbackTimers || new Set();
-			if (state) state.copyFeedbackTimers = feedbackTimers;
-			var scaleTimer = setTimeout(() => {
-				feedbackTimers.delete(scaleTimer);
-				copyIcon.classList.remove('zotero-preview-copy-success');
-			}, 300);
-			var iconTimer = setTimeout(() => {
-				feedbackTimers.delete(iconTimer);
-				copyIcon.innerHTML = this._clipboardIconSVG();
-			}, 1000);
-			feedbackTimers.add(scaleTimer);
-			feedbackTimers.add(iconTimer);
+		if (!this.initialized || type !== 'item' || !['modify', 'delete', 'trash', 'refresh', 'add'].includes(event)) return;
+		const changed = event === 'refresh' ? null : new Set(ids.map(Number));
+		if (changed && event === 'add') return;
+		for (const [key, entry] of this._cache) if (!changed || entry.ids.some(id => changed.has(id))) this._cacheDelete(key);
+		for (const state of this._states.values()) {
+			if (!changed || state.ids.some(id => changed.has(id))) {
+				state.payload = null; this._cancelRender(state); this._scheduleRefresh(state);
+			}
 		}
 	},
-
-	_getQuickCopyFormat() {
-		try {
-			var qc = Zotero.QuickCopy;
-			if (!qc?.getFormatFromURL || !qc?.unserializeSetting) return null;
-			var format = qc.unserializeSetting(qc.getFormatFromURL(qc.lastActiveURL));
-			return format && typeof format === 'object' ? format : null;
-		}
-		catch (err) {
-			this.log('QuickCopy format unavailable: ' + err);
-			return null;
-		}
+	_scheduleRefresh(state) {
+		if (state.destroyed || state.refreshTimer !== null) return;
+		state.refreshTimer = setTimeout(() => {
+			state.refreshTimer = null;
+			if (!this.initialized || state.destroyed) return;
+			// Dirty hidden/collapsed sections render when next opened.
+			if (!state.body.getClientRects().length || state.body.closest('collapsible-section')?.open === false) return;
+			Promise.resolve(state.refresh()).catch(error => this.log(error));
+		}, 80);
 	},
-
-	setPref(pref,value){
-		if (pref == 'extensions.zoteropreview.debug') {
-			this._debugEnabled = !!value;
-		}
-		if (pref == 'extensions.zoteropreview.fontsize') {
-			value = parseFloat(value);
-			if (Number.isNaN(value)) value = 1;
-			value = Math.max(0.2, Math.min(3, value));
-		}
-		if (pref == 'extensions.zoteropreview.spacing') {
-			value = parseFloat(value);
-			if (Number.isNaN(value)) value = 1.5;
-			value = Math.max(1, Math.min(3, value));
-		}
-		if (pref == 'extensions.zoteropreview.maxPreviewItems') {
-			value = parseInt(value, 10);
-			if (Number.isNaN(value)) value = 100;
-			value = Math.max(1, Math.min(500, value));
-			this._maxPreviewItems = value;
-		}
+	_queueAllPreviews() {
+		this._cache.clear(); this._cacheBytes = 0;
+		for (const state of this._states.values()) { state.payload = null; this._cancelRender(state); this._scheduleRefresh(state); }
+	},
+	setPref(pref, value) {
+		const name = pref.replace(this._prefPrefix, '');
+		const bounds = { fontsize: [1, 0.2, 3], spacing: [1.5, 1, 3], maxPreviewItems: [100, 1, 500] };
+		if (bounds[name]) { value = this._number(value, ...bounds[name]); if (name === 'maxPreviewItems') value = Math.floor(value); }
 		Zotero.Prefs.set(pref, value, true);
-		this._queueAllPreviews('post pref set: ' + pref + ' to ' + value);
 	},
-
-	getCitationPreview (debugmsg, preferredDoc){
-		this.log("=========================");
-		this.log('getCitationPreview started: ' + debugmsg);
-		var timings = { start: this._now(), quickCopy: 0, csl: 0, dom: 0 };
-		try {
-			var targetDoc = this._getPreviewTargetDoc(preferredDoc);
-			if (!targetDoc) {
-				this.log('No preview target document available yet');
-				return;
-			}
-			var targetDiv = targetDoc.getElementById('zotero-preview');
-			if (!targetDiv) {
-				this.log('No preview container in target document');
-				return;
-			}
-			var state = this.getPreviewState(targetDoc);
-			var items = this._getSelectedItems(targetDoc);
-			if (!items.length) {
-				state.currentItemID = null;
-				state.currentItemIDs = [];
-				state.lastRenderKey = null;
-				this.renderPreview(targetDoc, state, {
-					html: this._previewMessage('Select one or more items to preview citation.', 'info', 'zotero-preview-select-items')
-				});
-				return;
-			}
-			var selectedCount = items.length;
-			var maxItems = this._maxPreviewItems || this._getMaxPreviewItems();
-			if (items.length > maxItems) {
-				items = items.slice(0, maxItems);
-			}
-
-			var qc = Zotero.QuickCopy;
-			var format = this._getQuickCopyFormat();
-			if (!format) {
-				this.renderPreview(targetDoc, state, {
-					html: this._previewMessage('QuickCopy format is unavailable. Check Quick Copy settings and try again.', 'warning', 'zotero-preview-quickcopy-unavailable')
-				});
-				return;
-			}
-			if (format.mode == "") {
-				format.mode = "bibliography";
-			}
-
-			var userpref = Zotero.Prefs.get('extensions.zoteropreview.citationstyle', true);
-			var showpref = Zotero.Prefs.get('extensions.zoteropreview.whatToShow', true);
-			var userFontPref = Zotero.Prefs.get('extensions.zoteropreview.fontsize', true);
-			var spacingPref = Zotero.Prefs.get('extensions.zoteropreview.spacing', true);
-			if (debugmsg == 'zpboth' || debugmsg == 'zpintext' || debugmsg == 'zpbib') {
-				showpref = debugmsg;
-			}
-
-			spacingPref = parseFloat(spacingPref);
-			if (Number.isNaN(spacingPref) || spacingPref < 1 || spacingPref > 3) {
-				spacingPref = 1.5;
-			}
-
-			var fontSizePref = Zotero.Prefs.get('fontSize');
-			if (userFontPref != "") {
-				fontSizePref = userFontPref;
-			}
-			fontSizePref = parseFloat(fontSizePref);
-			if (Number.isNaN(fontSizePref) || fontSizePref < 0.2 || fontSizePref > 3) {
-				fontSizePref = 1;
-			}
-
-			if (userpref != "") {
-				format.id = userpref;
-				format.mode = "bibliography";
-			}
-			var locale = format.locale ? format.locale : Zotero.Prefs.get('export.quickCopy.locale');
-			format.locale = locale;
-
-			if (format.id == "" || format.mode == "export") {
-				state.lastRenderKey = null;
-				this.renderPreview(targetDoc, state, {
-					html: this._previewMessage('No bibliography style is chosen in the settings for QuickCopy. Set Preview preference in Settings.', 'warning', 'zotero-preview-no-style'),
-					fontSizePref
-				});
-				return;
-			}
-
-			var renderKey = this.buildRenderKey(items, format, { showpref, fontSizePref, spacingPref, locale });
-			if (renderKey === state.lastRenderKey && state.lastHTML && targetDiv.innerHTML === state.lastHTML) {
-				this.log('render skipped by cache key');
-				this.log('===================');
-				return;
-			}
-
-			state.currentItemID = items[0].id;
-			state.currentItemIDs = items.map(item => item.id);
-			var msg = "";
-			if (showpref == 'zpboth' || showpref == 'zpbib') {
-				var qcStart = this._now();
-				var biblio = qc.getContentFromItems(items, format);
-				timings.quickCopy = this._now() - qcStart;
-				var bibliographyHTML = biblio?.html || '';
-				if (!bibliographyHTML) {
-					throw new Error('QuickCopy returned no bibliography HTML');
-				}
-				msg = this._previewBlockHTML('bibliography', bibliographyHTML, 'zpbibcopy', false);
-			}
-
-			if (showpref == "zpboth") {
-				msg += '<hr class="zotero-preview-separator"/>';
-			}
-
-			if (showpref == 'zpboth' || showpref == 'zpintext') {
-				var cslStart = this._now();
-				var style = Zotero.Styles.get(format.id);
-				if (!style?.getCiteProc) {
-					throw new Error('Citation style unavailable: ' + format.id);
-				}
-				var styleEngine = style.getCiteProc(locale, 'html');
-				var citations;
-				try {
-					citations = styleEngine.previewCitationCluster(
-						{
-							citationItems: items.map(item => ({ id: item.id })),
-							properties: {}
-						},
-						[], [], "html"
-					);
-				}
-				finally {
-					styleEngine.free();
-				}
-				timings.csl = this._now() - cslStart;
-				if (showpref == 'zpintext') {
-					msg = "";
-				}
-				msg += this._previewBlockHTML('citation', citations, 'zpcitecopy', true);
-			}
-
-			if (selectedCount > items.length) {
-				msg = this._previewLimitNotice(items.length, selectedCount) + msg;
-			}
-			msg = `<div class="zotero-preview-content">${msg}</div>`;
-			var domStart = this._now();
-			this.renderPreview(targetDoc, state, { html: msg, spacingPref, fontSizePref });
-			timings.dom = this._now() - domStart;
-			state.lastRenderKey = renderKey;
-			this.log('getCitationPreview timings: ' + JSON.stringify({
-				total: this._now() - timings.start,
-				quickCopy: timings.quickCopy,
-				csl: timings.csl,
-				dom: timings.dom
-			}));
-			this.log('getCitationPreview done');
-			this.log('===================');
-		}
-		catch (err) {
-			this.log('getCitationPreview failed: ' + err);
-			var doc = this._getPreviewTargetDoc(preferredDoc);
-			var preview = doc?.getElementById ? doc.getElementById('zotero-preview') : null;
-			if (preview) {
-				var state = this.getPreviewState(doc);
-				state.lastRenderKey = null;
-				this.renderPreview(doc, state, {
-					html: this._previewMessage('Preview unavailable. Try selecting the item again.', 'error', 'zotero-preview-unavailable')
-				});
-			}
-		}
+	_destroySection(body) {
+		const state = this._states.get(body);
+		if (!state) return;
+		state.destroyed = true; this._cancelRender(state);
+		state.widthObserver?.disconnect();
+		if (state.refreshTimer !== null) clearTimeout(state.refreshTimer);
+		for (const timer of state.feedbackTimers) clearTimeout(timer);
+		body.removeEventListener('click', state.handler); body.removeEventListener('keydown', state.handler);
+		this._states.delete(body);
+		const sheet = this._stylesheets.get(state.doc);
+		if (sheet && --sheet.count === 0) { sheet.link.remove(); this._stylesheets.delete(state.doc); }
+	},
+	shutdown() {
+		if (!this.initialized) return;
+		this.initialized = false;
+		if (this._notifierID) Zotero.Notifier.unregisterObserver(this._notifierID);
+		for (const observer of this._prefObservers) Zotero.Prefs.unregisterObserver(observer);
+		if (this._sectionID) Zotero.ItemPaneManager.unregisterSection(this._sectionID);
+		for (const body of [...this._states.keys()]) this._destroySection(body);
+		for (const { link } of this._stylesheets.values()) link.remove();
+		this._stylesheets.clear(); this._cache.clear(); this._cacheBytes = 0;
+		this._sectionID = null; this._notifierID = null; this._prefObservers = [];
 	}
 };
