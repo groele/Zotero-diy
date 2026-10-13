@@ -1,5 +1,10 @@
 # Changelog
 
+## 40.1.1 — 2026-10-13
+
+- Normalize SVG line endings so every packaged runtime file matches the published Git blob byte for byte.
+- Refresh the versioned XPI, update-feed SHA-256, and download links; runtime behavior is unchanged from 40.1.0.
+
 ## 40.1.0 — 2026-10-13
 
 - Register the citation preview through Zotero ItemPaneManager in library and main-window reader sidebars.

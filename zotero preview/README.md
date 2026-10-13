@@ -1,10 +1,10 @@
-# ZoteroPreview 40.1.0
+# ZoteroPreview 40.1.1
 
 参考文献和正文引用预览，使用 Zotero 官方 `ItemPaneManager.registerSection` 接口。
 
 ## 使用
 
-在 Zotero 的“工具 → 插件”中选择“从文件安装插件”，安装 `dist/ZoteroPreview-40.1.0.xpi`。
+在 Zotero 的“工具 → 插件”中选择“从文件安装插件”，安装 `dist/ZoteroPreview-40.1.1.xpi`。
 主库选择文献或进入主窗口的 PDF / EPUB / 网页阅读标签页后，点击右侧的预览眼睛图标即可打开栏目。
 阅读页始终使用正在阅读的附件所对应的父文献，不使用主库的选中条目。
 没有父文献的独立附件、独立笔记和已删除文献隐藏栏目。
