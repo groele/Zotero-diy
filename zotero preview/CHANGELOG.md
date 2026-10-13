@@ -1,5 +1,9 @@
 # Changelog
 
+## 40.1.4 — 2026-10-13
+
+- Remove the bottom border under citation preview content, including its dark-theme color override.
+
 ## 40.1.3 — 2026-10-13
 
 - Restore the original position preference: top by default, after Info, or bottom, shared by library and main-window reader sidebars.
