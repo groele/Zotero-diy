@@ -1,6 +1,6 @@
 # Zotero DIY
 
-这是一个个人维护的 Zotero 插件及其衍生项目集合，当前包含三个相互独立的项目：**Zotero Citation**、**ZoteroPreview** 和 **MetaRef for Zotero**。每个子目录分别维护自己的源码/运行文件、安装包、版本说明、测试方式和许可证信息。
+这是一个个人维护的 Zotero 插件及其衍生项目集合，当前包含四个相互独立的项目：**Zotero Citation**、**ZoteroPreview**、**MetaRef for Zotero** 和 **RefNexus for Zotero 10**。每个子目录分别维护自己的源码/运行文件、安装包、版本说明、测试方式和许可证信息。
 
 本仓库不是单一插件发行包。请根据需要进入对应项目目录，阅读该项目的 README 后再安装或构建。
 
@@ -9,12 +9,12 @@
 | 项目 | 说明 | 当前版本 | Zotero 兼容声明 | 入口 |
 |---|---|---:|---|---|
 | Zotero Citation | 协助维护 Zotero 与 Word 集成引用信息，并在 Zotero 条目列表中显示引用状态。 | 40.0.4 | `6.999`–`10.0.*`，以子项目 `manifest.json` 为准 | [项目说明](./zotero%20citation/README.md) · [审查记录](./zotero%20citation/PROJECT_AUDIT.md) |
-| ZoteroPreview | 在 Zotero 主库及主窗口阅读标签页的原生侧栏预览参考文献和正文引用，并提供复制操作。 | 40.1.4 | `8.0`–`10.0.*`，以子项目 `manifest.json` 为准 | [项目说明](./zotero%20preview/README.md) · [验证记录](./zotero%20preview/VALIDATION.md) · [XPI 安装包](./zotero%20preview/dist/ZoteroPreview-40.1.4.xpi) |
-| MetaRef for Zotero (原 Linter) | 校验、整理和补全文献元数据，支持化学式上下标、缩写、全学科 ESI 和 Nature Index 标记。 | 11.0.7 | `10.0`–`10.999`；已在 Windows Zotero 10.0.5 验证 | [项目说明](./MetaRef-for-Zotero/README.md) · [11.0.7 发布记录](./MetaRef-for-Zotero/docs/releases/v11.0.7.md) · [XPI 安装包](./MetaRef-for-Zotero/dist/metaref-for-zotero.xpi) |
+| RefNexus for Zotero 10 | 获取参考文献、施引文献与相关文献，浏览文献卡片及引用关系。 | 11.0.2 | Zotero 10（以插件清单为准） | [项目说明](./RefNexus-Zotero10/README.md) |\n| ZoteroPreview | 在 Zotero 主库及主窗口阅读标签页的原生侧栏预览参考文献和正文引用，并提供复制操作。 | 40.1.7 | `8.0`–`10.0.*`，以子项目 `manifest.json` 为准 | [项目说明](./zotero%20preview/README.md) · [验证记录](./zotero%20preview/VALIDATION.md) · [XPI 安装包](./zotero%20preview/dist/ZoteroPreview-40.1.4.xpi) |
+| MetaRef for Zotero (原 Linter) | 校验、整理和补全文献元数据，支持化学式上下标、缩写、全学科 ESI 和 Nature Index 标记。 | 12.2.0（package.json） | `10.0`–`10.999`；已在 Windows Zotero 10.0.5 验证 | [项目说明](./MetaRef-for-Zotero/README.md) · [11.0.7 发布记录](./MetaRef-for-Zotero/docs/releases/v11.0.7.md) · [XPI 安装包](./MetaRef-for-Zotero/dist/metaref-for-zotero.xpi) |
 
 兼容范围是各插件清单中声明的范围，不代表已在该范围内所有 Zotero 构建上完成实机验收。尤其是 Zotero 主版本升级后，请先阅读子项目的兼容说明和已知限制。
 
-## 快速开始
+**仓库拆分正在规划，尚未创建四个独立仓库。** 迁移完成并通过安装/升级验证前，所有现有更新清单及下载路径均保持不变。参见 [迁移执行清单](./MIGRATION-PLAN.md)。\n\n## 快速开始
 
 ### 安装 ZoteroPreview
 
@@ -30,7 +30,7 @@ Zotero Citation 依赖 Zotero 与 Word 的集成环境。新安装请从 [40.0.4
 
 下载 [MetaRef 11.0.7 XPI](./MetaRef-for-Zotero/dist/metaref-for-zotero.xpi)，在 Zotero 插件管理器中从文件安装。操作与验证范围见 [项目说明](./MetaRef-for-Zotero/README.md)。
 
-## 构建与测试
+### 安装 RefNexus for Zotero 10\n\n见 [RefNexus 项目 README](./RefNexus-Zotero10/README.md)，从现有目录下载安装包，按其说明安装。\n\n## 构建与测试
 
 各子项目有独立的构建和测试流程，以下命令从仓库根目录运行。
 
@@ -49,7 +49,7 @@ Pop-Location
 pwsh -NoProfile -File './zotero preview/test.ps1'
 ```
 
-**MetaRef for Zotero**（Node.js 22+、pnpm 12.3.4）：
+**RefNexus for Zotero 10**（Node.js）：\n\n```powershell\nPush-Location RefNexus-Zotero10\nnpm install\nnpm test\nnpm run build\nPop-Location\n```\n\n**MetaRef for Zotero**（Node.js 22+、pnpm 12.3.4）：
 
 ```powershell
 Push-Location MetaRef-for-Zotero
@@ -67,7 +67,7 @@ MetaRef 另有真实 Zotero E2E，包含数据库、菜单、PDF 索引和生产
 
 - **Zotero Citation** 基于 [MuiseDestiny/zotero-citation](https://github.com/MuiseDestiny/zotero-citation) 二次开发。该子项目 README 说明了上游 AGPL-3.0 许可及当前许可证文件状态。
 - **ZoteroPreview** 基于 [dcartertod/zotero-plugins](https://github.com/dcartertod/zotero-plugins) 中的 ZoteroPreview 开发；上游采用 Apache-2.0，子项目目录保留了对应许可证文本。
-- **MetaRef for Zotero** 基于 [northword/zotero-format-metadata](https://github.com/northword/zotero-format-metadata) 维护，保留上游 AGPL-3.0 许可证与版权声明。
+- **RefNexus for Zotero 10** 基于 [MuiseDestiny/zotero-reference](https://github.com/MuiseDestiny/zotero-reference) 二次开发，保留上游 AGPL-3.0-or-later 许可与版权声明。\n- **MetaRef for Zotero** 基于 [northword/zotero-format-metadata](https://github.com/northword/zotero-format-metadata) 维护，保留上游 AGPL-3.0 许可证与版权声明。
 
 Zotero 及相关产品名称和商标归其各自所有者所有。本仓库为社区维护项目，与 Zotero 官方及各上游作者没有隶属或背书关系。
 
@@ -76,7 +76,7 @@ Zotero 及相关产品名称和商标归其各自所有者所有。本仓库为�
 ```text
 zotero citation/   Zotero Citation 插件、构建脚本、测试和审查文档
 zotero preview/    ZoteroPreview 插件、安装包、构建脚本、测试和审查文档
-MetaRef-for-Zotero/  元数据整理插件源码、参考数据、安装包、真实运行测试和审查文档
+MetaRef-for-Zotero/  元数据整理插件源码、参考数据、安装包、真实运行测试和审查文档\nRefNexus-Zotero10/  参考文献获取与引用关系浏览插件、测试及发布文件
 ```
 
 ## 维护与问题反馈
