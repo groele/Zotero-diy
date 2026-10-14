@@ -8,7 +8,7 @@
 
 | 项目 | 说明 | 当前版本 | Zotero 兼容声明 | 入口 |
 |---|---|---:|---|---|
-| Zotero Citation | 协助维护 Zotero 与 Word 集成引用信息，并在 Zotero 条目列表中显示引用状态。 | 40.0.3（候选维护版） | `6.999`–`10.0.*`，以子项目 `manifest.json` 为准 | [项目说明](./zotero%20citation/README.md) · [审查记录](./zotero%20citation/PROJECT_AUDIT.md) |
+| Zotero Citation | 协助维护 Zotero 与 Word 集成引用信息，并在 Zotero 条目列表中显示引用状态。 | 40.0.4 | `6.999`–`10.0.*`，以子项目 `manifest.json` 为准 | [项目说明](./zotero%20citation/README.md) · [审查记录](./zotero%20citation/PROJECT_AUDIT.md) |
 | ZoteroPreview | 在 Zotero 主库及主窗口阅读标签页的原生侧栏预览参考文献和正文引用，并提供复制操作。 | 40.1.4 | `8.0`–`10.0.*`，以子项目 `manifest.json` 为准 | [项目说明](./zotero%20preview/README.md) · [验证记录](./zotero%20preview/VALIDATION.md) · [XPI 安装包](./zotero%20preview/dist/ZoteroPreview-40.1.4.xpi) |
 | MetaRef for Zotero (原 Linter) | 校验、整理和补全文献元数据，支持化学式上下标、缩写、全学科 ESI 和 Nature Index 标记。 | 11.0.7 | `10.0`–`10.999`；已在 Windows Zotero 10.0.5 验证 | [项目说明](./MetaRef-for-Zotero/README.md) · [11.0.7 发布记录](./MetaRef-for-Zotero/docs/releases/v11.0.7.md) · [XPI 安装包](./MetaRef-for-Zotero/dist/metaref-for-zotero.xpi) |
 
@@ -24,7 +24,7 @@
 
 ### 安装 Zotero Citation
 
-Zotero Citation 依赖 Zotero 与 Word 的集成环境，当前子项目标记为候选维护版。请先阅读其[安装说明、兼容声明和验收边界](./zotero%20citation/README.md)，再按其中的脚本构建 XPI；安装或升级前建议使用隔离的 Zotero 配置进行测试。
+Zotero Citation 依赖 Zotero 与 Word 的集成环境。新安装请从 [40.0.4 发布页](https://github.com/groele/Zotero-diy/releases/tag/v40.0.4)下载 XPI 并通过 Zotero 插件管理器安装；配置了 40.x 更新清单的旧安装会收到自动更新。请先阅读[安装说明、兼容声明和验收边界](./zotero%20citation/README.md)。兼容范围仍限于 Zotero 10。
 
 ### 安装 MetaRef for Zotero
 
