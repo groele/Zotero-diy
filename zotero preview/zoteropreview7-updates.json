@@ -3,15 +3,15 @@
     "zoteropreview@carter-tod.com": {
       "updates": [
         {
-          "version": "40.1.4",
-          "update_link": "https://raw.githubusercontent.com/groele/Zotero-diy/main/zotero%20preview/dist/ZoteroPreview-40.1.4.xpi",
+          "version": "40.1.7",
+          "update_link": "https://raw.githubusercontent.com/groele/Zotero-diy/main/zotero%20preview/dist/ZoteroPreview-40.1.7.xpi",
           "applications": {
             "zotero": {
               "strict_min_version": "8.0",
               "strict_max_version": "10.0.*"
             }
           },
-          "update_hash": "sha256:e5198a475c7fa3d8b089220bade9ec418001c153831aeb06047a8c8e26a8d8eb"
+          "update_hash": "sha256:3c0e4a78e3d37ca5138e0d809a05fcbf9a6069ee57aeb8ac31694c28b21f2414"
         }
       ]
     }

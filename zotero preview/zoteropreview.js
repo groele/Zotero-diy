@@ -12,8 +12,12 @@ Zotero.zoteropreview = {
 		this._cache = new Map();
 		this._cacheBytes = 0;
 		this._prefObservers = [];
+		this._prefPaneCleanups = new Set();
 		this._stylesheets = new Map();
 		this._positionTimers = new Map();
+		this._positionObservers = new Map();
+		this._positionRuns = new Map();
+		this._lifecycle = Symbol('preview-lifecycle');
 		this._stats = { generations: 0, cacheHits: 0 };
 		this.initialized = true;
 	},
@@ -23,6 +27,11 @@ Zotero.zoteropreview = {
 	pref(name) { return Zotero.Prefs.get(this._prefPrefix + name, true); },
 	start() {
 		if (!Zotero.ItemPaneManager?.registerSection) throw new Error('Native ItemPaneManager API required');
+		// Restore the requested default once on upgrade, retaining later choices.
+		if (this.pref('positionPolicyVersion') !== 1) {
+			this.setPref(this._prefPrefix + 'position', 'zotero-item-pane-header');
+			this.setPref(this._prefPrefix + 'positionPolicyVersion', 1);
+		}
 		const title = { l10nID: 'zotero-preview-pane-title', icon: this.rootURI + 'view.svg' };
 		this._sectionID = Zotero.ItemPaneManager.registerSection({
 			paneID: 'zotero-preview', pluginID: this.id,
@@ -76,6 +85,7 @@ Zotero.zoteropreview = {
 		// XUL descendants can keep a larger intrinsic width than their sidebar.
 		// Observe the native section owner instead of polling window dimensions.
 		const owner = body.closest('item-details');
+		this._observePosition(owner, state);
 		this._queuePosition(owner);
 		if (owner && doc.defaultView.ResizeObserver) {
 			state.sizingOwner = owner;
@@ -88,15 +98,45 @@ Zotero.zoteropreview = {
 		return ['zotero-item-pane-header', 'zotero-editpane-item-box', 'zotero-editpane-related'].includes(position)
 			? position : 'zotero-item-pane-header';
 	},
+	_observePosition(owner, state) {
+		if (state.positionOwner === owner) return;
+		if (!owner?.getPanes) return;
+		const parent = owner.getPanes().find(pane => pane.contains?.(state.body))?.parentNode;
+		const Observer = state.doc.defaultView?.MutationObserver;
+		if (!parent || !Observer) return;
+		let entry = this._positionObservers.get(owner);
+		if (!entry) {
+			const observer = new Observer(() => this._queuePosition(owner));
+			// Watch only direct pane insertion/reordering, not citation content.
+			observer.observe(parent, { childList: true });
+			entry = { observer, count: 0 };
+			this._positionObservers.set(owner, entry);
+		}
+		entry.count++;
+		state.positionOwner = owner;
+	},
 	_queuePosition(owner) {
-		if (!owner?.getPanes || this._positionTimers.has(owner)) return;
+		if (!this.initialized || !owner?.getPanes || this._positionTimers.has(owner)) return;
+		const run = this._positionRuns.get(owner);
+		if (run) { run.dirty = true; return; }
+		const lifecycle = this._lifecycle;
 		const timer = setTimeout(() => {
 			this._positionTimers.delete(owner);
-			if (this.initialized) this._applyPosition(owner).catch(error => this.log(error));
+			if (!this.initialized || lifecycle !== this._lifecycle) return;
+			const task = { dirty: false };
+			this._positionRuns.set(owner, task);
+			this._applyPosition(owner).catch(error => this.log(error)).finally(() => {
+				if (this._positionRuns.get(owner) !== task) return;
+				this._positionRuns.delete(owner);
+				if (task.dirty && this.initialized && lifecycle === this._lifecycle) this._queuePosition(owner);
+			});
 		}, 0);
 		this._positionTimers.set(owner, timer);
 	},
 	async _applyPosition(owner) {
+		if (!this.initialized) return;
+		const lifecycle = this._lifecycle;
+		const sectionID = this._sectionID;
 		const panes = owner.getPanes();
 		const current = panes.findIndex(pane => pane.dataset.pane === this._sectionID);
 		if (current < 0 || owner.skipRender) return;
@@ -110,10 +150,29 @@ Zotero.zoteropreview = {
 		// Use native reordering rather than recreating or injecting a section.
 		const sidenav = owner.sidenav;
 		if (sidenav?.container === owner && sidenav.changePaneOrder) {
-			await sidenav.changePaneOrder(this._sectionID, index, { persist: false });
+			// Sidenav includes hidden buttons absent from this item's pane list.
+			// Translate the destination pane to its actual wrapper insertion index.
+			const wrappers = Array.from(sidenav.querySelectorAll?.('.inherit-flex > .pin-wrapper') || []);
+			const targetID = panes[index]?.dataset.pane;
+			const targetIndex = targetID ? wrappers.findIndex(wrapper =>
+				wrapper.querySelector('.btn[data-pane]')?.dataset.pane === targetID) : wrappers.length;
+			await sidenav.changePaneOrder(this._sectionID,
+				wrappers.length && targetIndex >= 0 ? targetIndex : index, { persist: false, render: false });
+			if (!this.initialized || lifecycle !== this._lifecycle) return;
+			// A stale sidenav can report no movement. Keep pane content authoritative.
+			const updated = owner.getPanes();
+			const actual = updated.findIndex(pane => pane.dataset.pane === this._sectionID);
+			const target = targetID ? updated.findIndex(pane => pane.dataset.pane === targetID) : updated.length;
+			if (actual >= 0 && target >= 0 && actual !== target && actual !== target - 1) {
+				await owner.changePaneOrder?.(sectionID, target, { render: false });
+			}
 		}
 		else if (owner.changePaneOrder) {
-			await owner.changePaneOrder(this._sectionID, index);
+			await owner.changePaneOrder(sectionID, index, { render: false });
+		}
+		if (!this.initialized || lifecycle !== this._lifecycle) return;
+		for (const state of this._states.values()) {
+			if (state.body.closest('item-details') === owner && !state.payload) this._scheduleRefresh(state);
 		}
 	},
 	_fitWidth(state) {
@@ -140,6 +199,7 @@ Zotero.zoteropreview = {
 		this._cancelRender(state);
 		state.item = this._normalizeItem(item);
 		state.tabType = tabType;
+		state.setEnabled = setEnabled;
 		state.ids = state.item ? [state.item.id] : [];
 		state.key = null;
 		state.payload = null;
@@ -191,7 +251,9 @@ Zotero.zoteropreview = {
 	},
 	async _renderSection({ body }) {
 		const state = this._states.get(body);
-		if (!state || state.destroyed || !state.item) return;
+		if (!this.initialized || !state || state.destroyed || !state.item) return;
+		state.item = this._normalizeItem(state.item);
+		if (!state.item) { state.payload = null; state.setEnabled?.(false); return; }
 		this._cancelRender(state);
 		const generation = state.generation;
 		// Coalesce rapid changes and yield before synchronous CSL work.
@@ -249,6 +311,7 @@ Zotero.zoteropreview = {
 	_cachePut(key, payload, ids) {
 		const bytes = JSON.stringify(payload).length * 2;
 		if (bytes > this._cacheByteLimit) return;
+		this._cacheDelete(key);
 		while (this._cache.size && (this._cache.size >= this._cacheLimit || this._cacheBytes + bytes > this._cacheByteLimit)) this._cacheDelete(this._cache.keys().next().value);
 		this._cache.set(key, { payload, ids, bytes, created: Date.now() });
 		this._cacheBytes += bytes;
@@ -264,6 +327,7 @@ Zotero.zoteropreview = {
 		return '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 1L5.5 9.5L2 6" stroke="#009900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 	},
 	_showCopyFeedback(state, button) {
+		if (state.destroyed) return;
 		for (const timer of state.copyFeedback.get(button) || []) {
 			clearTimeout(timer);
 			state.feedbackTimers.delete(timer);
@@ -299,6 +363,8 @@ Zotero.zoteropreview = {
 		this._fitWidth(state);
 	},
 	_setHTML(state, html) {
+		for (const timer of state.feedbackTimers) clearTimeout(timer);
+		state.feedbackTimers.clear(); state.copyFeedback.clear();
 		// Parse in an HTML document, then import into Zotero's XML/XUL document.
 		// Unqualified innerHTML tags otherwise inherit the host XUL namespace.
 		const parsed = new state.doc.defaultView.DOMParser().parseFromString(html, 'text/html');
@@ -350,12 +416,13 @@ Zotero.zoteropreview = {
 			return;
 		}
 		if (!this.initialized || type !== 'item' || !['modify', 'delete', 'trash', 'refresh', 'add'].includes(event)) return;
-		const changed = event === 'refresh' ? null : new Set(ids.map(Number));
+		const changed = event === 'refresh' ? null : new Set((ids || []).map(Number));
 		if (changed && event === 'add') return;
 		for (const [key, entry] of this._cache) if (!changed || entry.ids.some(id => changed.has(id))) this._cacheDelete(key);
 		for (const state of this._states.values()) {
 			if (!changed || state.ids.some(id => changed.has(id))) {
 				state.payload = null; this._cancelRender(state); this._scheduleRefresh(state);
+				if (!this._normalizeItem(state.item)) state.setEnabled?.(false);
 			}
 		}
 	},
@@ -366,7 +433,7 @@ Zotero.zoteropreview = {
 			if (!this.initialized || state.destroyed) return;
 			// Dirty hidden/collapsed sections render when next opened.
 			if (!state.body.getClientRects().length || state.body.closest('collapsible-section')?.open === false) return;
-			Promise.resolve(state.refresh()).catch(error => this.log(error));
+			Promise.resolve().then(() => state.refresh()).catch(error => this.log(error));
 		}, 80);
 	},
 	_queueAllPreviews() {
@@ -383,25 +450,48 @@ Zotero.zoteropreview = {
 		const state = this._states.get(body);
 		if (!state) return;
 		state.destroyed = true; this._cancelRender(state);
-		state.widthObserver?.disconnect();
+		this._cleanup(() => state.widthObserver?.disconnect());
+		const positionEntry = this._positionObservers.get(state.positionOwner);
+		if (positionEntry && --positionEntry.count === 0) {
+			this._cleanup(() => positionEntry.observer.disconnect());
+			this._positionObservers.delete(state.positionOwner);
+			const timer = this._positionTimers.get(state.positionOwner);
+			if (timer !== undefined) clearTimeout(timer);
+			this._positionTimers.delete(state.positionOwner);
+		}
 		if (state.refreshTimer !== null) clearTimeout(state.refreshTimer);
 		for (const timer of state.feedbackTimers) clearTimeout(timer);
 		state.copyFeedback.clear();
-		body.removeEventListener('click', state.handler); body.removeEventListener('keydown', state.handler);
+		this._cleanup(() => body.removeEventListener('click', state.handler));
+		this._cleanup(() => body.removeEventListener('keydown', state.handler));
 		this._states.delete(body);
 		const sheet = this._stylesheets.get(state.doc);
-		if (sheet && --sheet.count === 0) { sheet.link.remove(); this._stylesheets.delete(state.doc); }
+		if (sheet && --sheet.count === 0) {
+			this._cleanup(() => sheet.link.remove()); this._stylesheets.delete(state.doc);
+		}
+	},
+	_cleanup(action) {
+		try { action(); }
+		catch (error) { Zotero.logError?.(error); }
 	},
 	shutdown() {
 		if (!this.initialized) return;
 		this.initialized = false;
+		this._lifecycle = null;
 		for (const timer of this._positionTimers.values()) clearTimeout(timer);
 		this._positionTimers.clear();
-		if (this._notifierID) Zotero.Notifier.unregisterObserver(this._notifierID);
-		for (const observer of this._prefObservers) Zotero.Prefs.unregisterObserver(observer);
-		if (this._sectionID) Zotero.ItemPaneManager.unregisterSection(this._sectionID);
-		for (const body of [...this._states.keys()]) this._destroySection(body);
-		for (const { link } of this._stylesheets.values()) link.remove();
+		for (const { observer } of this._positionObservers.values()) this._cleanup(() => observer.disconnect());
+		this._positionObservers.clear();
+		this._positionRuns.clear();
+		// A failed host unregister must not strand other resources on disable.
+		const cleanup = action => this._cleanup(action);
+		for (const dispose of [...this._prefPaneCleanups]) cleanup(dispose);
+		this._prefPaneCleanups.clear();
+		if (this._notifierID != null) cleanup(() => Zotero.Notifier.unregisterObserver(this._notifierID));
+		for (const observer of this._prefObservers) cleanup(() => Zotero.Prefs.unregisterObserver(observer));
+		if (this._sectionID) cleanup(() => Zotero.ItemPaneManager.unregisterSection(this._sectionID));
+		for (const body of [...this._states.keys()]) cleanup(() => this._destroySection(body));
+		for (const { link } of this._stylesheets.values()) cleanup(() => link.remove());
 		this._stylesheets.clear(); this._cache.clear(); this._cacheBytes = 0;
 		this._sectionID = null; this._notifierID = null; this._prefObservers = [];
 	}

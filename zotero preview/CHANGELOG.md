@@ -1,5 +1,33 @@
 # Changelog
 
+## 40.1.7 — 2026-10-14
+
+- Serialize native placement work per sidebar and merge mutations received during an asynchronous move.
+- Reorder without recursive host rendering; refresh unrendered previews separately and cancel late moves after shutdown.
+- Avoid duplicate placement-observer registrations and isolate observer disconnect failures.
+- Hide trashed reader items immediately and prevent copying their cached content.
+- Correct cache byte accounting when replacing an existing key; release copy-feedback timers before DOM replacement.
+- Release preference listeners on fragment unload as well as window unload and plugin disable.
+- Expand regressions for asynchronous placement, cancellation, trash notifications, cache replacement, and cleanup failures.
+
+## 40.1.6 — 2026-10-14
+
+- Restore the default preview position above Info once on upgrade, while retaining subsequent user-selected placement.
+- Observe native pane insertion and reordering so Zotero sidebar-order restoration cannot leave the preview at the bottom.
+- Translate pane destinations to actual sidenav wrapper indices, accounting for hidden buttons, and recover when sidenav movement does not update the pane DOM.
+- Disconnect placement observers and cancel their timers when sections are destroyed or the plugin is disabled.
+- Add regressions for upgrade placement, restored native order, hidden sidenav buttons, and observer cleanup.
+
+## 40.1.5 — 2026-10-14
+
+- Prepare for Zotero 11 / Firefox 153 using the official platform migration checklist.
+- Remove the inline preferences load handler and initialize via captured native fragment load events, with per-document state and listener cleanup.
+- Explicitly request XUL parsing for the existing preferences fragment.
+- Cancel startup when disabled during host initialization; isolate cleanup failures and release Fluent resources even after a partial startup error.
+- Catch synchronous native refresh errors through the asynchronous refresh path.
+- Add frozen-sandbox, preference event, startup cancellation, cleanup failure, and obsolete-platform-pattern regressions.
+- Retain the Zotero 10 compatibility ceiling as requested by the current official Zotero 11 developer notice; dev/beta builds permit testing without raising it.
+
 ## 40.1.4 — 2026-10-13
 
 - Remove the bottom border under citation preview content, including its dark-theme color override.

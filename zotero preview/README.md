@@ -1,16 +1,16 @@
-# ZoteroPreview 40.1.4
+# ZoteroPreview 40.1.7
 
 参考文献和正文引用预览，使用 Zotero 官方 `ItemPaneManager.registerSection` 接口。
 
 ## 使用
 
-在 Zotero 的“工具 → 插件”中选择“从文件安装插件”，安装 `dist/ZoteroPreview-40.1.4.xpi`。
+在 Zotero 的“工具 → 插件”中选择“从文件安装插件”，安装 `dist/ZoteroPreview-40.1.7.xpi`。
 主库选择文献或进入主窗口的 PDF / EPUB / 网页阅读标签页后，点击右侧的预览眼睛图标即可打开栏目。
 阅读页始终使用正在阅读的附件所对应的父文献，不使用主库的选中条目。
 没有父文献的独立附件、独立笔记和已删除文献隐藏栏目。
 
 在插件设置中选择预览位置：顶部（默认）、信息栏后、底部。主库和主窗口阅读标签页共用该设置，原有位置偏好继续生效。
-默认预览在标题下方、信息栏目上方。复制按钮保留原来的缩放和绿色对勾反馈，1 秒后还原图标。
+默认预览在标题下方、信息栏目上方。40.1.7 首次升级会恢复这一位置；之后仍可自行选择其他位置。插件观察原生栏目插入/重排并重新应用位置，避免宿主恢复侧栏顺序后又回到底部。复制按钮保留原来的缩放和绿色对勾反馈，1 秒后还原图标。
 样式、展示内容、字号、行距和条目上限继续保留。可选择“跟随 Zotero Quick Copy 设置”。
 超出上限时显示省略数量，复制内容与实际预览的条目范围一致。
 
@@ -35,7 +35,8 @@
 ## 兼容性和更新
 
 声明 Zotero 8–10；已针对本机 10.0.6 及当前官方源码检查接口。8/9 和未发布的未来版本未实测。
-不放宽最高版本到未知版本。未来可基于原生 API 层集中适配。
+已针对 Zotero 11 / Firefox 153 官方变更补强设置页和生命周期：移除内联事件，通过捕获原生栏目 load 事件初始化设置，显式声明 XUL 解析，并完整清理设置事件监听器。启动期间禁用可取消后续注册，单个清理接口失败不阻断其余清理。
+Zotero 官方目前要求暂不声明 11 兼容，dev/beta 构建不强制最高版本；因此保留 10.0.* 上限用于开发版测试。Firefox 153 运行验证状态见 VALIDATION.md。
 自动更新源使用 `groele/Zotero-diy/zotero preview` 下的更新清单，下载地址绑定同目录内的版本化 XPI。
 此发布沿用维护仓库的更新通道，不使用原作者仓库的旧下载地址。
 
@@ -56,6 +57,7 @@ pwsh -NoProfile -File ./build.ps1
 官方依据：
 - https://www.zotero.org/support/dev/zotero_7_for_developers#custom_item_pane_sections
 - https://www.zotero.org/support/dev/zotero_10_for_developers
+- https://www.zotero.org/support/dev/zotero_11_for_developers
 - https://github.com/zotero/zotero/blob/main/chrome/content/zotero/xpcom/pluginAPI/itemPaneManager.js
 - https://github.com/zotero/zotero/blob/main/chrome/content/zotero/xpcom/quickCopy.js
 

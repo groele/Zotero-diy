@@ -1,7 +1,16 @@
 // Preference handlers are scoped to this preference-pane document.
-Zotero.zoteropreview.Prefs = {
+(() => {
+const preview = Zotero.zoteropreview;
+const initializedRoots = new WeakSet();
+const listeners = [];
+const listen = (target, type, handler, capture = false) => {
+    target.addEventListener(type, handler, capture);
+    listeners.push(() => target.removeEventListener(type, handler, capture));
+};
+const prefs = {
     init() {
-        const preview = Zotero.zoteropreview;
+        const root = document.getElementById('zotero-prefpane-zotero-preview');
+        if (!preview.initialized || !root || initializedRoots.has(root)) return;
         const popup = document.querySelector('#zotero-preview-style-menulist menupopup');
         popup.replaceChildren();
         const menu = document.getElementById('zotero-preview-style-menulist');
@@ -16,13 +25,13 @@ Zotero.zoteropreview.Prefs = {
             popup.appendChild(entry);
         }
         menu.value = preview.pref('citationstyle') || '';
-        menu.addEventListener('command', () => preview.setPref(preview._prefPrefix + 'citationstyle', menu.value));
+        listen(menu, 'command', () => preview.setPref(preview._prefPrefix + 'citationstyle', menu.value));
         const position = document.getElementById('extensions-zoteropreview-position');
         position.value = preview.getPosition();
-        position.addEventListener('command', () => preview.setPref(preview._prefPrefix + 'position', position.value));
+        listen(position, 'command', () => preview.setPref(preview._prefPrefix + 'position', position.value));
         const display = document.getElementById('extensions-zoteropreview-whatToShow');
         display.value = preview.pref('whatToShow') || 'zpboth';
-        display.addEventListener('command', () => preview.setPref(preview._prefPrefix + 'whatToShow', display.value));
+        listen(display, 'command', () => preview.setPref(preview._prefPrefix + 'whatToShow', display.value));
         for (const [id, name, fallback] of [
             ['zotero-preview-fontsize', 'fontsize', 1],
             ['zotero-preview-spacing', 'spacing', 1.5],
@@ -30,10 +39,27 @@ Zotero.zoteropreview.Prefs = {
         ]) {
             const input = document.getElementById(id);
             input.value = preview.pref(name) || fallback;
-            input.addEventListener('change', () => {
+            listen(input, 'change', () => {
                 preview.setPref(preview._prefPrefix + name, input.value);
                 input.value = preview.pref(name);
             });
         }
+        initializedRoots.add(root);
     }
 };
+// Zotero loads pane scripts before inserting the fragment, then dispatches
+// non-bubbling load events. Capture them without a CSP-blocked inline handler.
+listen(document, 'load', event => {
+    if (event.target?.id === 'zotero-prefpane-zotero-preview') prefs.init();
+}, true);
+const dispose = () => {
+    for (const remove of listeners.splice(0)) remove();
+    preview._prefPaneCleanups.delete(dispose);
+};
+preview._prefPaneCleanups.add(dispose);
+listen(document, 'unload', event => {
+    if (event.target?.id === 'zotero-prefpane-zotero-preview') dispose();
+}, true);
+listen(window, 'unload', dispose);
+prefs.init();
+})();

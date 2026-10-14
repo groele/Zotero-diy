@@ -30,7 +30,9 @@ function setup(clock = {setTimeout, clearTimeout}) {
  const transferable = { init() {}, addDataFlavor() {}, setTransferData: (f,s) => copied.push([f,s.data]) };
  const Components = { classes: new Proxy({}, {get: (t,k) => ({createInstance: () => k.includes('transferable') ? transferable : {data:''}})}),
   interfaces: {nsIClipboard:{kGlobalClipboard:1}} };
- vm.runInNewContext(source, {Zotero,Components,Services:{clipboard:{setData(){}}},setTimeout:clock.setTimeout,clearTimeout:clock.clearTimeout});
+ const context=vm.createContext({Zotero,Components,Services:{clipboard:{setData(){}}},setTimeout:clock.setTimeout,clearTimeout:clock.clearTimeout});
+ vm.runInContext('Object.freeze(Array.prototype); Object.freeze(JSON); Object.freeze(Promise);',context);
+ vm.runInContext(source,context);
  const plugin=Zotero.zoteropreview;
  // State tests do not emulate Gecko's HTML/XML parser; desktop QA covers it.
  plugin._setHTML=(state,html)=>{state.body.innerHTML=html;};
@@ -82,6 +84,59 @@ test('placement restores top by default, after Info and bottom without changing 
  await h.plugin._applyPosition(owner); assert.equal(moves.length,3);
  owner.skipRender=false; await h.plugin._applyPosition(owner);
  assert.equal(order()[0],'native-id'); h.plugin.shutdown();
+});
+
+test('position policy restores above Info once and preserves subsequent user choices',()=>{
+ const h=setup();
+ assert.equal(h.prefs.get('extensions.zoteropreview.position'),'zotero-item-pane-header');
+ assert.equal(h.prefs.get('extensions.zoteropreview.positionPolicyVersion'),1);
+ h.plugin.shutdown();
+ h.prefs.set('extensions.zoteropreview.position','zotero-editpane-related');
+ h.plugin.init({id:'test@example.com',version:'40.1.6',rootURI:'file:///plugin/'});
+ h.plugin.start();
+ assert.equal(h.plugin.getPosition(),'zotero-editpane-related'); h.plugin.shutdown();
+});
+
+test('native order restoration requeues placement and observer is released on section destruction',async()=>{
+ const h=setup(); const s=h.section(h.item(1));
+ let callback,disconnected=0,observed;
+ s.doc.defaultView.MutationObserver=class {
+  constructor(fn){callback=fn;} observe(parent,options){observed={parent,options};}
+  disconnect(){disconnected++;}
+ };
+ const parent={},panes=['info','other-plugin','native-id'].map(pane=>({dataset:{pane},parentNode:parent,contains:()=>pane==='native-id'}));
+ const owner={getPanes:()=>panes,changePaneOrder:async(id,index)=>{
+  const target=panes[index], current=panes.findIndex(p=>p.dataset.pane===id);
+  const [pane]=panes.splice(current,1);panes.splice(target?panes.indexOf(target):panes.length,0,pane);
+ }};
+ h.plugin._observePosition(owner,h.plugin._states.get(s.body));
+ assert.equal(observed.parent,parent); assert.equal(observed.options.childList,true);
+ assert.equal(observed.options.subtree,undefined);
+ callback(); await new Promise(r=>setTimeout(r,10));
+ assert.equal(panes[0].dataset.pane,'native-id');
+ panes.push(panes.shift()); // Simulate Zotero restoring the preview to the bottom.
+ callback(); await new Promise(r=>setTimeout(r,10));
+ assert.equal(panes[0].dataset.pane,'native-id');
+ h.plugin._destroySection(s.body); assert.equal(disconnected,1);
+ assert.equal(h.plugin._positionObservers.size,0);assert.equal(h.plugin._positionTimers.size,0);
+ h.plugin.shutdown();
+});
+
+test('hidden sidenav buttons do not shift the destination below Info',async()=>{
+ const h=setup();
+ const panes=['info','abstract','native-id'].map(pane=>({dataset:{pane}}));
+ const wrappers=['hidden-note','info','abstract','native-id'].map(id=>({querySelector:()=>({dataset:{pane:id}})}));
+ const owner={getPanes:()=>panes,changePaneOrder:async(id,index)=>{
+  const target=panes[index],current=panes.findIndex(p=>p.dataset.pane===id);
+  const [pane]=panes.splice(current,1);panes.splice(target?panes.indexOf(target):panes.length,0,pane);
+ }};
+ const indices=[];
+ owner.sidenav={container:owner,querySelectorAll:()=>wrappers,changePaneOrder:async(id,index)=>{
+  indices.push(index); // Model a sidenav that can lag behind the actual pane DOM.
+ }};
+ await h.plugin._applyPosition(owner);
+ assert.deepEqual(indices,[1]);assert.equal(panes[0].dataset.pane,'native-id');
+ h.plugin.shutdown();
 });
 
 test('original copy feedback scales for 300ms, shows green check for 1000ms and resets on repeated copy',()=>{
@@ -146,4 +201,63 @@ test('invalid style is recoverable and deletion hides an orphan reader item',asy
  h.Zotero.QuickCopy.getContentFromItems=()=>{throw Error('missing style');};
  await h.plugin._renderSection(s.props); assert.match(s.body.innerHTML,/zotero-preview-unavailable/);
  i.deleted=true; h.plugin._changeItem(s.props); assert.equal(s.body.enabled,false); h.plugin.shutdown();
+});
+
+test('one host unregister failure does not prevent remaining lifecycle cleanup',()=>{
+ const h=setup(), s=h.section(h.item(1));
+ const errors=[]; h.Zotero.logError=e=>errors.push(e.message);
+ h.Zotero.Notifier.unregisterObserver=()=>{throw Error('host notifier unavailable');};
+ let paneDisposed=false; h.plugin._prefPaneCleanups.add(()=>{paneDisposed=true;});
+ h.plugin.shutdown();
+ assert.equal(paneDisposed,true); assert.equal(h.observers.size,0);
+ assert.equal(h.plugin._states.size,0); assert.equal(s.listeners.size,0);
+ assert.equal(h.plugin._stylesheets.size,0); assert.equal(h.plugin._cache.size,0);
+ assert.deepEqual(errors,['host notifier unavailable']);
+ h.plugin.shutdown();
+});
+
+test('position changes serialize per owner and merge mutations during an async move',async()=>{
+ const h=setup(),owner={getPanes:()=>[]};
+ let resolve,active=0,maxActive=0,calls=0;
+ h.plugin._applyPosition=async()=>{calls++;active++;maxActive=Math.max(maxActive,active);
+  if(calls===1)await new Promise(r=>resolve=r);active--;
+ };
+ h.plugin._queuePosition(owner);await new Promise(r=>setTimeout(r,10));
+ for(let i=0;i<20;i++)h.plugin._queuePosition(owner);
+ assert.equal(calls,1);resolve();await new Promise(r=>setTimeout(r,20));
+ assert.equal(calls,2);assert.equal(maxActive,1);assert.equal(h.plugin._positionRuns.size,0);
+ h.plugin.shutdown();
+});
+
+test('shutdown during native reorder prevents fallback moves and fresh timers',async()=>{
+ const h=setup(),panes=['info','native-id'].map(pane=>({dataset:{pane}}));
+ let resolve,fallback=0;
+ const owner={getPanes:()=>panes,changePaneOrder:()=>{fallback++;}};
+ owner.sidenav={container:owner,changePaneOrder:async()=>{await new Promise(r=>resolve=r);}};
+ const pending=h.plugin._applyPosition(owner);h.plugin.shutdown();resolve();await pending;
+ h.plugin._queuePosition(owner);
+ assert.equal(fallback,0);assert.equal(h.plugin._positionTimers.size,0);
+});
+
+test('reader trash notification immediately disables preview and prevents copying deleted content',async()=>{
+ const h=setup(),i=h.item(1),s=h.section(i);
+ await h.plugin._renderSection(s.props);i.deleted=true;h.plugin.notify('trash','item',[1]);
+ assert.equal(s.body.enabled,false);assert.equal(h.plugin.copyCitation(false,s.body),false);
+ await h.plugin._renderSection(s.props);assert.equal(h.calls.length,2);h.plugin.shutdown();
+});
+
+test('replacing the same cache key keeps byte accounting exact',()=>{
+ const h=setup();for(let i=0;i<20;i++)h.plugin._cachePut('same',{x:'abc'},[1]);
+ assert.equal(h.plugin._cache.size,1);assert.equal(h.plugin._cacheBytes,JSON.stringify({x:'abc'}).length*2);
+ h.plugin._cacheDelete('same');assert.equal(h.plugin._cacheBytes,0);h.plugin.shutdown();
+});
+
+test('observer disconnect failures do not strand states or timers',()=>{
+ const h=setup(),s=h.section(h.item(1)),errors=[];
+ h.Zotero.logError=e=>errors.push(e.message);
+ h.plugin._states.get(s.body).widthObserver={disconnect(){throw Error('resize disconnect failed');}};
+ h.plugin._positionObservers.set({}, {observer:{disconnect(){throw Error('position disconnect failed');}},count:1});
+ h.plugin.shutdown();assert.equal(h.plugin._states.size,0);assert.equal(s.listeners.size,0);
+ assert.equal(h.plugin._positionObservers.size,0);assert.equal(h.plugin._positionTimers.size,0);
+ assert.equal(errors.length,2);
 });
