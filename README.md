@@ -1,19 +1,17 @@
-# Zotero DIY
+# Zotero DIY (Zotero Flow Series)
 
-这是一个个人维护的 Zotero 插件及其衍生项目集合，当前包含四个相互独立的项目：**Zotero Citation**、**ZoteroPreview**、**MetaRef for Zotero** 和 **RefNexus for Zotero 10**。每个子目录分别维护自己的源码/运行文件、安装包、版本说明、测试方式和许可证信息。
+这是一个个人维护的 Zotero 插件及其衍生项目集合。目前已全面升级并拆分为统一命名的 **Zotero Flow Series** 四大独立仓库：
 
-本仓库不是单一插件发行包。请根据需要进入对应项目目录，阅读该项目的 README 后再安装或构建。
+## Zotero Flow Series 项目一览
 
-## 项目一览
+| 系列体系 | 功能定位 | 原项目 | 当前版本 | 独立仓库 | 旧版更新兼容 |
+|---|---|---|:---:|---|---|
+| **Zotero-CiteFlow** | 写作引用追踪 | Zotero Citation | 40.0.4 | [groele/Zotero-CiteFlow](https://github.com/groele/Zotero-CiteFlow) | [update.json](./zotero%20citation/update.json) |
+| **Zotero-ViewFlow** | 侧栏引用预览 | ZoteroPreview | 40.1.7 | [groele/Zotero-ViewFlow](https://github.com/groele/Zotero-ViewFlow) | [zoteropreview7-updates.json](./zotero%20preview/zoteropreview7-updates.json) |
+| **Zotero-RefFlow** | 参考文献与引用网络 | RefNexus | 11.0.2 | [groele/Zotero-RefFlow](https://github.com/groele/Zotero-RefFlow) | [update.json](./RefNexus-Zotero10/update.json) |
+| **Zotero-MetaFlow** | 元数据校验与整理 | MetaRef | 12.2.0 | [groele/Zotero-MetaFlow](https://github.com/groele/Zotero-MetaFlow) | [update.json](./MetaRef-for-Zotero/update.json) |
 
-| 项目 | 说明 | 当前版本 | 独立仓库 | 旧版更新兼容 |
-|---|---|---:|---|---|
-| Zotero Citation | 协助维护 Zotero 与 Word 集成引用信息，并在条目列表中显示引用状态。 | 40.0.4 | [groele/Zotero-Citation](https://github.com/groele/Zotero-Citation) | [update.json](./zotero%20citation/update.json) |
-| RefNexus for Zotero 10 | 获取参考文献、施引文献与相关文献，浏览文献卡片及引用关系。 | 11.0.2 | [groele/RefNexus-Zotero10](https://github.com/groele/RefNexus-Zotero10) | [update.json](./RefNexus-Zotero10/update.json) |
-| ZoteroPreview | 在主库及阅读标签页的原生侧栏预览参考文献和正文引用。 | 40.1.7 | [groele/Zotero-Preview](https://github.com/groele/Zotero-Preview) | [zoteropreview7-updates.json](./zotero%20preview/zoteropreview7-updates.json) |
-| MetaRef for Zotero | 校验、整理和补全文献元数据，支持化学式上下标、缩写、ESI 与 Nature Index。 | 12.2.0 | [groele/MetaRef-for-Zotero](https://github.com/groele/MetaRef-for-Zotero) | [update.json](./MetaRef-for-Zotero/update.json) |
-
-**四个插件已成功拆分为独立仓库维护。** 为了保障已安装用户的无缝平滑升级，本仓库继续保留各插件历史版本的更新清单与下载路径；各插件新版本的开发、发布与问题反馈请移步上述独立仓库。详情参见 [迁移计划与执行记录](./MIGRATION-PLAN.md)。
+**四个插件已成功拆分为独立仓库维护并启用 Zotero Flow Series 统一命名。** 为了保障已安装用户的无缝平滑升级，本仓库继续保留各插件历史版本的更新清单与下载路径；各插件新版本的开发、发布与问题反馈请移步上述独立仓库。详情参见 [迁移计划与执行记录](./MIGRATION-PLAN.md)。
 
 ## 快速开始
 

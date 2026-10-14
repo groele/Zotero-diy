@@ -1,13 +1,16 @@
-# Zotero-diy 四插件独立仓库迁移计划
+# Zotero-diy 四插件独立仓库迁移计划（Zotero Flow Series）
 
-状态：**拆分已执行完成，进入双轨兼容验证阶段**。四个独立仓库已完成 Git 历史提取、标签过滤、配置迁移与最新发行版发布。
+状态：**拆分已执行完成，进入双轨兼容验证阶段**。已采用统一命名体系 **Zotero Flow Series**，四个独立仓库已完成 Git 历史提取、标签过滤、配置迁移与最新发行版发布。
 
-## 目标仓库（均已就绪）
+## 目标仓库（统一命名体系：Zotero Flow Series）
 
-- [groele/MetaRef-for-Zotero](https://github.com/groele/MetaRef-for-Zotero)（最新发布：v12.2.0）
-- [groele/RefNexus-Zotero10](https://github.com/groele/RefNexus-Zotero10)（最新发布：refnexus-v11.0.2）
-- [groele/Zotero-Citation](https://github.com/groele/Zotero-Citation)（最新发布：v40.0.4）
-- [groele/Zotero-Preview](https://github.com/groele/Zotero-Preview)（最新发布：zoteropreview-v40.1.7）
+| 功能分类 | 统一命名 | 对应原项目 | 独立仓库地址 | 当前版本 |
+|---|---|---|---|:---:|
+| 引用追踪 | **Zotero-CiteFlow** | Zotero Citation / Easier Citation | [groele/Zotero-CiteFlow](https://github.com/groele/Zotero-CiteFlow) | `40.0.4` |
+| 引用预览 | **Zotero-ViewFlow** | ZoteroPreview | [groele/Zotero-ViewFlow](https://github.com/groele/Zotero-ViewFlow) | `40.1.7` |
+| 参考文献获取 | **Zotero-RefFlow** | RefNexus-Zotero10 | [groele/Zotero-RefFlow](https://github.com/groele/Zotero-RefFlow) | `11.0.2` |
+| 元数据整理 | **Zotero-MetaFlow** | MetaRef-for-Zotero | [groele/Zotero-MetaFlow](https://github.com/groele/Zotero-MetaFlow) | `12.2.0` |
+
 - 保留 `groele/Zotero-diy` 用作统一导航入口与旧更新通道托管。
 
 ## 迁移顺序
