@@ -1,16 +1,14 @@
 # Zotero-diy 四插件独立仓库迁移计划
 
-状态：**准备中**。此文件是执行清单；并不表示目标仓库已创建或迁移完成。
+状态：**拆分已执行完成，进入双轨兼容验证阶段**。四个独立仓库已完成 Git 历史提取、标签过滤、配置迁移与最新发行版发布。
 
-## 目标
+## 目标仓库（均已就绪）
 
-- `groele/MetaRef-for-Zotero`
-- `groele/RefNexus-Zotero10`
-- `groele/Zotero-Citation`
-- `groele/Zotero-Preview`
-- 保留 `groele/Zotero-diy` 用作统一展示与入口。
-
-如目标名称已被占用，先确认目标的身份和已有内容；**不得覆盖现有仓库**。
+- [groele/MetaRef-for-Zotero](https://github.com/groele/MetaRef-for-Zotero)（最新发布：v12.2.0）
+- [groele/RefNexus-Zotero10](https://github.com/groele/RefNexus-Zotero10)（最新发布：refnexus-v11.0.2）
+- [groele/Zotero-Citation](https://github.com/groele/Zotero-Citation)（最新发布：v40.0.4）
+- [groele/Zotero-Preview](https://github.com/groele/Zotero-Preview)（最新发布：zoteropreview-v40.1.7）
+- 保留 `groele/Zotero-diy` 用作统一导航入口与旧更新通道托管。
 
 ## 迁移顺序
 

@@ -6,15 +6,16 @@
 
 ## 项目一览
 
-| 项目 | 说明 | 当前版本 | Zotero 兼容声明 | 入口 |
+| 项目 | 说明 | 当前版本 | 独立仓库 | 旧版更新兼容 |
 |---|---|---:|---|---|
-| Zotero Citation | 协助维护 Zotero 与 Word 集成引用信息，并在 Zotero 条目列表中显示引用状态。 | 40.0.4 | `6.999`–`10.0.*`，以子项目 `manifest.json` 为准 | [项目说明](./zotero%20citation/README.md) · [审查记录](./zotero%20citation/PROJECT_AUDIT.md) |
-| RefNexus for Zotero 10 | 获取参考文献、施引文献与相关文献，浏览文献卡片及引用关系。 | 11.0.2 | Zotero 10（以插件清单为准） | [项目说明](./RefNexus-Zotero10/README.md) |\n| ZoteroPreview | 在 Zotero 主库及主窗口阅读标签页的原生侧栏预览参考文献和正文引用，并提供复制操作。 | 40.1.7 | `8.0`–`10.0.*`，以子项目 `manifest.json` 为准 | [项目说明](./zotero%20preview/README.md) · [验证记录](./zotero%20preview/VALIDATION.md) · [XPI 安装包](./zotero%20preview/dist/ZoteroPreview-40.1.4.xpi) |
-| MetaRef for Zotero (原 Linter) | 校验、整理和补全文献元数据，支持化学式上下标、缩写、全学科 ESI 和 Nature Index 标记。 | 12.2.0（package.json） | `10.0`–`10.999`；已在 Windows Zotero 10.0.5 验证 | [项目说明](./MetaRef-for-Zotero/README.md) · [11.0.7 发布记录](./MetaRef-for-Zotero/docs/releases/v11.0.7.md) · [XPI 安装包](./MetaRef-for-Zotero/dist/metaref-for-zotero.xpi) |
+| Zotero Citation | 协助维护 Zotero 与 Word 集成引用信息，并在条目列表中显示引用状态。 | 40.0.4 | [groele/Zotero-Citation](https://github.com/groele/Zotero-Citation) | [update.json](./zotero%20citation/update.json) |
+| RefNexus for Zotero 10 | 获取参考文献、施引文献与相关文献，浏览文献卡片及引用关系。 | 11.0.2 | [groele/RefNexus-Zotero10](https://github.com/groele/RefNexus-Zotero10) | [update.json](./RefNexus-Zotero10/update.json) |
+| ZoteroPreview | 在主库及阅读标签页的原生侧栏预览参考文献和正文引用。 | 40.1.7 | [groele/Zotero-Preview](https://github.com/groele/Zotero-Preview) | [zoteropreview7-updates.json](./zotero%20preview/zoteropreview7-updates.json) |
+| MetaRef for Zotero | 校验、整理和补全文献元数据，支持化学式上下标、缩写、ESI 与 Nature Index。 | 12.2.0 | [groele/MetaRef-for-Zotero](https://github.com/groele/MetaRef-for-Zotero) | [update.json](./MetaRef-for-Zotero/update.json) |
 
-兼容范围是各插件清单中声明的范围，不代表已在该范围内所有 Zotero 构建上完成实机验收。尤其是 Zotero 主版本升级后，请先阅读子项目的兼容说明和已知限制。
+**四个插件已成功拆分为独立仓库维护。** 为了保障已安装用户的无缝平滑升级，本仓库继续保留各插件历史版本的更新清单与下载路径；各插件新版本的开发、发布与问题反馈请移步上述独立仓库。详情参见 [迁移计划与执行记录](./MIGRATION-PLAN.md)。
 
-**仓库拆分正在规划，尚未创建四个独立仓库。** 迁移完成并通过安装/升级验证前，所有现有更新清单及下载路径均保持不变。参见 [迁移执行清单](./MIGRATION-PLAN.md)。\n\n## 快速开始
+## 快速开始
 
 ### 安装 ZoteroPreview
 
